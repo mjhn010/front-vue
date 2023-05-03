@@ -1,0 +1,240 @@
+html,body,form{
+    height: 100%;
+}
+.container{
+    min-height: calc(100vh - 96px);
+    /* height: 100%; */
+    background-color:#eee;
+    display: flex;
+    justify-content: space-around;
+    box-sizing: border-box;
+}
+.reg-main{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+    padding-bottom: 1%;
+}
+.reg-title-box{
+    width: 100%;
+    margin-top: 1%;
+}
+.reg-title{
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid rgb(228, 232, 232);
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 11px 18px;
+    font-size: 14px;
+    line-height: 21px; 
+}
+.reg-content{
+    background-color: #fff;
+    box-sizing: border-box;
+    min-height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.content {
+    width: 100%;
+    border: 1px solid rgb(228, 232, 232);
+    /* height: 100%; */
+    padding: 3% 3%;
+    border-radius: 5px;
+    box-sizing: border-box;
+    line-height: 21px;
+    background-color: #fff;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .content-text{
+    font-size: 14px;
+    color: #000;
+  }
+  /* 처음화면 아무것도 안눌렀을 때 속성 !! default */
+  .start-content {
+    width: 100%;
+    border: 1px solid rgb(228, 232, 232);
+    height: fit-content;
+    box-sizing: border-box;
+    border-radius: 5px;
+    line-height: 21px;
+    background-color: #fff;
+    flex-grow: 1; 
+  }
+  .default-box{
+    box-sizing: border-box;
+    width: 80%;
+    margin-top: 5%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .default-box:hover{
+    border: 3px solid #000;
+  }
+  .main-title {
+    text-align: center;
+    width: 100%;
+    color: rgb(153, 153, 153);
+    font-size: 17px;
+    font-weight: 300;
+    box-sizing: border-box;
+  }
+  .start-app{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .app-box{
+    border: 1px solid #eee;
+    border-radius: 50%;
+    width: 96px;
+    height: 96px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 7%;
+  }
+  .app-box-font{
+    font-size: 14px;
+    font-weight: 300;
+  }
+  .app-box:hover{
+    background-color: #8CCCF4;
+  
+  }
+  .app-box>img{
+    width: 32px;
+    height: 32px;
+    
+  }
+  .sub-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+   cursor: pointer; 
+  }
+  /* aside */
+  .aside {
+    box-sizing: border-box;
+    padding: 0 1%;
+    display: flex;
+    justify-content: center;
+    width: 3%;
+  }
+  .nav {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1% 4%;
+    height: fit-content;
+    right: 2.5%;
+  }
+  .content-select {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .border-none {
+    border-bottom: none;
+  }
+   .aside-li {
+    box-sizing: border-box;
+    display: flex;
+    padding: 7% 3%;
+    /* border-right: 1px solid rgb(228, 232, 232);
+    border-bottom: 1px solid rgb(228, 232, 232); */
+    border: 1px solid rgb(228, 232, 232);
+    width: 120px;
+    background-color: #fff;
+  }
+  .aside-li:first-child {
+    border-right: none;
+  }
+  .aside-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 22px;
+  }
+  .aside-img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* register btn */
+  .register-btn {
+    background-color: rgb(44, 48, 48);
+    color: #fff;
+    border-radius: 24px;
+  }
+  .register-btn-1 {
+    background-color: #fff;
+    color: black;
+    border-radius: 24px;
+    border: 1px solid rgb(228, 232, 232);
+    font-weight: 300;
+  }
+  
+  
+  
+  input:focus{
+    border: 2px solid #8CCCF4;
+  }
+  
+  @media (max-width: 1224px) {
+    .nav{
+      display: none;
+    }
+    .reg-title-box{
+      display: none;
+    }
+    .reg-main{
+      display: none;
+    }
+    .container{
+      background-color: #fff;
+    }
+    .m-comment{
+      box-sizing: border-box;
+      padding: 3%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid rgb(185,74, 72);
+      border-radius: 8px;
+      background-color: rgb(242, 222, 222);
+      width: 400px;
+      font-size: 14px;
+      font-weight: 300;
+      text-align: center;
+      height: 28px;
+      color: rgb(185, 74, 72);
+      position: relative;
+      top: 50px;
+      left: -12%;
+    }
+  }
+
+  /* js */
