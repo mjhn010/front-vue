@@ -1,3 +1,5 @@
+export default Index;
+
 const sliderContainer = document.querySelector('.slider-container');
 const slider = sliderContainer.querySelector('.slider');
 const prevButton = sliderContainer.querySelector('.prev-button');
