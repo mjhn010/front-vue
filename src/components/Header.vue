@@ -29,3 +29,6 @@
         </ul>
     </header>
 </template>
+<style>
+@import url("/src/assets/css/compoment/header.css");
+</style>
