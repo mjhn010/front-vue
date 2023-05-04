@@ -8,7 +8,7 @@ import Header from '../Header.vue'
 <section class="margin-right-5 profile">
     <h1 class="d-none">왼편 프로필 창</h1>
     <div class="profile-info">
-        <img class="profile-img" src="../..../assets/images/logo.png">
+        <img class="profile-img" src="/src/assets/images/logo.png">
         <div class="nickname">
             김선호
         </div>
@@ -102,5 +102,5 @@ import Header from '../Header.vue'
 </main>
 </template>
 <style scoped>
-@import url("/frontend/srcntend/src/assets/css/compoment/profile.css");
+@import url("/src/assets/css/compoment/profile.css");
 </style>

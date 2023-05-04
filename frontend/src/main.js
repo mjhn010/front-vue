@@ -4,17 +4,17 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import App from "./App.vue";
 
 // 로그인,회원가입
-import Login from "./components/Login.vue";
+import Login from "/src/components/Login.vue";
 // 유저
-import Index from "./components/Index.vue";
+import Index from "/src/components/Index.vue";
 // 맴버
-import PortfolioRegister from "./components/member/PortfolioRegister.vue";
-import Mypage from "./components/member/Mypage.vue";
+import PortfolioRegister from "/src/components/member/PortfolioRegister.vue";
+import Mypage from "/src/components/member/Mypage.vue";
 // 커뮤니티
-import Community from "./components/Community.vue";
-import CommunityReg from "./components/member/CommunityRegister.vue";
+import Community from "/src/components/Community.vue";
+import CommunityReg from "/src/components/member/CommunityRegister.vue";
 // 포트폴리오 상세정보
-import PortfolioDetail from "./components/PortfolioDetail.vue";
+import PortfolioDetail from "/src/components/PortfolioDetail.vue";
 
 const routes = [
   { path: "/", component: Index },

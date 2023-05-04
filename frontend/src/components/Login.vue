@@ -39,5 +39,5 @@
 </section>
 </template>
 <style scoped>
-@import url("/frontend/srcntend/src/assets/css/compoment/login.css");
+@import url("/src/assets/css/compoment/login.css");
 </style>
