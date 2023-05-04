@@ -143,7 +143,7 @@ const recruits = [
                     :key="recruit"
             >
                 <img
-                        :src="`/src/images/temp/${recruit.image}`"
+                        :src="`/src/assets/images/temp/${recruit.image}`"
                         alt="Recruit thumbnail"
                         class="rounded-t-lg"
                 >

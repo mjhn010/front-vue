@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import Header from "@/components/Header.vue";
 
 // Mock data
 const member = { nickname: "D.BRONZE", image: "d.bronze.jpg" };
@@ -199,6 +200,7 @@ function scrollRight() {
 </script>
 
 <template>
+  <Header />
   <div
     class="absolute grid min-h-full gap-y-2 bg-gray-50 xl:min-w-full xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
@@ -281,9 +283,9 @@ function scrollRight() {
         :class="portfolio.awardDate ? 'sm:h-64' : 'sm:h-56'"
       >
         <div class="flex w-32 justify-evenly">
-            <div class="mb-2 cursor-pointer bg-white rounded-full border-2">
-                <div class="heart-icon hover:animate-ping" />
-            </div>
+          <div class="mb-2 cursor-pointer rounded-full border-2 bg-white">
+            <div class="heart-icon hover:animate-ping" />
+          </div>
           <div
             class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50"
           />
@@ -383,7 +385,7 @@ function scrollRight() {
       <div
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
-        <div class="rounded-full bg-white border-2 mb-2">
+        <div class="mb-2 rounded-full border-2 bg-white">
           <div class="heart-icon cursor-pointer hover:animate-ping" />
         </div>
         좋아요
