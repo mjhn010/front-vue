@@ -6,11 +6,7 @@
 
     <select id="findPortfolioComments" resultType="Comment">
         SELECT
-            id,
-            member_id,
-            portfolio_id,
-            content,
-            reg_date,
+            *
         FROM
             comment
         WHERE

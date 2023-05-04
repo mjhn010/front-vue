@@ -16,7 +16,7 @@ public class DefaultCommentService implements CommentService{
     }
 
     @Override
-    public List<Comment> getComments(Integer portfolioId) {
+    public List<Comment> getCommentsByPortfolioId(Integer portfolioId) {
         List<Comment> portfolioComments = repository.findPortfolioComments(portfolioId);
         return portfolioComments;
     }

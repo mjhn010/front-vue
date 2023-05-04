@@ -8,9 +8,21 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SkillRepository {
-	List<UsedSkill> findSkillById(Integer id);
+//	Skill
+	List<Skill> findAll();
 
-	void insert(UsedSkill usedSkill);
+	void insertSkill(Skill skill);
 
-	void delete(UsedSkill usedSkill);
+	void updateSkill(Skill skill);
+
+	void deleteSkill(Skill skill);
+
+//	UsedSkill
+	List<UsedSkill> findUsedSkillByPortfolioId(Integer id);
+
+	void insertUsedSkill(UsedSkill usedSkill);
+
+	void updateUsedSkill(UsedSkill usedSkill);
+
+	void deleteUsedSkill(UsedSkill usedSkill);
 }

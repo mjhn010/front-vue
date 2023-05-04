@@ -1,21 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.pofo.pofoapiboot3.repository.SkillRepository">
+    <!-- Skill -->
+    <select id="findAll" resultType="Skill">
+        SELECT
+            *
+        FROM
+            skill
+    </select>
 
-	<select id="findSkillById" parameterType="Integer" resultType="String">
-		select
-			eng_name
-		from
-			skill
-		where
-			portfolio_id = ${id}
-	</select>
-	
-	<insert id="insert" >
-		insert into skill(portfolio_id, eng_name, kor_name)
-		values(#{portfolioId}, #{engName}, #{korName})
-	</insert>
+    <insert id="insertSkill">
+        INSERT INTO
+            skill(portfolio_id, eng_name, kor_name)
+        VALUES
+            (#{portfolioId}, #{engName}, #{korName})
+    </insert>
 
+    <update id="updateSkill">
+        UPDATE
+            skill
+        SET
+            eng_name = #{engName},
+            kor_name = #{korName}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteSkill">
+        DELETE FROM
+            skill
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- UsedSkill -->
+    <select id="findUsedSkillByPortfolioId" parameterType="Integer" resultType="UsedSkill">
+        SELECT
+            *
+        FROM
+            used_skill
+        WHERE
+            portfolio_id = ${id}
+    </select>
+
+    <insert id="insertUsedSkill">
+        INSERT INTO
+            skill(portfolio_id, recruit_id, skill_id)
+        VALUES
+            (#{portfolioId}, #{recruitId}, #{skillId})
+    </insert>
+
+    <update id="updateUsedSkill">
+        UPDATE
+            skill
+        SET
+            portfolio_id = #{portfolioId},
+            recruit_id = #{recruitId},
+            skill_id = #{skillId}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteUsedSkill">
+        DELETE FROM
+            skill
+        WHERE
+            id = #{id}
+    </delete>
 </mapper>

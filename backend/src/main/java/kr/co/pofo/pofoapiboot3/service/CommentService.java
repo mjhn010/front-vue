@@ -5,7 +5,7 @@ import kr.co.pofo.pofoapiboot3.entity.Comment;
 import java.util.List;
 
 public interface CommentService {
-    List<Comment> getComments(Integer portfolioId);
+    List<Comment> getCommentsByPortfolioId(Integer portfolioId);
 
     void saveComment(Comment comment);
 
