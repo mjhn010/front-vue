@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kr.co.pofo.pofoapiboot3.entity.PortfolioComment;
 import kr.co.pofo.pofoapiboot3.repository.CommentRepository;
 
 @Service
