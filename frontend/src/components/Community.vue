@@ -96,7 +96,7 @@ const recruits = [
     <div class="min-h-full px-4 pt-24 md:px-16 xl:min-w-full xl:pb-8 xl:pt-24">
         <figure class="flex items-center justify-center xl:mb-20">
             <img
-                    src="@/assets/images/butterfly.png"
+                    src="../assets/images/butterfly.png"
                     alt="Logo"
                     class="w-8 sm:mr-2 sm:mt-2 sm:w-12 xl:w-20"
             >
@@ -120,7 +120,7 @@ const recruits = [
         <div class="mt-8 flex h-14 flex-col justify-evenly xl:h-20">
             <div class="flex items-center">
                 <img
-                        src="@/assets/images/group.png"
+                        src="../assets/images/group.png"
                         alt="User group icon"
                         class="mr-2 w-8"
                 >
@@ -181,5 +181,5 @@ const recruits = [
 </template>
 
 <style scoped>
-@import url("@/assets/css/tailwind.css");
+@import url("../assets/css/tailwind.css");
 </style>

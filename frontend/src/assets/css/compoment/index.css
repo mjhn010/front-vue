@@ -69,12 +69,12 @@
 
 .prev-button {
     left: 35px;
-    background-image: url("src/assets/images/chevron-left.png");
+    background-image: url("frontend/src../images/chevron-left.png");
 }
 
 .next-button {
     right: 35px;
-    background-image: url("src/assets/images/chevron-right.png");
+    background-image: url("frontend/src../images/chevron-right.png");
 }
 
 /* 인디케이터 컨테이너 */
@@ -240,22 +240,22 @@
     background-position: center center;
 }
 .category-item.java {
-    background-image: url('src/assets/images/java.svg');
+    background-image: url('frontend/src../images/java.svg');
 }
 .category-item.javascript {
-    background-image: url('src/assets/images/javascript\ \(1\).svg');
+    background-image: url('frontend/src/assets/images/javascript\ \(1\).svg');
 }
 .category-item.python {
-    background-image: url('src/assets/images/Group\ 7.svg');
+    background-image: url('frontend/src/assets/images/Group\ 7.svg');
 }
 .category-item.c {
-    background-image: url('src/assets/images/C_Programming_Language.svg');
+    background-image: url('frontend/src../images/C_Programming_Language.svg');
 }
 .category-item.c-sharp {
-    background-image: url('src/assets/images/cdnlogo.com_c.svg');
+    background-image: url('frontend/src../images/cdnlogo.com_c.svg');
 }
 .category-item.visual-basic {
-    background-image: url('src/assets/images/VB.NET_Logo.svg');
+    background-image: url('frontend/src../images/VB.NET_Logo.svg');
 }
 
 /* 정렬방식 스타일 */

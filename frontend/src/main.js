@@ -11,10 +11,10 @@ import Index from "./components/Index.vue";
 import PortfolioRegister from "./components/member/PortfolioRegister.vue";
 import Mypage from "./components/member/Mypage.vue";
 // 커뮤니티
-import Community from "@/components/Community.vue";
+import Community from "./components/Community.vue";
 import CommunityReg from "./components/member/CommunityRegister.vue";
 // 포트폴리오 상세정보
-import PortfolioDetail from "@/components/PortfolioDetail.vue";
+import PortfolioDetail from "./components/PortfolioDetail.vue";
 
 const routes = [
   { path: "/", component: Index },

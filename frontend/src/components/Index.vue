@@ -1,6 +1,6 @@
 
 <script setup>
-import Header from'./Header.vue';
+import Header from './Header.vue';
 
 </script>
 <template>
@@ -10,16 +10,16 @@ import Header from'./Header.vue';
         <section class="slider-container">
             <h1 class="d-none">이번주 인기 TOP 10</h1>
             <div class="slider">
-                <a href="/your-post-url-10"><img src="src/assets/images/A3rzk7ZMMuKmrv9y.비비드-rgb.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-1"><img src="src/assets/images/92sBdzoNV6uRcMTr.11.gif" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-2"><img src="src/assets/images/F9C9aBXD9WcJL9eU.태일_기본_백터.png" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-3"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-4"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-5"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-6"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-7"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-8"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
-                <a href="/your-post-url-9"><img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-10"><img src="../assets/images/A3rzk7ZMMuKmrv9y.비비드-rgb.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-1"><img src="..assets/images/92sBdzoNV6uRcMTr.11.gif" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-2"><img src="../assets/images/F9C9aBXD9WcJL9eU.태일_기본_백터.png" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-3"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-4"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-5"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-6"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-7"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-8"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
+                <a href="/your-post-url-9"><img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지"></a>
             </div>
             <div class="slider-controls">
                 <button class="prev-button"></button>
@@ -104,340 +104,340 @@ import Header from'./Header.vue';
                 <ul>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit">123</span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like">22</span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/92sBdzoNV6uRcMTr.11.gif" alt="포트폴리오 섬네일 이미지">
+                            <img src="..assets/images/92sBdzoNV6uRcMTr.11.gif" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit">12</span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like">2</span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/V8xLj9bx6VaubDZ3.성찰적 존재(Reflective Being).png" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/V8xLj9bx6VaubDZ3.성찰적 존재(Reflective Being).png" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/F9C9aBXD9WcJL9eU.태일_기본_백터.png" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/F9C9aBXD9WcJL9eU.태일_기본_백터.png" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/eye.png" alt="포트폴리오 섬네일 이미지">
+                            <img src="..assets/images/eye.png" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/A3rzk7ZMMuKmrv9y.비비드-rgb.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/A3rzk7ZMMuKmrv9y.비비드-rgb.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/ujqbJcYv4hQ4ZLZK.20230317_2_65.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="..assets/images/ujqbJcYv4hQ4ZLZK.20230317_2_65.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumbnail">
-                            <img src="src/assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
+                            <img src="../assets/images/BctLFrYLdnFPix7w.커플.jpg" alt="포트폴리오 섬네일 이미지">
                         </div>
                         <div class="information">
                             <div class="portfolio-info-profile">
-                                <img src="src/assets/images/free-icon-user-847969 28.png" alt="프로필 이미지">
+                                <img src="..assets/images/free-icon-user-847969%2028.png" alt="프로필 이미지">
                                 <span class="nickname">ilovepofo</span>
                             </div>
                             <div class="portfolio-info-counts">
-                                <img src="src/assets/images/eye.png" alt="조회수 이미지">
+                                <img src="..assets/images/eye.png" alt="조회수 이미지">
                                 <span class="hit"></span>
-                                <img src="src/assets/images/heart.png" alt="하트 이미지">
+                                <img src="..assets/images/heart.png" alt="하트 이미지">
                                 <span class="like"></span>
                             </div>
                         </div>
@@ -454,5 +454,5 @@ import Header from'./Header.vue';
     </main>
 </template>
 <style scoped>
-@import url("/src/assets/css/compoment/index.css");
+@import url("/frontend/srcntend/src/assets/css/compoment/index.css");
 </style>

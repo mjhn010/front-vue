@@ -1,5 +1,5 @@
 <script setup>
-import Header from'../Header.vue'
+import Header from '../Header.vue'
 </script>
 <template>
     <Header></Header>
@@ -7,7 +7,7 @@ import Header from'../Header.vue'
         <div class="border-blue"></div>
         <section class="team-c-title margin-top-2">
             <h1 class="team-title margin-top-7">팀 개설하기 안내</h1>
-            <img class="team-img" src="src/assets/images/diversity.png" alt="">
+            <img class="team-img" src="../..../assets/images/diversity.png" alt="">
             <p class="text margin-top-5">새로운 주제로 팀 프로젝트를 진행하고 싶으신가요 ? <br>
                 <br>
                 <br> 
@@ -20,7 +20,7 @@ import Header from'../Header.vue'
                 목표를 설정하면 팀을 개설하고 활동을 계획하는 데 도움이 됩니다.<br>
             아래 양식에 맞게 입력을 해주시면 새로운 팀 프로젝트가 진행됩니다!<br>
             자세한 팀원 모집은 알림과 채팅 기능을 이용해보세요 !
-            <img class="noti" src="src/assets/images/notification.png" alt="">
+            <img class="noti" src="../..../assets/images/notification.png" alt="">
             </p>
         </section>
         <form class="team-c-form" action="">
@@ -28,9 +28,9 @@ import Header from'../Header.vue'
             <div class="first-img-box">
                 <div class="img-box">
                     <input type="file" class="d-none">
-                    <img class="hover" src="src/assets/images/img.png" alt="">
+                    <img class="hover" src="../..../assets/images/img.png" alt="">
                     <span>썸네일 대표 이미지를 추가해주세요.</span>
-                    <img class="hover d-none" src="src/assets/images/fff-img.png" alt="">
+                    <img class="hover d-none" src="../..../assets/images/fff-img.png" alt="">
                 </div>
             </div>
             <div class="text-box margin-top-3">
@@ -70,5 +70,5 @@ import Header from'../Header.vue'
     </div>
 </template>
 <style scoped>
-@import url("/src/assets/css/compoment/team-register.css");
+@import url("/frontend/srcntend/src/assets/css/compoment/team-register.css");
 </style>

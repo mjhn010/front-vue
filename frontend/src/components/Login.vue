@@ -6,7 +6,7 @@
 <div class="login-border">
 
     <div class="login-box">
-        <a><img src="src/assets/images/pofo.svg" class="logo-img"></a>
+        <a><img src="../assets/images/pofo.svg" class="logo-img"></a>
 
         <form class="margin-top-15">
 
@@ -23,9 +23,9 @@
             <p class="text-center margin-bottom-5 font-weight-500 font-size1">SNS로 간편하게 시작하기</p>
 
             <div class="logos margin-top-1">
-                <a><img src="src/assets/images/google_logo.png"></a>
-                <a><img src="src/assets/images/kakao_logo.png"></a>
-                <a><img src="src/assets/images/naver_logo.svg"></a>
+                <a><img src="..assets/images/google_logo.png"></a>
+                <a><img src="..assets/images/kakao_logo.png"></a>
+                <a><img src="..assets/images/naver_logo.svg"></a>
             </div>
         </div>
 
@@ -39,5 +39,5 @@
 </section>
 </template>
 <style scoped>
-@import url("/src/assets/css/compoment/login.css");
+@import url("/frontend/srcntend/src/assets/css/compoment/login.css");
 </style>

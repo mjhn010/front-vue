@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import Header from "@/components/Header.vue";
+import Header from "./Header.vue";
 
 // Mock data
 const member = { nickname: "D.BRONZE", image: "d.bronze.jpg" };
@@ -290,7 +290,6 @@ function scrollRight() {
             class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50"
           />
         </div>
-        <!-- Portfolio banner -->
         <span
           class="text-sm font-bold text-blue-300"
           v-if="portfolio.awardDate != null"
@@ -320,7 +319,7 @@ function scrollRight() {
         >
           <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
-            src="@/assets/images/chevron-right.svg"
+            src="../assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
           >
@@ -373,7 +372,7 @@ function scrollRight() {
         >
           <img
             class="mb-2 h-12 w-12 rounded-full border-2"
-            src="@/assets/images/temp/d.bronze.jpg"
+            src="../assets/images/temp/d.bronze.jpg"
             alt="Profile image"
           >
         </router-link>
@@ -465,7 +464,7 @@ function scrollRight() {
             >
               <img
                 class="h-12 w-12 rounded-full"
-                src="@/assets/images/temp/d.bronze.jpg"
+                src="../assets/images/temp/d.bronze.jpg"
                 alt="Profile image"
               >
             </a>
@@ -497,7 +496,7 @@ function scrollRight() {
             >
               <img
                 class="h-12 w-12 rounded-full"
-                src="@/assets/images/temp/d.bronze.jpg"
+                src="../assets/images/temp/d.bronze.jpg"
                 alt="Profile image"
               >
             </a>
@@ -529,7 +528,7 @@ function scrollRight() {
             >
               <img
                 class="h-12 w-12 rounded-full"
-                src="/src/assets/images/temp/d.bronze.jpg"
+                src="/frontend/srcntend/src/assets/images/temp/d.bronze.jpg"
                 alt="Profile image"
               >
             </a>
@@ -555,7 +554,7 @@ function scrollRight() {
 </template>
 
 <style scoped>
-@import url("/src/assets/css/tailwind.css");
+@import url("/frontend/srcntend/src/assets/css/tailwind.css");
 
 main:deep(section) {
   @apply mx-6 mb-12 xl:mx-12;
@@ -563,7 +562,7 @@ main:deep(section) {
 }
 
 main:deep(img) {
-  @apply mb-12 w-fit;
+  @apply mb-12 w-fit h-1/5;
 }
 
 section:deep(h2) {
@@ -587,7 +586,7 @@ section:deep(p) {
 .chevron-left-icon {
   width: 48px;
   height: 48px;
-  background-image: url("@/assets/images/chevron-left.svg");
+  background-image: url("../assets/images/chevron-left.svg");
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -597,7 +596,7 @@ section:deep(p) {
 .chevron-right-icon {
   width: 48px;
   height: 48px;
-  background-image: url("@/assets/images/chevron-right.svg");
+  background-image: url("../assets/images/chevron-right.svg");
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -608,7 +607,7 @@ section:deep(p) {
 .heart-icon {
   width: 48px;
   height: 48px;
-  background-image: url("@/assets/images/heart.svg");
+  background-image: url("../assets/images/heart.svg");
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -617,7 +616,7 @@ section:deep(p) {
 .collection-icon {
   width: 48px;
   height: 48px;
-  background-image: url("@/assets/images/folder.svg");
+  background-image: url("../assets/images/folder.svg");
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -627,7 +626,7 @@ section:deep(p) {
 .comment-icon {
   width: 48px;
   height: 48px;
-  background-image: url("@/assets/images/chat-bubble-left.svg");
+  background-image: url("../assets/images/chat-bubble-left.svg");
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -636,7 +635,7 @@ section:deep(p) {
 .share-icon {
   width: 48px;
   height: 48px;
-  background-image: url("@/assets/images/share-icon.svg");
+  background-image: url("../assets/images/share-icon.svg");
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -648,7 +647,7 @@ section:deep(p) {
   height: 28px;
   margin-left: 82%;
   margin-top: -1%;
-  background-image: url("@/assets/images/x-mark.svg");
+  background-image: url("../assets/images/x-mark.svg");
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */

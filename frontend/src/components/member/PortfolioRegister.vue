@@ -1,5 +1,5 @@
 <script setup>
-import Header from'../Header.vue'
+import Header from '../Header.vue'
 </script>
 <template>
     <Header></Header>
@@ -19,11 +19,11 @@ import Header from'../Header.vue'
                         </div>
                         <div class="start-app">
                           <div class="margin-right-5 sub-box">
-                            <div class="app-box"><img class="hover" src="src/assets/images/img.png" alt=""><img class="hover d-none" src="src/assets/images/fff-img.png" alt=""></div>
+                            <div class="app-box"><img class="hover" src="../..../assets/images/img.png" alt=""><img class="hover d-none" src="../..../assets/images/fff-img.png" alt=""></div>
                             <div class="app-box-font">이미지</div>
                           </div>
                           <div class="sub-box">
-                            <div class="app-box"><img class="hover" src="src/assets/images/text.png" alt=""><img class="hover d-none" src="src/assets/images/fff-text.png" alt=""></div>
+                            <div class="app-box"><img class="hover" src="../..../assets/images/text.png" alt=""><img class="hover d-none" src="../..../assets/images/fff-text.png" alt=""></div>
                             <div class="app-box-font">텍스트</div>
                           </div>
                         </div>
@@ -36,24 +36,24 @@ import Header from'../Header.vue'
                   <ul class="content-select">
                     <li class="border-none aside-li">
                       <button class="aside-btn">
-                        <img class="aside-img" src="src/assets/images/img.png" alt="" />이미지추가
+                        <img class="aside-img" src="../..../assets/images/img.png" alt="" />이미지추가
                       </button>
                     </li>
                     <li class="border-none aside-li">
                       <button class="aside-btn">
-                        <img class="aside-img" src="src/assets/images/text.png" alt="" />텍스트추가
+                        <img class="aside-img" src="../..../assets/images/text.png" alt="" />텍스트추가
                       </button>
                     </li>
                   </ul>
                   <ul class="content-select">
                     <li class="aside-li">
                       <button class="aside-btn">
-                        <img class="aside-img" src="src/assets/images/content.svg" alt="" />콘텐츠재정렬
+                        <img class="aside-img" src="../..../assets/images/content.svg" alt="" />콘텐츠재정렬
                       </button>
                     </li>
                     <li class="aside-li">
                       <button class="aside-btn">
-                        <img class="aside-img" src="src/assets/images/preview.png" alt="" />미리보기
+                        <img class="aside-img" src="../..../assets/images/preview.png" alt="" />미리보기
                       </button>
                     </li>
                   </ul>
@@ -68,5 +68,5 @@ import Header from'../Header.vue'
      </form>
 </template>
 <style scoped>
-@import url("/src/assets/css/compoment/register.css");
+@import url("/frontend/srcntend/src/assets/css/compoment/register.css");
 </style>
