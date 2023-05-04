@@ -4,6 +4,4 @@ import kr.co.pofo.pofoapiboot3.entity.Skill;
 
 public interface SkillService {
 
-	int add(Skill skill);
-
 }

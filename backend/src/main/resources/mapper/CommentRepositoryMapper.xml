@@ -2,39 +2,30 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.portfo.web.repository.CommentRepository">
+<mapper namespace="kr.co.pofo.pofoapiboot3.repository.CommentRepository">
 
-    <select id="findPortfolioComments" resultType="PortfolioComment">
+    <select id="findPortfolioComments" resultType="Comment">
         SELECT
-            c.id,
-            c.portfolio_id,
-            c.content,
-            c.reg_date,
-            mi.name AS member_image_name,
-            m.nickname AS member_nickname
+            id,
+            member_id,
+            portfolio_id,
+            content,
+            reg_date,
         FROM
-            comment AS c
-        LEFT JOIN
-            member AS m
-        ON
-            c.member_id = m.id
-        LEFT JOIN
-            member_image AS mi
-        ON
-            m.id = mi.member_id
+            comment
         WHERE
-            c.portfolio_id = #{portfolioId}
+            portfolio_id = #{portfolioId}
         ORDER BY
-            c.reg_date DESC
+            reg_date DESC
     </select>
 
-    <insert id="insert" parameterType="com.portfo.web.entity.Comment">
+    <insert id="insert">
         INSERT INTO
             comment
         VALUES (
-            #{content},
             #{memberId},
-            #{portfolioId}
+            #{portfolioId},
+            #{content}
         )
     </insert>
 

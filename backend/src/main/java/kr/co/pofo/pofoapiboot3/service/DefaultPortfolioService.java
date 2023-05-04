@@ -28,8 +28,7 @@ public class DefaultPortfolioService implements PortfolioService {
 	@Override
 	public List<PortfolioView> getViewList(String query, String order) {
 		List<PortfolioView> list = portfolioRepository.findViewListByQuery(query, order);
-		setSkillNames(list);
-		
+
 		//좋아요로 정렬 시
 		return list;
 	}
@@ -37,16 +36,9 @@ public class DefaultPortfolioService implements PortfolioService {
 	@Override
 	public List<PortfolioView> getViewList(Integer type, String order) {
 		List<PortfolioView> list = portfolioRepository.findViewListByType(type, order);
-		setSkillNames(list);
 
 		//좋아요로 정렬 시
 		return list;
-	}
-	
-	public void setSkillNames(List<PortfolioView> list){
-		for(PortfolioView p : list) {
-			p.setSkillNames(skillRepository.findSkillById(p.getId()));
-		}
 	}
 
 	@Override

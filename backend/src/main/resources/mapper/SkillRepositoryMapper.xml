@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.portfo.web.repository.SkillRepository">
+<mapper namespace="kr.co.pofo.pofoapiboot3.repository.SkillRepository">
 
 	<select id="findSkillById" parameterType="Integer" resultType="String">
 		select
@@ -16,7 +16,6 @@
 	<insert id="insert" >
 		insert into skill(portfolio_id, eng_name, kor_name)
 		values(#{portfolioId}, #{engName}, #{korName})
-		
 	</insert>
 
 </mapper>
