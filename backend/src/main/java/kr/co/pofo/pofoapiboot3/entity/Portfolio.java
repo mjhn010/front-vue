@@ -16,6 +16,6 @@ public class Portfolio {
 	private Integer hit;
 	private Date regDate;
 	private Date deleteDate;
-	private Date modifiedDate;
+	private Date awardDate;
 	private Integer likes;
 }

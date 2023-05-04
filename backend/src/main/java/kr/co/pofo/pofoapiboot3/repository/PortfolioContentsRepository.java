@@ -6,6 +6,12 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface PortfolioContentRepository {
+public interface PortfolioContentsRepository {
     List<PortfolioContents> selectByPortfolioId(Integer portfolioId);
+
+    void insert(PortfolioContents portfolioContents);
+
+    void update(PortfolioContents portfolioContents);
+
+    void delete(PortfolioContents portfolioContents);
 }

@@ -15,4 +15,7 @@ public interface PortfolioService {
 	void add(Portfolio pf);
 
 	int getId();
+
+	//  Detail
+	Portfolio getPortfolioById(Integer id);
 }

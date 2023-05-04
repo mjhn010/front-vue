@@ -9,7 +9,7 @@ import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
 
 @Mapper
 public interface PortfolioRepository {
-
+//	Index
 	List<PortfolioView> findViewListByRecentHits();
 
 	List<PortfolioView> findViewListByQuery(String query, String order);
@@ -19,5 +19,7 @@ public interface PortfolioRepository {
 	void insert(Portfolio pf);
 
 	int findId();
-	
+
+//	Detail
+	Portfolio findPortfolioById(Integer id);
 }

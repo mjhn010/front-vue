@@ -1,21 +1,36 @@
 package kr.co.pofo.pofoapiboot3.service;
 
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
-import kr.co.pofo.pofoapiboot3.repository.PortfolioContentRepository;
-import org.springframework.web.bind.annotation.RestController;
+import kr.co.pofo.pofoapiboot3.repository.PortfolioContentsRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-@RestController
+@Service
 public class DefaultPortfolioContentService implements PortfolioContentsService {
-    PortfolioContentRepository portfolioContentRepository;
+    PortfolioContentsRepository portfolioContentsRepository;
 
-    public DefaultPortfolioContentService(PortfolioContentRepository portfolioContentRepository) {
-        this.portfolioContentRepository = portfolioContentRepository;
+    public DefaultPortfolioContentService(PortfolioContentsRepository portfolioContentsRepository) {
+        this.portfolioContentsRepository = portfolioContentsRepository;
     }
 
     @Override
-    public List<PortfolioContents> selectByPortfolioId(Integer portfolioId) {
-        List<PortfolioContents> list = portfolioContentRepository.selectByPortfolioId(portfolioId);
+    public List<PortfolioContents> getPortfolioContents(Integer portfolioId) {
+        List<PortfolioContents> list = portfolioContentsRepository.selectByPortfolioId(portfolioId);
         return list;
+    }
+
+    @Override
+    public void insert(PortfolioContents portfolioContents) {
+        portfolioContentsRepository.insert(portfolioContents);
+    }
+
+    @Override
+    public void update(PortfolioContents portfolioContents) {
+        portfolioContentsRepository.update(portfolioContents);
+    }
+
+    @Override
+    public void delete(PortfolioContents portfolioContents) {
+        portfolioContentsRepository.delete(portfolioContents);
     }
 }

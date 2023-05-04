@@ -20,6 +20,7 @@ public class DefaultPortfolioService implements PortfolioService {
         return indexPortfolioViewList;
     }
 
+    //  Index
     @Override
     public List<PortfolioView> getViewList(String query, String order) {
         List<PortfolioView> list = portfolioRepository.findViewListByQuery(query, order);
@@ -44,5 +45,11 @@ public class DefaultPortfolioService implements PortfolioService {
     @Override
     public int getId() {
         return portfolioRepository.findId();
+    }
+
+//  Detail
+    @Override
+    public Portfolio getPortfolioById(Integer id) {
+        return portfolioRepository.findPortfolioById(id);
     }
 }
