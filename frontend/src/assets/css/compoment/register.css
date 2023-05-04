@@ -38,7 +38,7 @@ html,body,form{
     min-height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
 }
 
@@ -87,6 +87,9 @@ html,body,form{
   .default-box:hover{
     border: 3px solid #000;
   }
+  .click-text:hover{
+    border: 3px solid #000;
+  }
   .main-title {
     text-align: center;
     width: 100%;
@@ -131,6 +134,28 @@ html,body,form{
     margin-top: 5%;
    cursor: pointer; 
   }
+
+  /* 클릭시 이미지,텍스트 창 view */
+  .img-upLoad-comment{
+    display: block;
+    font-size: 15px;
+    color: #000;
+    font-weight: 300;
+  }
+  .color-eee{
+    color: #999999;
+    font-size: 13px;
+  }
+  .click-text-box{
+    width: 100%;
+    margin-bottom: 3%;
+  }
+  .click-text{
+    width: 100%;
+    border: none;
+    resize: none;
+  }
+
   /* aside */
   .aside {
     box-sizing: border-box;
