@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface CommentRepository {
-    List<PortfolioComment> findPortfolioComments(Integer portfolioId);
+    List<Comment> findPortfolioComments(Integer portfolioId);
 
     void save(Comment comment);
 
