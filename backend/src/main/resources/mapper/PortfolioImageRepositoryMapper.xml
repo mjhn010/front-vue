@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portfo.web.repository.PortfolioImageRepository">
+    <select id="findNameByMemberId" resultType="PortfolioImage">
+        SELECT id, name
+        FROM member_image
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findNamesByPortfolioId" resultType="PortfolioImage">
+        SELECT id, name, orders
+        FROM image
+        WHERE portfolio_id = #{portfolioId}
+        ORDER BY orders
+    </select>
+</mapper>
