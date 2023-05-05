@@ -5,7 +5,7 @@
             <li class="pro"><a href="">프로젝트</a></li>
             <li class="community"><a href="">커뮤니티</a></li>
         </ul>
-        <div class="search-box"><img class="search-img" src="/imgs/free-icon-search-482631 3.svg" alt="돋보기"><input class="header-search" type="text" placeholder="검색어를 입력해보세요"></div>
+        <div class="search-box"><img class="search-img" src="/imgs/free-icon-search-482631-3.svg" alt="돋보기"><input class="header-search" type="text" placeholder="검색어를 입력해보세요"></div>
         <ul class="m-menu user-bar">
             <li class="login-li" ><a class="login" href="">로그인</a></li>
             <li class="sign-up-li"><a href=""><button class="btn btn-3 sign-up">회원가입</button></a></li>
@@ -19,7 +19,7 @@
             <li class="pro"><a href="">프로젝트</a></li>
             <li class="community"><router-link to="/community">커뮤니티</router-link></li>
         </ul>
-        <div class="search-box"><img class="search-img" src="/src/assets/images/free-icon-search-482631%203.svg" alt="돋보기"><input class="header-search" type="text" placeholder="검색어를 입력해보세요"></div>
+        <div class="search-box"><img class="search-img" src="/src/assets/images/free-icon-search-482631-3.svg" alt="돋보기"><input class="header-search" type="text" placeholder="검색어를 입력해보세요"></div>
         <ul class="m-menu member-bar">
             <li><router-link to="/pofo/reg"><button class="btn btn-3 prj-register">프로젝트 등록</button></router-link></li>
             <li><img class="dm" src="/src/assets/images/email.png" alt="DM"></li>
