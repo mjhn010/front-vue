@@ -3,12 +3,14 @@ package kr.co.pofo.pofoapiboot3.entity;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Portfolio {
 	private Integer id;
 	private Integer memberId;
@@ -17,6 +19,7 @@ public class Portfolio {
 	private Date regDate;
 	private Date deleteDate;
 	private Date awardDate;
-	private Integer likes;
-	private Integer collaboration;
+	private String thumbnail;
+    private Long likes;
+    private Integer collaboration;
 }

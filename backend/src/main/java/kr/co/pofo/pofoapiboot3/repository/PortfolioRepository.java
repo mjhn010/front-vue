@@ -16,9 +16,18 @@ public interface PortfolioRepository {
 
 	List<PortfolioView> findViewListByType(Integer type, String order);
 	
+	// Index PortfolioView List
+	List<PortfolioView> findViewAll(Integer offset, 
+                                    int size, 
+                                    String sort, 
+                                    Integer collaboration, 
+                                    Integer skillId);
+	
 	void insert(Portfolio pf);
 
 	int findId();
+
+	
 
 //	Detail
 	Portfolio findPortfolioById(Integer id);

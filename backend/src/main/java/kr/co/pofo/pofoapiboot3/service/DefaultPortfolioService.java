@@ -20,6 +20,14 @@ public class DefaultPortfolioService implements PortfolioService {
         return indexPortfolioViewList;
     }
 
+    // Index PortfolioView List
+    @Override
+    public List<PortfolioView> getViewList(Integer page, String sort, Integer collaboration, Integer skillId) {
+    	
+        int size = 15; // 포트폴리오를 한 번에 15개씩 가져옴
+        return portfolioRepository.findViewAll(page, size, sort, collaboration, skillId);
+    }
+
     //  Index
     @Override
     public List<PortfolioView> getViewList(String query, String order) {

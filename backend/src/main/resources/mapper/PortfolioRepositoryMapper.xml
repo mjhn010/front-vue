@@ -12,6 +12,8 @@
         <result property="modifiedDate" column="modified_date"/>
         <result property="deleteDate" column="delete_date"/>
         <result property="imageName" column="image_name"/>
+		<result property="likeCount" column="like_count" />
+		<result property="skillIds" column="skill_ids" />
     </resultMap>
 
     <!-- 인덱스 페이지 추천 포트폴리오 -->
@@ -93,6 +95,29 @@
         p.hit
         order by ${order} desc
     </select>
+
+    <!-- Index PortfolioView List -->
+    <select id="findViewAll" resultMap="portfolioViewResultMap">
+		select *
+		from index_portfolio_view
+		where 1 = 1
+		<if test="skillId != null">
+			and FIND_IN_SET(#{skillId}, skill_ids) > 0
+		</if>
+		<if test="collaboration != null">
+			and collaboration = #{collaboration}
+		</if>
+		order by
+		<choose>
+			<when test="sort == 'likes'">
+				like_count desc
+			</when>
+			<otherwise>
+				reg_date desc
+			</otherwise>
+		</choose>
+		limit #{size} offset #{offset}
+	</select>
 
     <select id="findId" resultType="int">
         SELECT max(id) from portfolio;

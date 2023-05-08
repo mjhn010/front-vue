@@ -8,6 +8,9 @@ import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
 public interface PortfolioService {
 	//index 페이지에서 사용하는 getViewList;
 	List<PortfolioView> getViewList();
+	//shl
+	List<PortfolioView> getViewList(Integer page, String sort, Integer collaboration, Integer skillId);
+	
 	//list 페이지에서 사용하는 getViewList;
 	List<PortfolioView> getViewList(String q, String o);
 	List<PortfolioView> getViewList(Integer type, String o);
