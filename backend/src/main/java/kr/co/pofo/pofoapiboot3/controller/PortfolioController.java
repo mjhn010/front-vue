@@ -9,7 +9,9 @@ import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/pofo")
@@ -25,17 +27,17 @@ public class PortfolioController {
     }
 
     @GetMapping("{portfolioId}")
-    public List<Object> getPortfolioDetail(@PathVariable("portfolioId") Integer portfolioId) {
+    public Map<String, Object> getPortfolioDetail(@PathVariable("portfolioId") Integer portfolioId) {
         Portfolio portfolio = portfolioService.getPortfolioById(portfolioId);
         List<PortfolioContents> portfolioContents = portfolioContentsService.getPortfolioContents(portfolioId);
         List<Comment> comments = commentService.getCommentsByPortfolioId(portfolioId);
 
-        List<Object> list = new ArrayList<>();
+        Map<String, Object> objectMap = new LinkedHashMap<>();
 
-        list.add(portfolio);
-        list.add(portfolioContents);
-        list.add(comments);
+        objectMap.put("portfolio", portfolio);
+        objectMap.put("portfolioContents", portfolioContents);
+        objectMap.put("comments", comments);
 
-        return list;
+        return objectMap;
     }
 }

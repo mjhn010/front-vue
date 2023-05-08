@@ -18,4 +18,5 @@ public class Portfolio {
 	private Date deleteDate;
 	private Date awardDate;
 	private Integer likes;
+	private Integer collaboration;
 }
