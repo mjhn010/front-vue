@@ -5,6 +5,7 @@ import { reactive, ref } from "vue";
 let clickCheck = ref(true);
 let showImg = ref(false);
 let showText = ref(false);
+let showModal = ref(false)
 
 function imgHandler() {
   clickCheck.value = !clickCheck.value;
@@ -16,8 +17,12 @@ function textHandler() {
   clickCheck.value = !clickCheck.value;
   showText.value = !showText.value;
 }
+function showModalHandler(){
+  showModal.value = !showModal.value;
+}
 </script>
 <template>
+  <div v-show="showModal" class="screen"></div>
   <Header />
   <form action="">
     <div class="container">
@@ -170,7 +175,7 @@ function textHandler() {
               </button>
             </li>
           </ul>
-          <button class="register-btn btn-1 margin-top-5">
+          <button @click="showModalHandler" class="register-btn btn-1 margin-top-5">
             등록하기
           </button>
           <button class="register-btn-1 btn-1 margin-top-5">
@@ -181,6 +186,62 @@ function textHandler() {
       <div class="m-comment d-none">
         <span>작업 업로드 및 수정은 PC버전에서만 지원이 가능합니다.</span>
       </div>
+    </div>
+   <div v-show="showModal" class="reg-modal-box">
+    <div class="modal-h1">
+      <p class="modal-s-title">세부 정보 입력</p>
+      <button @click="showModalHandler" class="modal-close"></button>
+    </div>
+    <div class="reg-modal">
+      <div class="modal-flex">
+      <div class="thumbnail-box">
+        <div class="modal-thumbnail-text">
+          <span class="thumbnail-span">커버</span><span class="thumbnail-color">(필수)</span>
+        </div>
+        <div class="thumbnail-img-box margin-top-5">
+          <img class="thumbnail-img" src="" alt="">
+          <input class="d-none" type="file">
+        </div>
+      </div>
+      <div class="border-right"></div>
+    </div>
+      <!-- 모달 -->
+      <div class="modal-main-box">
+        <div class="modal-main-text margin-top-3">
+          <span class="thumbnail-span">제목</span><span class="thumbnail-color">(필수)</span>
+        </div>
+        <input class="modal-main-title margin-top-2" type="text" placeholder="제목을 입력하세요">
+        <div class="modal-main-text margin-top-5">
+          <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
+        </div>
+        <div class="check-box margin-top-2">
+          <label><input class="cb" type="checkbox" value="java" checked="checked">java</label>
+          <label><input class="cb" type="checkbox" value="javaScript">javaScript</label>
+          <label><input class="cb" type="checkbox" value="python">python</label>
+          <label><input class="cb" type="checkbox" value="C">C</label>
+          <label><input class="cb" type="checkbox" value="C#">C#</label>
+          <label><input class="cb" type="checkbox" value="VisualBasic">VisualBasic</label>
+          <label><input class="cb" type="checkbox" value="HTML">HTML</label>
+          <label><input class="cb" type="checkbox" value="CSS">CSS</label>
+          <label><input class="cb" type="checkbox" value="spring">Spring</label>
+          <label><input class="cb" type="checkbox" value="springBoot">SpringBoot</label>
+        </div>
+        <div class="modal-main-text margin-top-5">
+          <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
+        </div>
+        <div class="team-info margin-top-3">
+          <input type="checkbox" name="singgle" value="0">개인
+          <input type="checkbox" name="team" value="1">팀
+        </div>
+        <div class="modal-main-text margin-top-5">
+          <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
+        </div>
+        <input class="modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
+        <div class="submit-box margin-top-7">
+          <input class="modal-submit-btn" type="submit" value="업로드">
+        </div>
+      </div>
+    </div>
     </div>
   </form>
 </template>
