@@ -215,16 +215,16 @@ function showModalHandler(){
           <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
         </div>
         <div class="check-box margin-top-2">
-          <label><input class="cb" type="checkbox" value="java" checked="checked">java</label>
-          <label><input class="cb" type="checkbox" value="javaScript">javaScript</label>
-          <label><input class="cb" type="checkbox" value="python">python</label>
-          <label><input class="cb" type="checkbox" value="C">C</label>
-          <label><input class="cb" type="checkbox" value="C#">C#</label>
-          <label><input class="cb" type="checkbox" value="VisualBasic">VisualBasic</label>
-          <label><input class="cb" type="checkbox" value="HTML">HTML</label>
-          <label><input class="cb" type="checkbox" value="CSS">CSS</label>
-          <label><input class="cb" type="checkbox" value="spring">Spring</label>
-          <label><input class="cb" type="checkbox" value="springBoot">SpringBoot</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="java" checked="checked">java</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="javaScript">javaScript</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="python">python</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="C">C</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="C#">C#</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="VisualBasic">VisualBasic</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="HTML">HTML</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="CSS">CSS</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="spring">Spring</label>
+          <label class="skill-label"><input class="cb" type="checkbox" value="springBoot">SpringBoot</label>
         </div>
         <div class="modal-main-text margin-top-5">
           <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
