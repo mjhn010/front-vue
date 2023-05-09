@@ -12,11 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=true)
 public class PortfolioView extends Portfolio {
-	private String imageName;
-	private Integer weeklyTotalHits;
-	private List<String> skillNames;
-
-	// shl
 	private String nickname;
     private String memberImage;
     private Long likeCount;

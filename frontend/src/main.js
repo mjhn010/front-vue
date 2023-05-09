@@ -17,7 +17,7 @@ import CommunityReg from "/src/components/member/CommunityRegister.vue";
 import PortfolioDetail from "/src/components/PortfolioDetail.vue";
 
 const routes = [
-  { path: "/", component: Index },
+  { path: "/index", component: Index },
 
   // pofo경로
   { path: "/pofo/reg", component: PortfolioRegister },

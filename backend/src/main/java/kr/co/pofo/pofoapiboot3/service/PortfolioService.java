@@ -4,12 +4,14 @@ import java.util.List;
 
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
+import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 
 public interface PortfolioService {
-	//index 페이지에서 사용하는 getViewList;
-	List<PortfolioView> getViewList();
-	//shl
-	List<PortfolioView> getViewList(Integer page, String sort, Integer collaboration, Integer skillId);
+	// 포트폴리오 리스트
+    List<PortfolioView> getViewList(Integer page, String sort, Integer collaboration, Integer skillId);
+
+    // 이번주 인기 포트폴리오 리스트
+    List<WeeklyPopularPortfolioView> getWeeklyPopularViewList();
 	
 	//list 페이지에서 사용하는 getViewList;
 	List<PortfolioView> getViewList(String q, String o);

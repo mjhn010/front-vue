@@ -1,149 +1,3 @@
-/* 슬라이더 컨테이너 */
-.slider-container {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-
-    background-color: #F6F8F8;
-    /* 슬라이더의 배경색을 #F6F8F8로 설정 */
-}
-
-/* 슬라이더 */
-.slider {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-
-    /* transform: translateX(-30%); */
-    /* 슬라이더를 왼쪽으로 30% 이동시켜 마지막 이미지가 왼쪽에 보이도록 함 */
-    margin-top: 24px;
-}
-
-/* 슬라이더의 각 슬라이드 아이템 */
-.slider a {
-    flex: 0 0 30%;
-    max-height: 100%;
-    padding: 0 1.66%;
-    width: 570px;
-    height: 320px;
-    border-radius: 10px;
-}
-
-.slider a img {
-    width: 100%; 
-    height: 100%;
-    max-height: 100%;
-
-    object-fit: cover;
-    border-radius: 10px;
-
-}
-
-/* 버튼 */
-.prev-button,
-.next-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    color: #fff;
-    cursor: pointer;
-
-    margin-top: -20px;
-    /* 버튼의 높이의 절반만큼 위로 이동하여 수직으로 가운데에 정렬 */
-
-    box-sizing: border-box;
-    border-radius: 50%;
-    /* 동그라미 모양으로 꾸미기 위해 border-radius 속성 추가 */
-    border: 0.5px solid #ccc;
-    /* 보더 추가 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* 음영 추가 */
-
-    background-repeat: no-repeat;
-    background-position: center;
-    /* 이미지를 가운데 정렬 */
-
-}
-
-.prev-button {
-    left: 35px;
-    background-image: url("/src/assets/images/chevron-left.png");
-}
-
-.next-button {
-    right: 35px;
-    background-image: url("/src/assets/images/chevron-right.png");
-}
-
-/* 인디케이터 컨테이너 */
-.indicator-container {
-    width: 100%;
-    text-align: center;
-    margin: 10px 0 20px;
-    /* 인디케이터와의 간격을 설정할 수 있음 */
-}
-
-/* 인디케이터 리스트 */
-.indicator-list {
-    display: inline-block;
-    list-style-type: none;
-    padding: 0;
-}
-
-/* 인디케이터 아이템 */
-.indicator {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #C3CCCC;
-    margin: 0 5px;
-    /* 인디케이터 간의 간격을 설정할 수 있음 */
-    cursor: pointer;
-}
-
-/* 현재 이미지와 짝이 맞는 인디케이터의 색상 설정 */
-.indicator.active {
-    background-color: #8CCCF4;
-    /* 현재 이미지와 짝이 맞는 인디케이터의 배경색을 #17B4BD로 설정 */
-}
-
-/* 화면의 너비가 1920px 이하일 때 */
-@media (max-width: 1920px) {
-    .slider a {
-        flex: 0 0 30%;
-        padding: 0 1.66%;
-    }
-}
-
-@media (max-width: 1400px) {
-    .slider a {
-        flex: 0 0 46%;
-        padding: 0 2%;
-    }
-
-    .prev-button,
-    .next-button {
-        display: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .slider a {
-        flex: 0 0 98%;
-        /* 슬라이드 아이템의 너비를 100%로 설정 */
-        padding: 0 1%;
-        /* 슬라이드 아이템의 좌우 패딩을 3%로 설정 */
-    }
-
-    /* 버튼 숨기기 */
-    .prev-button,
-    .next-button {
-        display: none;
-    }
-}
 
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -212,15 +66,16 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 1; 
 
     border-radius: 5px;
 
 }
 
-.category-item:hover {
-    background-color: rgba(140, 204, 244, 1);
+.category-item:hover,
+.category-item.active {
+    background-color: rgba(140, 204, 244, 1); 
     color: #8CCCF4;
 
 
@@ -240,37 +95,45 @@
     background-position: center center;
 }
 .category-item.java {
-    background-image: url('/src/assets/images/java.svg');
+    background-image: url('/image/Language_Icon/java.svg');
 }
 .category-item.javascript {
-    background-image: url('/src/assets/images/javascript(1).svg');
+    background-image: url('/image/Language_Icon/javascript\ \(1\).svg');
 }
 .category-item.python {
-    background-image: url('/src/assets/images/Group7.svg');
+    background-image: url('/image/Language_Icon/Group\ 7.svg');
 }
 .category-item.c {
-    background-image: url('/src/assets/images/C_Programming_Language.svg');
+    background-image: url('/image/Language_Icon/C_Programming_Language.svg');
 }
 .category-item.c-sharp {
-    background-image: url('/src/assets/images/cdnlogo.com_c.svg');
+    background-image: url('/image/Language_Icon/cdnlogo.com_c.svg');
 }
 .category-item.visual-basic {
-    background-image: url('/src/assets/images/VB.NET_Logo.svg');
+    background-image: url('/image/Language_Icon/VB.NET_Logo.svg');
 }
 
 /* 정렬방식 스타일 */
-.sorting-options {
+
+.options-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+.sorting-options,
+.collaboration-options {
     display: flex;
     align-items: center;
     margin: 2% 0;
 }
 
 /* 조회수 클릭 시 표시할 스타일 */
-.sorting-options .sort-button.active {
+.sorting-options .sort-button.active,
+.collaboration-options .collaboration-button.active {
     position: relative;
 }
 
-.sorting-options .sort-button.active::after {
+.sorting-options .sort-button.active::after,
+.collaboration-options .collaboration-button.active::after {
     content: "";
     display: block;
     width: 100%;
@@ -281,7 +144,8 @@
     left: 0;
 }
 
-.sort-button {
+.sort-button,
+.collaboration-button {
     margin-left: 10px;
 }
 
@@ -411,6 +275,8 @@
     width: 24px;
     height: 24px;
     object-fit: cover;
+
+    border-radius: 50px;
 }
 
 .portfolio-info-counts img {
@@ -473,5 +339,3 @@
         max-height: none;
     }
 }
-
-/* --------------------------------------------------------- */

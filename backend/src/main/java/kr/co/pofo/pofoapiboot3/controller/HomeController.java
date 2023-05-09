@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
+import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 
 @RestController
@@ -25,18 +26,22 @@ public class HomeController {
     // 디폴트 포트폴리오 리스트[프로그래밍언어(전체), 정렬방식(최신순), 협업여부(전체)]
     @GetMapping("index")
     public ResponseEntity<Map<String, Object>> index(
-        @RequestParam(name = "page", defaultValue = "0") Integer page,
-        @RequestParam(name = "sort", defaultValue = "latest") String sort,  // 정렬방법
-        @RequestParam(name = "collaboration", required = false) Integer collaboration, // 협업여부
-        @RequestParam(name = "language", required = false) Integer skillId // 프로그래밍언어
-    ){
-
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "sort", defaultValue = "latest") String sort, // 정렬방법
+            @RequestParam(name = "collaboration", required = false) Integer collaboration, // 협업여부
+            @RequestParam(name = "language", required = false) Integer skillId // 프로그래밍언어
+    ) {
+        // 포트폴리오 리스트
         List<PortfolioView> portfolioViewList = portfolioService.getViewList(page, sort, collaboration, skillId);
 
-        Map<String, Object> dto = new HashMap<>();
-        dto.put("result", portfolioViewList);
+        // 이번주 인기 포트폴리오 리스트
+        List<WeeklyPopularPortfolioView> weeklyPopularPortfolioViewList = portfolioService.getWeeklyPopularViewList();
 
-        return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
+        Map<String, Object> dto = new HashMap<>();
+        dto.put("list", portfolioViewList);
+        dto.put("weeklyPopularList", weeklyPopularPortfolioViewList);
+
+        return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
     }
-    
+
 }
