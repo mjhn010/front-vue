@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 let email = ref('');
 let nickname = ref('');
-
+let router = useRouter();
 
 async function signupHandler() {
     let form = document.querySelector("#form");
@@ -11,7 +12,12 @@ async function signupHandler() {
         method: "POST",
         body: formData
     });
-    let json = await response.json();
+    let json = await response.text();
+    //회원 가입 성공하면 로그인 화면으로 이동 시키기
+    if (json == "ok") {
+        router.push("/login")
+    }
+
 }
 
 </script>
@@ -30,7 +36,8 @@ async function signupHandler() {
                 <div class="flex-colum line-text">이메일로 가입하기</div>
                 <div class="margin-top-5">
                     <h6 class="margin-top-10">이메일주소</h6>
-                    <input type="text" class="security-input-text" v-model="email" @input="" autocomplete="off" name="email">
+                    <input type="text" class="security-input-text" v-model="email" @input="" autocomplete="off"
+                        name="email">
                     <button class="security-btn margin-top-2">인증</button>
 
                     <h6 class="margin-top-5">닉네임</h6>

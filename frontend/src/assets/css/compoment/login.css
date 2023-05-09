@@ -24,6 +24,8 @@
 
 button{
     width: 100% !important;
+    padding: 3.5% 1% !important;
+    border-radius: 4px !important;
 }
 
 .logo-img{
@@ -51,7 +53,7 @@ a:hover {
 }
 
 input[type="text"]{
-    width: 100%;
+    width: 98%;
 }
 
 .float-right{

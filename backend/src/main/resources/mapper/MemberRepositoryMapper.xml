@@ -16,8 +16,8 @@
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="Member">
 		insert into member
-		(username,pwd,nickname,email, gender_id, career)
-		values(#{username},#{pwd},#{nickname},#{email},#{genderId},#{career})
+		(email,pwd,nickname,url)
+		values(#{email},#{pwd},#{nickname},#{url})
 	</insert>
 	
 	<!-- 기존 가입된 이메일인지 확인 -->
