@@ -12,25 +12,21 @@ async function signupHandler() {
         method: "POST",
         body: formData
     });
-    let json = await response.text();
-    //회원 가입 성공하면 로그인 화면으로 이동 시키기
-    if (json == "ok") {
-        router.push("/login")
+    let result = await response.text();
+    
+    if (result == "ok") {
+        router.push("/login");
     }
 
 }
 
 </script>
 
-
-
-
-
 <template>
     <div class="black-bg">
         <div class="white-bg">
             <header class="">
-                <img src="/src/assets/images/Pofo.svg" alt="">
+                <router-link to="/index"><img src="/src/assets/images/pofo.svg" class="logo-img"></router-link>
             </header>
             <form id="form">
                 <div class="flex-colum line-text">이메일로 가입하기</div>
@@ -46,7 +42,7 @@ async function signupHandler() {
                 </div>
                 <div class="margin-top-5">
                     <h6 class="margin-top-5">비밀번호</h6>
-                    <input type="password" class="input-text1" placeholder="6자이상" autocomplete="off" name="password">
+                    <input type="password" class="input-text1" placeholder="6자이상" autocomplete="off" name="pwd">
                     <h6 class="margin-top-5">비밀번호확인</h6>
                     <input type="password" class="input-text1" placeholder="6자이상" autocomplete="off">
                     <h6 class="margin-top-5">URL 추가</h6>

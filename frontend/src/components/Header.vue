@@ -15,7 +15,7 @@
     <!-- 맴버 -->
     <header class="com-header">
         <ul class="menu-bar">
-            <li><router-link to="/"><img class="header-logo" src="/src/assets/images/Pofo.svg" alt="logo"></router-link></li>
+            <li><router-link to="/index"><img class="header-logo" src="/src/assets/images/Pofo.svg" alt="logo"></router-link></li>
             <li class="pro"><a href="">프로젝트</a></li>
             <li class="community"><router-link to="/community">커뮤니티</router-link></li>
         </ul>

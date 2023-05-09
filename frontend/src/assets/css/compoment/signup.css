@@ -36,7 +36,7 @@
     line-height: 16px;
     letter-spacing: -.25px;
     text-align: center;
-    margin-top: 18%;
+    margin-top: 10%;
 
 } 
 .page-btn{
@@ -93,3 +93,8 @@
     width: 100%;
   }
 
+.logo-img{
+    display: block;
+    width: 100px;
+    margin: 0px auto;
+}
