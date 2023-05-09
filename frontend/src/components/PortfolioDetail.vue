@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import Header from "./Header.vue";
 
 // Mock data
@@ -28,20 +28,14 @@ const portfolios = [
   { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
 ];
 
-// fetch data
+// Data
+const commentBoxOpen = ref(false);
+let data = getData();
 
-fetch(`http://localhost:8080/pofo/1`, { mode: "cors" })
-  .then((response) => response.json())
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// Console log
+console.log(data);
 
 // Functions
-const commentBoxOpen = ref(false);
-
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
@@ -67,6 +61,27 @@ function scrollRight() {
   const scrollContainer = document.querySelector(".scroll-container");
   scrollContainer.scrollLeft += 326;
 }
+
+async function getData() {
+  let items = {
+    portfolio: {},
+    contents: [],
+    comments: [],
+  }
+
+  fetch(`http://localhost:8080/pofo/1`)
+    .then((response) => response.json())
+    .then((data) => {
+      items.portfolio = data.portfolio;
+      items.contents = data.contents;
+      items.comments = data.comments;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return items;
+}
 </script>
 
 <template>
@@ -86,14 +101,11 @@ function scrollRight() {
             :src="`/src/assets/images/temp/${member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          >
+          />
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
-          <h1
-            class="text-2xl font-bold"
-            v-text="portfolio.title"
-          />
+          <h1 class="text-2xl font-bold" v-text="portfolio.title" />
           <div>
             <router-link to="/nickname">
               <span
@@ -104,17 +116,15 @@ function scrollRight() {
             <span
               class="cursor-pointer text-lg font-semibold hover:text-gray-500"
               @click="toggleCommentBox"
-            >ᆞ팔로우</span>
+              >ᆞ팔로우</span
+            >
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template
-          :key="content.orders"
-          v-for="content in contents"
-        >
+        <template :key="content.orders" v-for="content in contents">
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -144,7 +154,7 @@ function scrollRight() {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          >
+          />
         </div>
       </div>
       <!-- Banner -->
@@ -163,7 +173,8 @@ function scrollRight() {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="portfolio.awardDate != null"
-        >POFO PICK 선정</span>
+          >POFO PICK 선정</span
+        >
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="portfolio.title"
@@ -173,10 +184,9 @@ function scrollRight() {
           v-if="portfolio.awardDate != null"
           v-text="`${portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
         />
-        <span
-          class="text-xs font-semibold text-white sm:text-sm"
-          v-else
-        >그래픽 디자인 · UI/UX</span>
+        <span class="text-xs font-semibold text-white sm:text-sm" v-else
+          >그래픽 디자인 · UI/UX</span
+        >
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -187,12 +197,14 @@ function scrollRight() {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
+          <span class="block text-sm font-semibold text-gray-500"
+            >프로필 자세히 보기</span
+          >
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          >
+          />
         </router-link>
       </div>
 
@@ -215,7 +227,7 @@ function scrollRight() {
               :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
               alt="#"
               class="h-full w-72 rounded-t-lg"
-            >
+            />
             <figcaption
               class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
               v-text="memberPortfolio.title"
@@ -244,7 +256,7 @@ function scrollRight() {
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          >
+          />
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -328,26 +340,19 @@ function scrollRight() {
       <div class="mx-5 border-t py-5">
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
+            <a href="#" class="row-span-2">
               <img
                 class="h-12 w-12 rounded-full"
                 src="/src/assets/images/temp/d.bronze.jpg"
                 alt="Profile image"
-              >
+              />
             </a>
-            <div class="col-start-2 font-bold">
-              nickname
-            </div>
+            <div class="col-start-2 font-bold">nickname</div>
             <div class="col-start-2 text-xs font-semibold text-gray-500">
               2023.04.06
             </div>
           </figure>
-          <p class="col-span-7 my-4 text-sm">
-            댓글 내용
-          </p>
+          <p class="col-span-7 my-4 text-sm">댓글 내용</p>
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
@@ -360,26 +365,19 @@ function scrollRight() {
       <div class="mx-5 border-t py-5">
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
+            <a href="#" class="row-span-2">
               <img
                 class="h-12 w-12 rounded-full"
                 src="/src/assets/images/temp/d.bronze.jpg"
                 alt="Profile image"
-              >
+              />
             </a>
-            <div class="col-start-2 font-bold">
-              nickname
-            </div>
+            <div class="col-start-2 font-bold">nickname</div>
             <div class="col-start-2 text-xs font-semibold text-gray-500">
               2023.04.06
             </div>
           </figure>
-          <p class="col-span-7 my-4 text-sm">
-            댓글 내용
-          </p>
+          <p class="col-span-7 my-4 text-sm">댓글 내용</p>
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
@@ -392,26 +390,19 @@ function scrollRight() {
       <div class="mx-5 border-t py-5">
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
+            <a href="#" class="row-span-2">
               <img
                 class="h-12 w-12 rounded-full"
                 src="/src/assets/images/temp/d.bronze.jpg"
                 alt="Profile image"
-              >
+              />
             </a>
-            <div class="col-start-2 font-bold">
-              nickname
-            </div>
+            <div class="col-start-2 font-bold">nickname</div>
             <div class="col-start-2 text-xs font-semibold text-gray-500">
               2023.04.06
             </div>
           </figure>
-          <p class="col-span-7 my-4 text-sm">
-            댓글 내용
-          </p>
+          <p class="col-span-7 my-4 text-sm">댓글 내용</p>
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
