@@ -5,31 +5,22 @@
   <section class="main">
     <div class="login-border">
       <div class="login-box">
-        <a><img
-          src="/src/assets/images/pofo.svg"
-          class="logo-img"
-        ></a>
+        <a><img src="/src/assets/images/pofo.svg" class="logo-img"></a>
 
         <form class="margin-top-15">
           <p class="font-weight-500">
             이메일
           </p>
-          <input
-            type="text"
-            class="input-text"
-          >
+          <input type="text" class="input-text">
 
           <p class="font-weight-500">
             비밀번호
           </p>
-          <input
-            type="text"
-            class="input-text"
-          >
+          <input type="text" class="input-text">
           <button class="btn btn-0 margin-top-8 margin-bottom-5">
             로그인
           </button>
-          <a class="float-right font-size1">비밀번호 찾기></a>
+          <a class="float-right font-size1 margin-top-3">비밀번호 찾기 ></a>
         </form>
 
         <div class="margin-top-20 sub-section">
