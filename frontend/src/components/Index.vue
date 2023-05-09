@@ -1,5 +1,5 @@
 <script setup>
-import Header from './inc/Header.vue';
+import Header from './Header.vue';
 
 import { reactive, onMounted, ref, watch } from 'vue';
 

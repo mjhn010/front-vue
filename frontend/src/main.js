@@ -15,7 +15,8 @@ import Community from "/src/components/Community.vue";
 import CommunityReg from "/src/components/member/CommunityRegister.vue";
 // 포트폴리오 상세정보
 import PortfolioDetail from "/src/components/PortfolioDetail.vue";
-
+// 회원가입
+import Signup from "/src/components/Signup.vue";
 const routes = [
   { path: "/", component: Index },
 
@@ -30,7 +31,7 @@ const routes = [
   // 로그인,회원가입,비밀번호찾기
   { path: "/login", component: Login },
   { path: "/mypage", component: Mypage },
-
+  { path: "/signup", component: Signup}
   // { path: "/member", component: MemberLayout,children:[
   //     {path:'communityreg',component:CommunityRegister}
   // ] }
