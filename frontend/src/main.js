@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { createPinia } from "pinia";
-import {useUserDetailsStore} from './components/stores/useUserDetailsStore';
+import piniaPersist from 'pinia-plugin-persist'
 import App from "./App.vue";
 
 // 로그인,회원가입
@@ -42,21 +42,6 @@ const routes = [
   //멤버 관련 페이지
   { path: "/member/mypage", component: Mypage }
 
-  // { path: "/member", component: MemberLayout,children:[
-  //     {path:'communityreg',component:CommunityRegister}
-  // ] }
-  //수업내용
-  // {
-  //   path: "/",
-  //   component: Layout,
-  //   children: [
-  //     { path: "menu/list", component: MenuList },
-  //     { path: 'menu/:id', component: Detail },
-  //     { path: "about", component: About },
-  //   ],
-  // },
-  // { path: "/admin", component: AdminLayout,
-  // children:[{path:"menu/list",component:AdminList}]}
 ];
 
 const router = createRouter({
@@ -65,6 +50,8 @@ const router = createRouter({
   routes, // short for `routes: routes`
 });
 const pinia = createPinia();
+pinia.use(piniaPersist);
+
 createApp(App)
 .use(router)
 .use(pinia)

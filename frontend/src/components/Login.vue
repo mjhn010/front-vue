@@ -34,12 +34,10 @@ async function loginHandler(){
     user.email ='';
     user.password = '';
   }
-
   else if(returnURL)
     router.push(returnURL);
   else 
     router.push("/index");
-
 }
 </script>
 <template>

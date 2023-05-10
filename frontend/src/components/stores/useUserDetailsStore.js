@@ -19,5 +19,8 @@ export const useUserDetailsStore = defineStore("userDetails", {
       let result = this.email == null ? false : true;
       return result;
     }
+  },
+  persist: {
+    enabled: true
   }
 });

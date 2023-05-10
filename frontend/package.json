@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.2.47",
     "vue3-carousel": "^0.3.1"
   },
