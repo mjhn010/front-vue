@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeMount, onMounted, ref} from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import Header from "./Header.vue";
 
 // Mock data
@@ -30,10 +30,15 @@ const portfolios = [
 
 // Data
 const commentBoxOpen = ref(false);
-let data = getData();
+const state = reactive({
+  portfolio: {},
+  contents: [],
+  comments: [],
+});
 
-// Console log
-console.log(data);
+// Lifecycle
+onMounted(getData);
+watch(() => state.comments, getData);
 
 // Functions
 function scrollToTop() {
@@ -63,24 +68,17 @@ function scrollRight() {
 }
 
 async function getData() {
-  let items = {
-    portfolio: {},
-    contents: [],
-    comments: [],
-  }
+  let url = "http://127.0.0.1:5173/src/assets/data/2023-05-10T134838.200.json";
 
-  fetch(`http://localhost:8080/pofo/1`)
-    .then((response) => response.json())
+  await fetch(url)
+    .then((res) => res.json())
     .then((data) => {
-      items.portfolio = data.portfolio;
-      items.contents = data.contents;
-      items.comments = data.comments;
-    })
-    .catch((error) => {
-      console.log(error);
+      state.portfolio = data.portfolio;
+      state.contents = data.contents;
+      state.comments = data.comments;
     });
 
-  return items;
+  return state;
 }
 </script>
 
@@ -105,7 +103,7 @@ async function getData() {
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
-          <h1 class="text-2xl font-bold" v-text="portfolio.title" />
+          <h1 class="text-2xl font-bold" v-text="state.portfolio.title" />
           <div>
             <router-link to="/nickname">
               <span
@@ -124,7 +122,7 @@ async function getData() {
 
       <!-- Main -->
       <main>
-        <template :key="content.orders" v-for="content in contents">
+        <template :key="content.id" v-for="content in state.contents">
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -160,7 +158,7 @@ async function getData() {
       <!-- Banner -->
       <div
         class="flex h-48 flex-col items-center justify-between bg-gray-950 py-9 sm:py-10"
-        :class="portfolio.awardDate ? 'sm:h-64' : 'sm:h-56'"
+        :class="state.portfolio.awardDate ? 'sm:h-64' : 'sm:h-56'"
       >
         <div class="flex w-32 justify-evenly">
           <div class="mb-2 cursor-pointer rounded-full border-2 bg-white">
@@ -172,17 +170,17 @@ async function getData() {
         </div>
         <span
           class="text-sm font-bold text-blue-300"
-          v-if="portfolio.awardDate != null"
+          v-if="state.portfolio.awardDate != null"
           >POFO PICK 선정</span
         >
         <span
           class="text-lg font-bold text-white sm:text-xl"
-          v-text="portfolio.title"
+          v-text="state.portfolio.title"
         />
         <span
           class="text-xs font-semibold text-white sm:text-sm"
-          v-if="portfolio.awardDate != null"
-          v-text="`${portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
+          v-if="state.portfolio.awardDate != null"
+          v-text="`${state.portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
         />
         <span class="text-xs font-semibold text-white sm:text-sm" v-else
           >그래픽 디자인 · UI/UX</span
