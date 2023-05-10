@@ -1,23 +1,64 @@
 <script setup>
+import { reactive } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import {useUserDetailsStore} from './stores/useUserDetailsStore';
 
+//--------------데이터
+let router = useRouter();
+let route = useRoute();
+let userDetails = useUserDetailsStore();
+let user = reactive({
+  email: "",
+  password: "",
+});
+
+
+//-------------이벤트 핸들러
+async function loginHandler(){
+  let response = await fetch("http://localhost:8080/user/login",{
+    method : "POST",
+    headers : {
+      "Accept" : "application/json",
+      "Content-type" : "application/x-www-form-urlencoded"
+    },
+    body : `email=${user.email}&password=${user.password}`
+  });
+  let json = await response.json();
+  userDetails.id = json.result.id;
+  userDetails.email = json.result.email;
+  userDetails.nickname = json.result.nickname;
+  let returnURL = route.query.returnURL;
+  
+  if (!userDetails.email){
+    router.push("/login");
+    user.email ='';
+    user.password = '';
+  }
+
+  else if(returnURL)
+    router.push(returnURL);
+  else 
+    router.push("/index");
+
+}
 </script>
 <template>
   <section class="main">
     <div class="login-border">
       <div class="login-box">
-        <a><img src="/src/assets/images/pofo.svg" class="logo-img"></a>
+        <router-link to="/index"><img src="/src/assets/images/pofo.svg" class="logo-img"></router-link>
 
         <form class="margin-top-15">
           <p class="font-weight-500">
             이메일
           </p>
-          <input type="text" class="input-text">
+          <input type="text" class="input-text" v-model="user.email">
 
           <p class="font-weight-500">
             비밀번호
           </p>
-          <input type="text" class="input-text">
-          <button class="btn btn-0 margin-top-8 margin-bottom-5">
+          <input type="text" class="input-text" v-model="user.password">
+          <button class="btn btn-0 margin-top-8 margin-bottom-5" @click.prevent="loginHandler">
             로그인
           </button>
           <a class="float-right font-size1 margin-top-3">비밀번호 찾기 ></a>

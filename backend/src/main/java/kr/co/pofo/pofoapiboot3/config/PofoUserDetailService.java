@@ -22,7 +22,7 @@ public class PofoUserDetailService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		//RlandUserDetails 그릇에 담을 데이터 준비
-		Member member = repository.findByUid(username);
+		Member member = repository.findByEmail(username);
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
 		
