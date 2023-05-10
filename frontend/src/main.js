@@ -36,18 +36,9 @@ const routes = [
   { path: "/community/reg", component: CommunityReg },
 
   // 로그인,회원가입,비밀번호찾기
-<<<<<<< HEAD
-  { path: "/login", component: Login },
-  { path: "/signup", component: Signup},
-
-  //멤버 관련 페이지
-  { path: "/member/mypage", component: Mypage }
-
-=======
   { path: "/login", component: Login},
   { path: "/mypage", component: Mypage },
   { path: "/signup", component: Signup}
->>>>>>> b93d1b0f08f1c270f360ed49ce67f04ace6744cb
   // { path: "/member", component: MemberLayout,children:[
   //     {path:'communityreg',component:CommunityRegister}
   // ] }
