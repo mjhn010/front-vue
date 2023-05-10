@@ -14,4 +14,20 @@ public class DefaultMemberService implements MemberService {
     public int signup(Member member) {
         return repository.insert(member);
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public Member getById(int id);
+
 }
