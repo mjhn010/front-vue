@@ -57,7 +57,7 @@ async function loginHandler(){
           <p class="font-weight-500">
             비밀번호
           </p>
-          <input type="text" class="input-text" v-model="user.password">
+          <input type="password" class="input-text" v-model="user.password">
           <button class="btn btn-0 margin-top-8 margin-bottom-5" @click.prevent="loginHandler">
             로그인
           </button>
