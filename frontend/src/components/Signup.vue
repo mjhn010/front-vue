@@ -34,11 +34,11 @@ async function signupHandler() {
                     <h6 class="margin-top-10">이메일주소</h6>
                     <input type="text" class="security-input-text" v-model="email" @input="" autocomplete="off"
                         name="email">
-                    <button class="security-btn margin-top-2">인증</button>
-
+                        <button class="security-btn margin-top-2">인증번호 전송</button>
+                        <input type="text" class="certification-text">
                     <h6 class="margin-top-5">닉네임</h6>
                     <input type="text" class="security-input-text" v-model="nickname" autocomplete="off" name="nickname">
-                    <button class="security-btn margin-top-2">인증</button>
+                    <button class="security-btn1 margin-top-2">중복확인</button>
                 </div>
                 <div class="margin-top-5">
                     <h6 class="margin-top-5">비밀번호</h6>
