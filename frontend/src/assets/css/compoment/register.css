@@ -87,9 +87,12 @@ html,body,form{
   .default-box:hover{
     border: 3px solid #000;
   }
-  .click-text:hover{
-    border: 3px solid #000;
+  .click-text:focus{
+    outline: none;
   }
+  .click-text::-webkit-scrollbar {
+    display: none;
+    }
   .main-title {
     text-align: center;
     width: 100%;
