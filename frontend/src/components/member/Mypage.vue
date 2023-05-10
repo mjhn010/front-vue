@@ -14,7 +14,7 @@ import Header from '../Header.vue'
         </div>
         <a class="url" href="#">www.ksh.github.com</a>
         <div>
-            <button class="btn btn-0 font-size-15">프로필 편집</button>
+            <button class="btn btn-0 font-size-15 btn-height">프로필 편집</button>
             <button class="d-none">팔로우</button>
         </div>
     </div>

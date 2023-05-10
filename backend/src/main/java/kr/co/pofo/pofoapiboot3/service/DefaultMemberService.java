@@ -18,6 +18,10 @@ public class DefaultMemberService implements MemberService {
     public int signup(Member member) {
         member.setPwd(passwordEncoder.encode(member.getPwd()));
         return repository.insert(member);
+    };
+
+    public Member getById(int id){
+        return null;
     }
 
     @Override
