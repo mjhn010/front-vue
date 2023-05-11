@@ -1,11 +1,21 @@
 
 <style scoped>
 
+  .good-enter-active,
+    .good-leave-active{
+        transition: opacity 1s ease;
+
+    }
+    .good-enter-from,
+    .good-leave-to{
+        opacity: 0;
+    }
 
 
 @import url("/src/assets/css/compoment/loginmodal.css");
 </style>
 <template>
+    <Transition name="good">
    <div class="black-bg">
         <div class="white-bg">
             <div class="이미지가운데">
@@ -20,4 +30,5 @@
             </div>
         </div>
     </div>
+</Transition>
 </template>
