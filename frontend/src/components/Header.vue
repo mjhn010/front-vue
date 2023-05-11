@@ -16,12 +16,7 @@
   <header class="com-header">
     <ul class="menu-bar">
       <li>
-        <router-link to="/index"
-          ><img
-            class="header-logo"
-            src="/src/assets/images/Pofo.svg"
-            alt="logo"
-        /></router-link>
+        <router-link to="/index"><img class="header-logo" src="/src/assets/images/Pofo.svg" alt="logo" /></router-link>
       </li>
       <li class="pro"><a href="">프로젝트</a></li>
       <li class="community">
@@ -29,23 +24,14 @@
       </li>
     </ul>
     <div class="search-box">
-      <img
-        class="search-img"
-        src="/src/assets/images/free-icon-search-482631-3.svg"
-        alt="돋보기"
-      /><input
-        class="header-search"
-        type="text"
-        placeholder="검색어를 입력해보세요"
-      />
+      <img class="search-img" src="/src/assets/images/free-icon-search-482631-3.svg" alt="돋보기" /><input
+        class="header-search" type="text" placeholder="검색어를 입력해보세요" />
     </div>
     <ul class="m-menu member-bar">
       <li>
-        <router-link to="/pofo/reg"
-          ><button class="btn btn-3 prj-register">
+        <router-link to="/pofo/reg"><button class="btn btn-3 prj-register">
             프로젝트 등록
-          </button></router-link
-        >
+          </button></router-link>
       </li>
       <button @click="showModalMessage">
         <li><img class="dm" src="/src/assets/images/email.png" alt="DM" /></li>
@@ -57,11 +43,7 @@
       </button>
       <li>
         <button @click="showModalProfile">
-          <img
-            class="header-profile"
-            src="/src/assets/images/proflie.svg"
-            alt="마이프로필"
-          />
+          <img class="header-profile" src="/src/assets/images/proflie.svg" alt="마이프로필" />
         </button>
       </li>
       <li>
@@ -69,12 +51,7 @@
       </li>
     </ul>
   </header>
-  <div
-    class="head-popup"
-    :class="modalChange"
-    v-if="isModalOpenMessage"
-    v-click-outside="closeModal"
-  >
+  <div class="head-popup" :class="modalChange" v-if="isModalOpenMessage" v-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
@@ -86,15 +63,8 @@
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div width="40" height="40" class="modal-thumbnail-circle">
-                  <div
-                    class="profile-image-wrap"
-                    style="width: 40px; height: 40px"
-                  >
-                    <span
-                      class="profile-username-uppercase"
-                      style="width: 40px; height: 40px"
-                      >K</span
-                    >
+                  <div class="profile-image-wrap" style="width: 40px; height: 40px">
+                    <span class="profile-username-uppercase" style="width: 40px; height: 40px">K</span>
                   </div>
                 </div>
               </div>
@@ -121,12 +91,7 @@
         </div> -->
     </div>
   </div>
-  <div
-    class="head-popup"
-    :class="modalChange"
-    v-if="isModalOpenNotify"
-    v-click-outside="closeModal"
-  >
+  <div class="head-popup" :class="modalChange" v-if="isModalOpenNotify" v-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
@@ -138,26 +103,15 @@
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div width="40" height="40" class="modal-thumbnail-circle">
-                  <div
-                    class="profile-image-wrap"
-                    style="width: 40px; height: 40px"
-                  >
-                    <span
-                      class="profile-username-uppercase"
-                      style="width: 40px; height: 40px"
-                      >K</span
-                    >
+                  <div class="profile-image-wrap" style="width: 40px; height: 40px">
+                    <span class="profile-username-uppercase" style="width: 40px; height: 40px">K</span>
                   </div>
                 </div>
               </div>
               <div width="16px" height="100%" class="modal-wall"></div>
               <div class="modal-content">
                 <div class="modal-title">
-                  <p
-                    class="modal-msg-text"
-                    style="font-weight: lighter"
-                    title="Thomas님이 좋아요를 누르셨습니다."
-                  >
+                  <p class="modal-msg-text" style="font-weight: lighter" title="Thomas님이 좋아요를 누르셨습니다.">
                     Thomas님이 좋아요를 누르셨습니다.
                   </p>
                   <div class="modal-date">2023년 04월 21일</div>
@@ -174,23 +128,14 @@
         </div> -->
     </div>
   </div>
-  <div
-    class="head-popup"
-    :class="modalChange"
-    v-if="isModalOpenProfile"
-    v-click-outside="closeModal"
-  >
+  <div class="head-popup" :class="modalChange" v-if="isModalOpenProfile" v-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="user-main-wrap">
           <a href="#" width="56" height="56" target="_blank" class="">
             <div class="profile-image-wrap" style="width: 56px width: 56px;">
-              <span
-                class="profile-username-uppercase"
-                style="width: 56px; height: 56px"
-                >K</span
-              >
+              <span class="profile-username-uppercase" style="width: 56px; height: 56px">K</span>
             </div>
           </a>
           <div class="user-detail-wrap">
@@ -199,9 +144,7 @@
           </div>
         </div>
         <div class="profile-menu-wrap">
-          <a href="#" class="upload menu-item margin-top-5"
-            >새로운 포트폴리오 업로드</a
-          >
+          <a href="#" class="upload menu-item margin-top-5">새로운 포트폴리오 업로드</a>
           <a href="#" class="mypofo menu-item">나의 포트폴리오</a>
           <a href="#" class="pofile-setting menu-item">설정</a>
           <div class="line-bar"></div>
