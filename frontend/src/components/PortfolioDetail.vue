@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, ref, watch} from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import Header from "./Header.vue";
 
 // Mock data
@@ -38,7 +38,7 @@ const state = reactive({
 
 // Lifecycle
 onMounted(getData);
-computed(()=> state.comments);
+computed(() => state.comments);
 
 // Functions
 function scrollToTop() {
@@ -68,9 +68,10 @@ function scrollRight() {
 }
 
 async function getData() {
-  let url = "/src/assets/data/2023-05-10T134838.200.json";
+  const url = window.location.href;
+  const id = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-  await fetch(url)
+  await fetch(`http://localhost:8080/pofo/${id}`)
     .then((res) => res.json())
     .then((data) => {
       state.portfolio = data.portfolio;
@@ -99,14 +100,11 @@ async function getData() {
             :src="`/src/assets/images/temp/${member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          >
+          />
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
-          <h1
-            class="text-2xl font-bold"
-            v-text="state.portfolio.title"
-          />
+          <h1 class="text-2xl font-bold" v-text="state.portfolio.title" />
           <div>
             <router-link to="/nickname">
               <span
@@ -117,17 +115,15 @@ async function getData() {
             <span
               class="cursor-pointer text-lg font-semibold hover:text-gray-500"
               @click="toggleCommentBox"
-            >ᆞ팔로우</span>
+              >ᆞ팔로우</span
+            >
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template
-          :key="content.id"
-          v-for="content in state.contents"
-        >
+        <template :key="content.id" v-for="content in state.contents">
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -140,7 +136,7 @@ async function getData() {
         <nav class="flex gap-x-2 py-3 text-xs sm:px-0">
           <router-link
             v-for="skill in usedSkills"
-            :key="skill.engName"
+            :key="skill.id"
             :to="`/search?text=${skill.engName.toLowerCase()}`"
           >
             <div
@@ -157,7 +153,7 @@ async function getData() {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          >
+          />
         </div>
       </div>
       <!-- Banner -->
@@ -176,7 +172,8 @@ async function getData() {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-        >POFO PICK 선정</span>
+          >POFO PICK 선정</span
+        >
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -186,10 +183,9 @@ async function getData() {
           v-if="state.portfolio.awardDate != null"
           v-text="`${state.portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
         />
-        <span
-          class="text-xs font-semibold text-white sm:text-sm"
-          v-else
-        >그래픽 디자인 · UI/UX</span>
+        <span class="text-xs font-semibold text-white sm:text-sm" v-else
+          >그래픽 디자인 · UI/UX</span
+        >
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -200,12 +196,14 @@ async function getData() {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
+          <span class="block text-sm font-semibold text-gray-500"
+            >프로필 자세히 보기</span
+          >
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          >
+          />
         </router-link>
       </div>
 
@@ -228,7 +226,7 @@ async function getData() {
               :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
               alt="#"
               class="h-full w-72 rounded-t-lg"
-            >
+            />
             <figcaption
               class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
               v-text="memberPortfolio.title"
@@ -257,7 +255,7 @@ async function getData() {
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          >
+          />
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -310,9 +308,10 @@ async function getData() {
           @click="toggleCommentBox"
         />
         <div class="col-span-7 flex h-16 flex-col justify-between">
-          <h2 class="text-md col-span-7 font-bold">
-            COMMAX IoT Smart Home Display UI/UX
-          </h2>
+          <h2
+            class="text-md col-span-7 font-bold"
+            v-text="state.portfolio.title"
+          />
           <span class="col-span-7 mb-5 text-xs font-bold text-gray-500">
             UI/UX · 그래픽 디자인
           </span>
@@ -340,33 +339,30 @@ async function getData() {
       <!-- Comment component -->
       <div
         class="mx-5 border-t py-5"
+        :key="comment.id"
         v-for="comment in state.comments"
       >
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
+            <a href="#" class="row-span-2">
               <img
                 class="h-12 w-12 rounded-full"
-                src="/src/assets/images/temp/d.bronze.jpg"
+                :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              >
+              />
             </a>
             <div
               class="col-start-2 font-bold"
-              v-text="comment.memberId"
+              v-text="comment.memberNickname"
             />
             <div
               class="col-start-2 text-xs font-semibold text-gray-500"
-              v-text="comment.regDate.trim().substring(0, 10).replace(/-/g, '.')"
+              v-text="
+                comment.regDate.trim().substring(0, 10).replace(/-/g, '.')
+              "
             />
           </figure>
-          <p
-            class="col-span-7 my-4 text-sm"
-            v-text="comment.content"
-          />
+          <p class="col-span-7 my-4 text-sm" v-text="comment.content" />
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
