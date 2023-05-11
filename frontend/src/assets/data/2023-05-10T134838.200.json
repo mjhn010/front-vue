@@ -1,0 +1,95 @@
+{
+  "portfolio": {
+    "id": 1,
+    "memberId": 1,
+    "title": "COMMAX IoT Smart Home Display UI/UX",
+    "hit": 0,
+    "regDate": "2023-04-27T06:48:25.000+00:00",
+    "deleteDate": null,
+    "awardDate": null,
+    "thumbnail": "aurora-over-iceland.png",
+    "likes": 0,
+    "collaboration": 1
+  },
+  "contents": [
+    {
+      "id": 1,
+      "portfolioId": 1,
+      "content": "aurora-over-iceland.png",
+      "type": "1",
+      "orders": 1
+    },
+    {
+      "id": 2,
+      "portfolioId": 1,
+      "content": "<section class=\"mb-12 px-12\">\n          <h2 class=\"text-lg font-bold\">\n            IoT Device Smart Home Display UI | UX Design\n          </h2>\n          <p class=\"my-4 text-xs\">\n            코맥스는 인터폰부터 비디오폰, 스마트홈 시스템과 시큐리티 솔루션 등\n            앞선 기술력과 차별화된 제품은 물론 고객이 누려야 할 삶의 안전과\n            가치를 위한 다양한 서비스&플랫폼을 제공하는 A.I HOME 전문\n            기업입니다.\n          </p>\n          <p class=\"my-4 text-xs\">\n            COMMAX is a specialized A.I home company that offers a variety of\n            services and platforms to enhance the safety and value of customers'\n            lives. The company's products are differentiated by advanced\n            technologies, such as interphones, video phones, smart home systems,\n            and security solutions.\n          </p>\n        </section>",
+      "type": "0",
+      "orders": 2
+    },
+    {
+      "id": 3,
+      "portfolioId": 1,
+      "content": "cherryblossom.jpg",
+      "type": "1",
+      "orders": 3
+    },
+    {
+      "id": 4,
+      "portfolioId": 1,
+      "content": "<section class=\"mb-12 px-12\">\n          <h2 class=\"text-lg font-bold\">UX | UI planning approach</h2>\n          <p class=\"my-4 text-xs\">\n            사용자들이 WallPad에서 제공되는 정보를 쉽게 파악할 수 있도록\n            백그라운드를 활용하는 방법을 사용하였습니다. Home Screen에서 Control\n            Window 전환은 상세 조작이 가능한 화면으로 진입해 있다는 인식을 Depth\n            발생을 통해 인지하도록 구현하였습니다. 더 세밀한 조작을 위한 Second\n            Control Window는 Modal Window에 Dialog UI로 구성을 하였습니다. 이는\n            상세 조작을 위해 한 단계 더 깊이 들어가는 Depth를 사용자가 느끼지\n            못하게 하기 위해 Modal Window로 플래닝을 하였으며, 언제든 Home\n            Screen으로 빠져나갈 수 있습니다. UI | UX 또한 코맥스만의 시각적인\n            일관성을 보여주기 위한 플래닝으로 디자인 하였습니다.\n          </p>\n          <p class=\"my-4 text-xs\">\n            We utilized the background to enable users to easily understand the\n            information provided on the WallPad. To help users recognize the\n            transition from the Home Screen to the Control Window, we\n            implemented Depth perception. The Second Control Window, which\n            allows for more detailed operations, was designed as a Modal Window\n            with a Dialog UI. This was planned as a Modal Window to prevent\n            users from feeling the additional Depth required for more detailed\n            operations, and users can return to the Home Screen at any time. The\n            UI/UX was also designed with planning to show COMMAX's visual\n            consistency.\n          </p>\n        </section>",
+      "type": "0",
+      "orders": 4
+    },
+    {
+      "id": 5,
+      "portfolioId": 1,
+      "content": "corn.jpg",
+      "type": "1",
+      "orders": 5
+    },
+    {
+      "id": 6,
+      "portfolioId": 1,
+      "content": "<section class=\"mb-12 px-12\">\n          <h2 class=\"text-lg font-bold\">\n            Acrylic Fluent Design\n          </h2>\n          <p class=\"my-4 text-xs\">\n            다중 레이어 방식으로 백그라운드에 표현되는 날씨 정보나 컬러를 통해\n            정확하게 화면을 보지 않더라도 정보를 인지할 수 있도록 하였습니다.\n            자세한 정보가 표시되는 상태 정보창은 Opacity 퍼센트의 변화를 주어\n            배경과 정보창의 분리를 통해 가독성을 높이고 명확한 정보인식을 할 수\n            있도록 하였습니다.\n          </p>\n          <p class=\"my-4 text-xs\">\n            We used a multi-layered approach to display weather information or\n            colors on the background, allowing users to perceive information\n            accurately without looking at the screen carefully. The status\n            information window, which displays detailed information, was\n            designed to increase readability and enable clear information\n            recognition by changing the Opacity percentage to separate the\n            background and the information window.\n          </p>\n        </section>",
+      "type": "0",
+      "orders": 6
+    },
+    {
+      "id": 7,
+      "portfolioId": 1,
+      "content": "dandelion.jpg",
+      "type": "1",
+      "orders": 7
+    },
+    {
+      "id": 8,
+      "portfolioId": 1,
+      "content": "<section class=\"mb-12 px-12\">\n          <h2 class=\"text-lg font-bold\">\n            COMMAX UI | UX Design Plan\n          </h2>\n          <p class=\"my-4 text-xs\">\n            출근 전 시간 확인 또는 우산을 챙겨야 하는지 알기 위해 날씨 확인,\n            미세먼지 확인, 그리고 집안의 전열기구 등의 현재 사용량을 파악 확인\n            등, 사용자의 WallPad 사용목적을 정확하게 파악한 후 이에 적합한\n            디자인 플랜을 계획하였습니다. 바쁜 일상생활 속에서 WallPad는 빠르고\n            정확하게 정보 확인이 가능하여야 합니다. WallPad에 집중하지 않더라도\n            표현되는 정보를 쉽게 파악할 수 있도록 하기 위해 컬러를 이용한 사용자\n            인지 반응 시간을 단축시켰습니다. 긍정의 정보 표현은 하늘색에서\n            연두색으로 표현, 위험 또는 조심의 정보 표현은 분홍에서 보라색으로\n            표현하여 사용자들이 쉽게 인지할 수 있도록 하였으며, 톤 다운된\n            백그라운드 컬러를 사용하여 컬러 대비 값을 높이는 방법을 채택, 더\n            인지 반응 시간을 단축시켰습니다.\n          </p>\n          <p class=\"my-4 text-xs\">\n            We planned a suitable design plan after accurately understanding the\n            user's purpose of using WallPad, such as checking the time before\n            going to work, checking the weather and fine dust, and checking the\n            current usage of home heating appliances to see if an umbrella needs\n            to be taken. In busy daily life, WallPad needs to provide quick and\n            accurate information. To make it easy for users to perceive the\n            displayed information even without focusing on WallPad, we shortened\n            the user perception reaction time using colors. Positive information\n            is expressed in shades of green from sky blue, and dangerous or\n            cautious information is expressed in shades of purple from pink to\n            help users easily perceive it. We also adopted the method of using\n            toned-down background colors to increase color contrast values and\n            further shorten the perception reaction time.\n          </p>\n        </section>",
+      "type": "0",
+      "orders": 8
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "memberId": 1,
+      "portfolioId": 1,
+      "content": "놀랍군요!",
+      "regDate": "2023-05-08T01:38:19.000+00:00"
+    },
+    {
+      "id": 2,
+      "memberId": 2,
+      "portfolioId": 1,
+      "content": "비밀 댓글입니다.",
+      "regDate": "2023-05-09T01:38:19.000+00:00"
+    },
+    {
+      "id": 3,
+      "memberId": 3,
+      "portfolioId": 1,
+      "content": "퍼가요♥",
+      "regDate": "2023-05-10T01:38:19.000+00:00"
+    }
+  ]
+}

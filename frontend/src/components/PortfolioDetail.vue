@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import Header from "./Header.vue";
 
 // Mock data
@@ -28,20 +28,19 @@ const portfolios = [
   { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
 ];
 
-// fetch data
+// Data
+const commentBoxOpen = ref(false);
+const state = reactive({
+  portfolio: {},
+  contents: [],
+  comments: [],
+});
 
-fetch(`http://localhost:8080/pofo/1`, { mode: "cors" })
-  .then((response) => response.json())
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// Lifecycle
+onMounted(getData);
+computed(()=> state.comments);
 
 // Functions
-const commentBoxOpen = ref(false);
-
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
@@ -66,6 +65,20 @@ function scrollLeft() {
 function scrollRight() {
   const scrollContainer = document.querySelector(".scroll-container");
   scrollContainer.scrollLeft += 326;
+}
+
+async function getData() {
+  let url = "/src/assets/data/2023-05-10T134838.200.json";
+
+  await fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      state.portfolio = data.portfolio;
+      state.contents = data.contents;
+      state.comments = data.comments;
+    });
+
+  return state;
 }
 </script>
 
@@ -92,7 +105,7 @@ function scrollRight() {
         <figcaption class="flex cursor-default flex-col justify-evenly">
           <h1
             class="text-2xl font-bold"
-            v-text="portfolio.title"
+            v-text="state.portfolio.title"
           />
           <div>
             <router-link to="/nickname">
@@ -112,8 +125,8 @@ function scrollRight() {
       <!-- Main -->
       <main>
         <template
-          :key="content.orders"
-          v-for="content in contents"
+          :key="content.id"
+          v-for="content in state.contents"
         >
           <div v-html="contentToHTML(content)" />
         </template>
@@ -150,7 +163,7 @@ function scrollRight() {
       <!-- Banner -->
       <div
         class="flex h-48 flex-col items-center justify-between bg-gray-950 py-9 sm:py-10"
-        :class="portfolio.awardDate ? 'sm:h-64' : 'sm:h-56'"
+        :class="state.portfolio.awardDate ? 'sm:h-64' : 'sm:h-56'"
       >
         <div class="flex w-32 justify-evenly">
           <div class="mb-2 cursor-pointer rounded-full border-2 bg-white">
@@ -162,16 +175,16 @@ function scrollRight() {
         </div>
         <span
           class="text-sm font-bold text-blue-300"
-          v-if="portfolio.awardDate != null"
+          v-if="state.portfolio.awardDate != null"
         >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
-          v-text="portfolio.title"
+          v-text="state.portfolio.title"
         />
         <span
           class="text-xs font-semibold text-white sm:text-sm"
-          v-if="portfolio.awardDate != null"
-          v-text="`${portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
+          v-if="state.portfolio.awardDate != null"
+          v-text="`${state.portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
         />
         <span
           class="text-xs font-semibold text-white sm:text-sm"
@@ -325,7 +338,10 @@ function scrollRight() {
       </div>
 
       <!-- Comment component -->
-      <div class="mx-5 border-t py-5">
+      <div
+        class="mx-5 border-t py-5"
+        v-for="comment in state.comments"
+      >
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
             <a
@@ -338,80 +354,19 @@ function scrollRight() {
                 alt="Profile image"
               >
             </a>
-            <div class="col-start-2 font-bold">
-              nickname
-            </div>
-            <div class="col-start-2 text-xs font-semibold text-gray-500">
-              2023.04.06
-            </div>
+            <div
+              class="col-start-2 font-bold"
+              v-text="comment.memberId"
+            />
+            <div
+              class="col-start-2 text-xs font-semibold text-gray-500"
+              v-text="comment.regDate.trim().substring(0, 10).replace(/-/g, '.')"
+            />
           </figure>
-          <p class="col-span-7 my-4 text-sm">
-            댓글 내용
-          </p>
-          <div
-            class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
-          >
-            답글 남기기
-          </div>
-        </div>
-      </div>
-
-      <!-- Comment component -->
-      <div class="mx-5 border-t py-5">
-        <div class="grid grid-cols-7 grid-rows-2">
-          <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
-              <img
-                class="h-12 w-12 rounded-full"
-                src="/src/assets/images/temp/d.bronze.jpg"
-                alt="Profile image"
-              >
-            </a>
-            <div class="col-start-2 font-bold">
-              nickname
-            </div>
-            <div class="col-start-2 text-xs font-semibold text-gray-500">
-              2023.04.06
-            </div>
-          </figure>
-          <p class="col-span-7 my-4 text-sm">
-            댓글 내용
-          </p>
-          <div
-            class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
-          >
-            답글 남기기
-          </div>
-        </div>
-      </div>
-
-      <!-- Comment component -->
-      <div class="mx-5 border-t py-5">
-        <div class="grid grid-cols-7 grid-rows-2">
-          <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
-              <img
-                class="h-12 w-12 rounded-full"
-                src="/src/assets/images/temp/d.bronze.jpg"
-                alt="Profile image"
-              >
-            </a>
-            <div class="col-start-2 font-bold">
-              nickname
-            </div>
-            <div class="col-start-2 text-xs font-semibold text-gray-500">
-              2023.04.06
-            </div>
-          </figure>
-          <p class="col-span-7 my-4 text-sm">
-            댓글 내용
-          </p>
+          <p
+            class="col-span-7 my-4 text-sm"
+            v-text="comment.content"
+          />
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >

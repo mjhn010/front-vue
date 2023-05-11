@@ -82,10 +82,12 @@ html,body,form{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 99;
 
   }
   .default-box:hover{
     border: 3px solid #000;
+    z-index: 99;
   }
   .click-text:focus{
     outline: none;
@@ -158,7 +160,41 @@ html,body,form{
     border: none;
     resize: none;
   }
-
+  .erase-box{
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-top: 8px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15),
+                0 2px 2px rgba(0,0,10,0.15);
+     width: 40px;
+     height: 40px;
+     text-align: center;
+     position: relative;
+     top: -146%;
+     left: 41%; 
+     z-index: 1000;
+     background-color: #fff;
+  }
+  .erase-text-box{
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-top: 8px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15),
+                0 2px 2px rgba(0,0,10,0.15);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    position: relative;
+    top: -203px;
+    right: 48%;
+    z-index: 1000;
+    background-color: #fff;
+  }
+  .erase{
+    position: relative;
+    width: 25px;
+    z-index: 1000;
+  }
   /* aside */
   .aside {
     box-sizing: border-box;
