@@ -2,21 +2,22 @@
 import Header from "../Header.vue";
 import { reactive, ref } from "vue";
 // 보였다가 없어짐
-let clickCheck = ref(true);
-let showImg = ref(false);
-let showText = ref(false);
 let showModal = ref(false)
+let addPlus = ref([]);
 
-function imgHandler() {
-  clickCheck.value = !clickCheck.value;
-  showImg.value = !showImg.value;
-  console.log(clickCheck);
+// function imgHandler() {
+//   clickCheck.value = false;
+//   addPlus.value.push(0);
+// }
+
+function imgPlusHandler(){
+  addPlus.value.push(0);
+}
+function textPlusHandler(){
+  addPlus.value.push(1);
+  
 }
 
-function textHandler() {
-  clickCheck.value = !clickCheck.value;
-  showText.value = !showText.value;
-}
 function showModalHandler(){
   showModal.value = !showModal.value;
 }
@@ -37,7 +38,7 @@ function showModalHandler(){
         <!--  -->
         <section class="reg-content">
           <section
-            v-if="clickCheck"
+            v-if="addPlus.length==0"
             class="default-box"
           >
             <div class="main-title">
@@ -46,7 +47,7 @@ function showModalHandler(){
             <div class="start-app">
               <div class="margin-right-5 sub-box">
                 <div
-                  @click="imgHandler"
+                  @click="imgPlusHandler"
                   class="app-box"
                 >
                   <img
@@ -65,7 +66,7 @@ function showModalHandler(){
               </div>
               <div class="sub-box">
                 <div
-                  @click="textHandler"
+                  @click="textPlusHandler"
                   class="app-box"
                 >
                   <img
@@ -85,18 +86,23 @@ function showModalHandler(){
             </div>
           </section>
           <!-- 이미지 클릭했을때 나오는 박스 -->
+
           <section
-            v-if="showImg"
+           v-for="(item,index) in addPlus"
             class="default-box click-img-box"
-          >
+          ><div v-if="item==0">
             <div class="start-app">
               <div class="sub-box">
                 <div class="app-box">
-                  <img
+                  <label for="click-file">
+                    <img
                     class="hover"
                     src="/src/assets/images/img.png"
                     alt=""
-                  ><img
+                  >
+                  </label>
+                  <input class="d-none" id="click-file" type="file" name="ffiles[]" multiple accept="jpg,gif,png">
+                  <img
                     class="hover d-none"
                     src="/src/assets/images/fff-img.png"
                     alt=""
@@ -112,24 +118,26 @@ function showModalHandler(){
                 JPEG,JPG,GIF 이미지파일
               </span>
             </div>
-          </section>
+          </div>
           <!-- 텍스트 눌렀을때 나오는 텍스트박스 -->
           <section
-            v-if="showText"
-            class="click-text-box margin-top-3"
+          v-else
+          class="click-text-box margin-top-3"
           >
-            <div class="start-app">
-              <!-- <textarea class="click-text" type="text" placeholder="여기에 텍스트를 입력하세요."> -->
+          <div class="start-app">
+            <!-- <textarea class="click-text" type="text" placeholder="여기에 텍스트를 입력하세요."> -->
               <textarea
-                class="click-text"
-                name=""
-                id=""
-                cols="30"
-                rows="2"
-                placeholder="여기에 텍스트를 입력하세요."
+              class="click-text"
+              name=""
+              id=""
+              cols="30"
+              rows="16"
+              placeholder="여기에 텍스트를 입력하세요."
               />
             </div>
           </section>
+          <div></div>
+        </section>
           <!--  -->
         </section>
       </main>
@@ -137,7 +145,7 @@ function showModalHandler(){
         <nav class="margin-top-4 nav">
           <ul class="content-select">
             <li class="aside-li border-none">
-              <button class="aside-btn">
+              <button @click.prevent="imgPlusHandler" class="aside-btn">
                 <img
                   class="aside-img"
                   src="/src/assets/images/img.png"
@@ -146,7 +154,7 @@ function showModalHandler(){
               </button>
             </li>
             <li class="aside-li border-none">
-              <button class="aside-btn">
+              <button @click.prevent="textPlusHandler" class="aside-btn">
                 <img
                   class="aside-img"
                   src="/src/assets/images/text.png"

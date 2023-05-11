@@ -3,6 +3,7 @@ import { reactive, onMounted, ref, watch, defineComponent } from 'vue';
 import Header from './Header.vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import {useUserDetailsStore} from './stores/useUserDetailsStore';
 
 export default defineComponent({
   components: {
