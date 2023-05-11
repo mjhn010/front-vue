@@ -1,15 +1,23 @@
 <script setup>
 import Header from "../Header.vue";
-import { reactive, ref } from "vue";
+import { reactive, ref} from "vue";
 // 보였다가 없어짐
 let showModal = ref(false)
 let addPlus = ref([]);
 let hoverIndex = ref(null)
-// let erase = ref(false)
-// function imgHandler() {
-//   clickCheck.value = false;
-//   addPlus.value.push(0);
-// }
+
+let imageSrc = ref('');
+let fileInputRef = ref(null);
+function onFileSelected(){
+  console.log(flies[0])
+  let file = fileInputRef.value.files[0];
+  if(file){
+    let imageUrl = URL.createObjectURL(file)
+    imageSrc.value = imageUrl
+  }
+}
+
+
 
 function hvoerHandler(index){
   hoverIndex.value = index;
@@ -36,7 +44,7 @@ function showModalHandler(){
 <template>
   <div v-show="showModal" class="screen"></div>
   <Header />
-  <form action="">
+  <form action="" enctype="multipart/form-data">
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
@@ -112,11 +120,11 @@ function showModalHandler(){
                     alt=""
                   >
                   </label>
-                  <input class="d-none" id="click-file" type="file" name="ffiles[]" multiple accept="jpg,gif,png">
+                  <input @change="onFileSelected" ref="fileInputRef" class="d-none" id="click-file" type="file" name="files[]" multiple accept="jpg,gif,png">
                   <img
-                    class="hover d-none"
-                    src="/src/assets/images/fff-img.png"
-                    alt=""
+                    src="imageSrc"
+                    alt="Image"
+                    v-if="imageSrc"
                   >
                 </div>
               </div>
