@@ -36,7 +36,6 @@ let props = defineProps({
 
 .screen {
     background-color: rgba(0, 0, 0, 0.8);
-
     left: 0;
     top: 0;
     width: 100vw;
@@ -60,7 +59,6 @@ let props = defineProps({
     background: rgb(255, 255, 255);
     border-radius: 4px;
     box-sizing: border-box;
-
 }
 
 .느낌표 {
@@ -101,7 +99,7 @@ let props = defineProps({
 }
 
 .d-none{
-        display: none !important;
+    display: none !important;
 }
 
 .check-btn {

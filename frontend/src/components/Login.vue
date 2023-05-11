@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import {useUserDetailsStore} from './stores/useUserDetailsStore';
+import {useUserDetailsStore} from '../stores/useUserDetailsStore';
 
 //--------------데이터
 let router = useRouter();
