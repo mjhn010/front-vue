@@ -19,6 +19,27 @@
 		(email,pwd,nickname,url)
 		values(#{email},#{pwd},#{nickname},#{url})
 	</insert>
+
+	<!-- 기존 가입된 이메일인지 확인 -->
+	<select id="countEmail" resultType="int">
+		select
+			count(id)
+		from
+			member
+		where
+			email = #{email}
+	</select>
+
+	<!-- 기존 가입된 닉네임인지 확인 -->
+	<select id="countNickname" resultType="int">
+		select
+			count(nickname)
+		from
+			member
+		where
+			nickname = #{nickname}
+	</select>
+
 </mapper>
 
 

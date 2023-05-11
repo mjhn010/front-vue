@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +19,11 @@ import kr.co.pofo.pofoapiboot3.service.MemberService;
 public class UserController {
 
     @Autowired
-    private MemberService memberService;
-    
+    private MemberService service;
+
     @PostMapping("/signup")
     public String signup(Member member) {
-        memberService.signup(member);
+        service.signup(member);
         return "ok";
     }
 
@@ -30,10 +31,19 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> login(String email, String password) {
         Map<String, Object> dto = new HashMap<>();
         dto.put("result", false);
-        if(memberService.isValid(email, password)){
-            Member member = memberService.getByEmail(email);
+        if (service.isValid(email, password)) {
+            Member member = service.getByEmail(email);
             dto.put("result", member);
         }
-        return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("/nicknamecheck")
+    public String nicknameCheck(String nickname) {
+        int result = service.checkNickname(nickname);
+        if (result == 1)
+            return "no";
+        else
+            return "ok";
     }
 }

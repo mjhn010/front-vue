@@ -11,4 +11,8 @@ public interface MemberRepository {
 
 	// 회원 가입 insert
 	int insert(Member member);
+
+	int countEmail(String email);
+
+	int countNickname(String nickname);
 }
