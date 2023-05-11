@@ -4,14 +4,25 @@ import { reactive, ref } from "vue";
 // 보였다가 없어짐
 let showModal = ref(false)
 let addPlus = ref([]);
-
+let hoverIndex = ref(null)
+// let erase = ref(false)
 // function imgHandler() {
 //   clickCheck.value = false;
 //   addPlus.value.push(0);
 // }
 
+function hvoerHandler(index){
+  hoverIndex.value = index;
+}
+function arrayRemove(event,index){
+  
+    addPlus.value.splice(index,1)
+}
+
 function imgPlusHandler(){
   addPlus.value.push(0);
+  console.log(addPlus.value)
+  
 }
 function textPlusHandler(){
   addPlus.value.push(1);
@@ -87,8 +98,8 @@ function showModalHandler(){
           </section>
           <!-- 이미지 클릭했을때 나오는 박스 -->
 
-          <section
-           v-for="(item,index) in addPlus"
+          <section 
+           v-for="(item,index) in addPlus" v-on:mouseover.prevent="hvoerHandler(index)" v-on:mouseleave="hvoerHandler(null)"
             class="default-box click-img-box"
           ><div v-if="item==0">
             <div class="start-app">
@@ -118,7 +129,12 @@ function showModalHandler(){
                 JPEG,JPG,GIF 이미지파일
               </span>
             </div>
+            <button @click.prevent="arrayRemove($event,index)" v-if="hoverIndex === index" class="erase-box">
+            <img class="erase" src="/src/assets/images/erase.png" alt="">
+            <!-- <div class="diamond"></div> -->
+          </button>
           </div>
+          
           <!-- 텍스트 눌렀을때 나오는 텍스트박스 -->
           <section
           v-else
@@ -134,9 +150,16 @@ function showModalHandler(){
               rows="16"
               placeholder="여기에 텍스트를 입력하세요."
               />
+              <button @click.prevent="arrayRemove($event,index)" v-if="hoverIndex === index" class="erase-text-box">
+              <img class="erase" src="/src/assets/images/erase.png" alt="">
+              <!-- <div class="diamond"></div> -->
+            </button>
             </div>
           </section>
-          <div></div>
+          <!-- <div class="erase-box">
+            <img class="erase" src="/src/assets/images/erase.png" alt="">
+            <div class="diamond"></div>
+          </div> -->
         </section>
           <!--  -->
         </section>
