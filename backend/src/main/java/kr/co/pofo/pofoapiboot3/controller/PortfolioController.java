@@ -1,6 +1,7 @@
 package kr.co.pofo.pofoapiboot3.controller;
 
 import kr.co.pofo.pofoapiboot3.entity.Comment;
+import kr.co.pofo.pofoapiboot3.entity.CommentView;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.service.CommentService;
@@ -30,7 +31,7 @@ public class PortfolioController {
     public Map<String, Object> getPortfolioDetail(@PathVariable("portfolioId") Integer portfolioId) {
         Portfolio portfolio = portfolioService.getPortfolioById(portfolioId);
         List<PortfolioContents> contents = portfolioContentsService.getPortfolioContents(portfolioId);
-        List<Comment> comments = commentService.getCommentsByPortfolioId(portfolioId);
+        List<CommentView> comments = commentService.getCommentViews(portfolioId);
 
         Map<String, Object> objectMap = new LinkedHashMap<>();
 

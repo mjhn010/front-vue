@@ -3,6 +3,7 @@ package kr.co.pofo.pofoapiboot3.service;
 import java.util.List;
 
 import kr.co.pofo.pofoapiboot3.entity.Comment;
+import kr.co.pofo.pofoapiboot3.entity.CommentView;
 import org.springframework.stereotype.Service;
 
 import kr.co.pofo.pofoapiboot3.repository.CommentRepository;
@@ -16,9 +17,15 @@ public class DefaultCommentService implements CommentService{
     }
 
     @Override
-    public List<Comment> getCommentsByPortfolioId(Integer portfolioId) {
-        List<Comment> portfolioComments = repository.findPortfolioComments(portfolioId);
+    public List<Comment> getComments(Integer portfolioId) {
+        List<Comment> portfolioComments = repository.findComments(portfolioId);
         return portfolioComments;
+    }
+
+    @Override
+    public List<CommentView> getCommentViews(Integer portfolioId) {
+        List<CommentView> portfolioCommentViews = repository.findCommentViews(portfolioId);
+        return portfolioCommentViews;
     }
 
     @Override
