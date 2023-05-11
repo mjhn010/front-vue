@@ -12,7 +12,7 @@ import Index from "/src/components/Index.vue";
 
 // 맴버
 import PortfolioRegister from "/src/components/member/PortfolioRegister.vue";
-import Mypage from "/src/components/member/Mypage.vue";
+import MemberRoute from "./components/member/route.js";
 
 // 커뮤니티
 import Community from "/src/components/Community.vue";
@@ -38,10 +38,7 @@ const routes = [
   // 로그인,회원가입,비밀번호찾기
   { path: "/login", component: Login },
   { path: "/signup", component: Signup},
-
-  //멤버 관련 페이지
-  { path: "/member/mypage", component: Mypage }
-
+  MemberRoute
 ];
 
 const router = createRouter({
