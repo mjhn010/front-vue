@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.pofo.pofoapiboot3.repository.CommentRepository">
 
-    <select id="findPortfolioComments" resultType="Comment">
+    <select id="findComments" resultType="Comment">
         SELECT
             *
         FROM
@@ -13,6 +13,23 @@
             portfolio_id = #{portfolioId}
         ORDER BY
             reg_date DESC
+    </select>
+
+    <select id="findCommentViews" resultType="CommentView">
+        SELECT
+            c.*,
+            m.nickname AS member_nickname,
+            m.image AS member_image
+        FROM
+            comment AS c
+        INNER JOIN
+            member AS m
+        ON
+            c.member_id = m.id
+        WHERE
+            c.portfolio_id = #{portfolioId}
+        ORDER BY
+            c.reg_date DESC
     </select>
 
     <insert id="insert">
