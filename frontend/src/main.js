@@ -11,7 +11,6 @@ import Login from "/src/components/Login.vue";
 import Index from "/src/components/Index.vue";
 
 // 맴버
-import PortfolioRegister from "/src/components/member/PortfolioRegister.vue";
 import MemberRoute from "./components/member/route.js";
 
 // 커뮤니티
@@ -27,8 +26,7 @@ import Signup from "/src/components/Signup.vue";
 const routes = [
   { path: "/index", component: Index },
 
-  // pofo경로
-  { path: "/pofo/reg", component: PortfolioRegister },
+  
   { path: "/pofo/:id", component: PortfolioDetail },
 
   // community경로

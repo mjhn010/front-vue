@@ -7,7 +7,7 @@ let addPlus = ref([]);
 let hoverIndex = ref(null)
 
 let imageSrc = ref('');
-let fileInputRef = ref(null);
+let fileInputRef = ref("");
 function onFileSelected(){
   console.log(flies[0])
   let file = fileInputRef.value.files[0];
