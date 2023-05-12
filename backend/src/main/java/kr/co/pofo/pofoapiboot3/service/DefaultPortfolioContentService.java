@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class DefaultPortfolioContentService implements PortfolioContentsService {
+public class DefaultPortfolioContentService implements PortfolioContentService {
     PortfolioContentsRepository portfolioContentsRepository;
 
     public DefaultPortfolioContentService(PortfolioContentsRepository portfolioContentsRepository) {
