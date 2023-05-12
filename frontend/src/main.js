@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { createPinia } from "pinia";
-import piniaPersist from 'pinia-plugin-persist'
+import piniaPersist from "pinia-plugin-persist";
 import App from "./App.vue";
 
 // 로그인,회원가입
@@ -22,21 +22,22 @@ import PortfolioDetail from "/src/components/PortfolioDetail.vue";
 
 // 회원가입
 import Signup from "/src/components/Signup.vue";
+import PortfolioRegister from "@/components/member/PortfolioRegister.vue";
 
 const routes = [
   { path: "/index", component: Index },
 
-  
+  { path: "/pofo/reg", component: PortfolioRegister },
   { path: "/pofo/:id", component: PortfolioDetail },
 
   // community경로
-  { path: "/community", component: Community},
+  { path: "/community", component: Community },
   { path: "/community/reg", component: CommunityReg },
 
   // 로그인,회원가입,비밀번호찾기
   { path: "/login", component: Login },
-  { path: "/signup", component: Signup},
-  MemberRoute
+  { path: "/signup", component: Signup },
+  MemberRoute,
 ];
 
 const router = createRouter({
@@ -47,7 +48,4 @@ const router = createRouter({
 const pinia = createPinia();
 pinia.use(piniaPersist);
 
-createApp(App)
-.use(router)
-.use(pinia)
-.mount("#app");
+createApp(App).use(router).use(pinia).mount("#app");
