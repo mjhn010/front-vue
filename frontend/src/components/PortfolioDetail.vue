@@ -95,7 +95,7 @@ async function getData() {
 <template>
   <Header />
   <div
-    class="absolute xl:grid w-full min-h-full gap-y-2 bg-gray-50 xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
+    class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
     <div
       class="w-full bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
@@ -114,18 +114,18 @@ async function getData() {
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
           <h1
-            class="text-sm sm:text-2xl font-bold"
+            class="text-sm font-bold sm:text-2xl"
             v-text="state.portfolio.title"
           />
           <div>
             <router-link to="/nickname">
               <span
-                class="cursor-pointer text-xs sm:text-lg font-semibold hover:text-gray-500"
+                class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
                 v-text="member.nickname"
               />
             </router-link>
             <span
-              class="cursor-pointer text-xs sm:text-lg font-semibold hover:text-gray-500"
+              class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
             >ᆞ팔로우</span>
           </div>
@@ -194,7 +194,11 @@ async function getData() {
         <span
           class="text-xs font-semibold text-white sm:text-sm"
           v-if="state.portfolio.awardDate != null"
-          v-text="`${state.portfolio.awardDate.substring(0, 10).replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`"
+          v-text="
+            `${state.portfolio.awardDate
+              .substring(0, 10)
+              .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
+          "
         />
         <span
           class="text-xs font-semibold text-white sm:text-sm"
@@ -220,35 +224,41 @@ async function getData() {
       </div>
 
       <!-- Member's portfolio list -->
-      <div
-        class="scroll-container scrollbar-hide mx-8 flex h-60 overflow-x-scroll scroll-smooth"
-        style="column-gap: 2.38rem"
-      >
+      <div class="w-full">
         <div
-          class="chevron-left-icon absolute bottom-40 left-56 cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
-          @click="scrollLeft"
-        />
-        <figure
-          class="h-48 w-96 cursor-pointer"
-          :key="memberPortfolio.id"
-          v-for="memberPortfolio in portfolios"
+          class="scroll-container scrollbar-hide mx-8 flex h-60 overflow-x-scroll scroll-smooth"
+          style="column-gap: 2.38rem"
         >
-          <router-link :to="`/pofo/${memberPortfolio.id}`">
-            <img
-              :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
-              alt="#"
-              class="h-full w-72 rounded-t-lg"
-            >
-            <figcaption
-              class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
-              v-text="memberPortfolio.title"
-            />
-          </router-link>
-        </figure>
-        <div
-          class="chevron-right-icon absolute bottom-40 cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
-          @click="scrollRight"
-        />
+          <figure
+            class="h-48 w-96 cursor-pointer"
+            :key="memberPortfolio.id"
+            v-for="memberPortfolio in portfolios"
+          >
+            <router-link :to="`/pofo/${memberPortfolio.id}`">
+              <img
+                :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
+                alt="#"
+                class="h-full w-72 rounded-t-lg"
+              >
+              <figcaption
+                class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
+                v-text="memberPortfolio.title"
+              />
+            </router-link>
+          </figure>
+        </div>
+
+        <!-- Scroll buttons -->
+        <div class="relative h-0 bottom-40 px-4 flex w-full justify-between">
+          <div
+            class="chevron-left-icon cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            @click="scrollLeft"
+          />
+          <div
+            class="chevron-right-icon justify-self-center col-start-12 cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            @click="scrollRight"
+          />
+        </div>
       </div>
     </div>
 
@@ -372,9 +382,7 @@ async function getData() {
             />
             <div
               class="col-start-2 text-xs font-semibold text-gray-500"
-              v-text="
-                comment.regDate.substring(0, 10).replace(/-/g, '.')
-              "
+              v-text="comment.regDate.substring(0, 10).replace(/-/g, '.')"
             />
           </figure>
           <p
@@ -401,7 +409,7 @@ main:deep(section) {
 }
 
 main:deep(img) {
-  @apply mb-12 w-full h-1/5;
+  @apply mb-12 h-1/5 w-full;
 }
 
 main:deep(h2) {
