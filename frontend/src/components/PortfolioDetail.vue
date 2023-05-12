@@ -38,7 +38,6 @@ const state = reactive({
 
 // Lifecycle
 onMounted(getData);
-computed(() => state.comments);
 
 // Functions
 function scrollToTop() {
@@ -53,7 +52,7 @@ function contentToHTML(item) {
   if (item.type === "0") {
     return item.content;
   } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image" style="width: 100%"/>`;
+    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
   }
 }
 
@@ -96,11 +95,11 @@ async function getData() {
 <template>
   <Header />
   <div
-    class="absolute grid min-h-full gap-y-2 bg-gray-50 xl:min-w-full xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
+    class="absolute xl:grid w-full min-h-full gap-y-2 bg-gray-50 xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
     <div
-      class="col-start-2 bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
-      :class="commentBoxOpen ? 'xl:col-span-8' : 'xl:col-span-10'"
+      class="w-full bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
+      :class="commentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
       <figure class="flex p-6">
@@ -115,18 +114,18 @@ async function getData() {
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
           <h1
-            class="text-2xl font-bold"
+            class="text-sm sm:text-2xl font-bold"
             v-text="state.portfolio.title"
           />
           <div>
             <router-link to="/nickname">
               <span
-                class="cursor-pointer text-lg font-semibold hover:text-gray-500"
+                class="cursor-pointer text-xs sm:text-lg font-semibold hover:text-gray-500"
                 v-text="member.nickname"
               />
             </router-link>
             <span
-              class="cursor-pointer text-lg font-semibold hover:text-gray-500"
+              class="cursor-pointer text-xs sm:text-lg font-semibold hover:text-gray-500"
               @click="toggleCommentBox"
             >ᆞ팔로우</span>
           </div>
@@ -178,7 +177,7 @@ async function getData() {
       >
         <div class="flex w-32 justify-evenly">
           <div class="mb-2 cursor-pointer rounded-full border-2 bg-white">
-            <div class="heart-icon hover:animate-ping" />
+            <div class="heart-icon hover:animate-pulse" />
           </div>
           <div
             class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50"
@@ -195,7 +194,7 @@ async function getData() {
         <span
           class="text-xs font-semibold text-white sm:text-sm"
           v-if="state.portfolio.awardDate != null"
-          v-text="`${state.portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
+          v-text="`${state.portfolio.awardDate.substring(0, 10).replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`"
         />
         <span
           class="text-xs font-semibold text-white sm:text-sm"
@@ -279,7 +278,7 @@ async function getData() {
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div class="mb-2 rounded-full border-2 bg-white">
-          <div class="heart-icon cursor-pointer hover:animate-ping" />
+          <div class="heart-icon cursor-pointer hover:animate-pulse" />
         </div>
         좋아요
       </div>
@@ -374,7 +373,7 @@ async function getData() {
             <div
               class="col-start-2 text-xs font-semibold text-gray-500"
               v-text="
-                comment.regDate.trim().substring(0, 10).replace(/-/g, '.')
+                comment.regDate.substring(0, 10).replace(/-/g, '.')
               "
             />
           </figure>
@@ -402,15 +401,15 @@ main:deep(section) {
 }
 
 main:deep(img) {
-  @apply mb-12 h-1/5 w-fit;
+  @apply mb-12 w-full h-1/5;
 }
 
-section:deep(h2) {
-  @apply text-lg font-bold;
+main:deep(h2) {
+  @apply text-lg font-bold sm:text-2xl;
 }
 
-section:deep(p) {
-  @apply my-4 text-xs;
+main:deep(p) {
+  @apply my-4 text-xs sm:text-base;
 }
 
 .sidebar {
