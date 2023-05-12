@@ -19,6 +19,7 @@ export default defineComponent({
       sort: 'latest', // 정렬방식을 나타내는 변수, 최신순이 디폴트
       collaboration: null, // 협업여부를 나타내는 변수, 전체가 디폴트
       language: null, // 프로그래밍언어를 나타내는 변수, 전체가 디폴트
+      query : '', // 검색어를 담을 변수, 
 
       weeklyPopularList: [], // 이번주 인기 포트폴리오 리스트를 담을 변수
 
@@ -29,9 +30,13 @@ export default defineComponent({
 
     // --- Life Cycles -------------------------------------
     onMounted(fetchPortfolios);
-    watch(() => [state.sort, state.collaboration, state.language], fetchPortfolios); // 변수가 변경될 때마다 함수 실행
+    watch(() => [state.sort, state.collaboration, state.language, state.query], fetchPortfolios); // 변수가 변경될 때마다 함수 실행
 
     // --- Event Handlers ----------------------------------
+    function queryUpdateHandler(query){
+            state.query = query;
+    }
+
     async function fetchPortfolios() {
       const url = new URL('http://localhost:8080/index');
       url.searchParams.set('sort', state.sort); // URL의 query string을 처리하는 함수
@@ -41,8 +46,9 @@ export default defineComponent({
       if (state.language !== null) { // 프로그래밍언어를 선택한 경우 쿼리 파라미터를 추가함
         url.searchParams.set('language', state.language);
       }
-
-      console.log(url);
+      if (state.query !== null) { // 검색한 경우 쿼리 파라미터를 추가함
+        url.searchParams.set('query', state.query);
+      }
 
       let response = await fetch(url);
       let json = await response.json();
@@ -52,14 +58,17 @@ export default defineComponent({
 
     }
 
-    return { state };
+    return { 
+      state,
+      queryUpdateHandler
+    };
   }
 })
 
 </script>
 
 <template>
-  <Header />
+  <Header @query-updated="queryUpdateHandler" />
   <main>
     <!-- 이번주 인기 TOP 10 포트폴리오 리스트 -->
     <section class="slider-container">
