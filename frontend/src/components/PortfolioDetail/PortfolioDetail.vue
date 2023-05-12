@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import Header from "./Header.vue";
+import Header from "../Header.vue";
 
 // Mock data
 const member = { nickname: "D.BRONZE", image: "d.bronze.jpg" };
@@ -124,10 +124,11 @@ async function getData() {
                 v-text="member.nickname"
               />
             </router-link>
+            <span class="text-xs sm:text-lg">ᆞ</span>
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-            >ᆞ팔로우</span>
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>

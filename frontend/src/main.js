@@ -18,7 +18,7 @@ import Community from "/src/components/Community.vue";
 import CommunityReg from "/src/components/member/CommunityRegister.vue";
 
 // 포트폴리오 상세정보
-import PortfolioDetail from "/src/components/PortfolioDetail.vue";
+import PortfolioDetail from "/src/components/PortfolioDetail/PortfolioDetail.vue";
 
 // 회원가입
 import Signup from "/src/components/Signup.vue";
