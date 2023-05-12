@@ -136,9 +136,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(255, 255, 255);
   position: relative;
   border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 .profile-username-uppercase {
   border-radius: 50%;
@@ -149,6 +151,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 .modal-wall {
   width: 16px;
@@ -284,4 +288,19 @@
 }
 .profile-menu-wrap .menu-item .logout-btn {
   padding: 20px;
+}
+.modal-msg-text-notify {
+  font-weight: lighter;
+}
+.profile-img-mypage {
+  width: 45px;
+  height: 45px;
+}
+.profile-img-noti {
+  width: 40px;
+  height: 40px;
+}
+.profile-img-msg {
+  width: 40px;
+  height: 40px;
 }
