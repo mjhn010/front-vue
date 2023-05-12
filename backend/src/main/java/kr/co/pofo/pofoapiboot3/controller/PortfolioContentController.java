@@ -8,7 +8,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/pofo/{portfolioId}/content")
+@RequestMapping("/pofo/{portfolioId}/contents")
 public class PortfolioContentController {
     private final PortfolioContentService service;
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/pofo/{portfolioId}/comment")
+@RequestMapping("/pofo/{portfolioId}/comments")
 public class CommentController {
     private final CommentService service;
 
