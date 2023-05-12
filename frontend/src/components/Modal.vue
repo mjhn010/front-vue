@@ -21,7 +21,6 @@
         </div>
 </template>
 
-
 <script setup>
 
 let props = defineProps({

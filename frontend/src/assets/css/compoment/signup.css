@@ -17,7 +17,7 @@
     position: absolute;
     top: 5%;
     left: 35%;
-    height: 90%;
+    min-height: 90%;
     width: 30%;
     padding: 40px 48px;
     border: 1px solid rgb(240, 245, 245);
