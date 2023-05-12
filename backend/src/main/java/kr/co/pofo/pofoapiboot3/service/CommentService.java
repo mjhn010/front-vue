@@ -10,7 +10,7 @@ public interface CommentService {
 
     List<CommentView> getCommentViews(Integer portfolioId);
 
-    void saveComment(Comment comment);
+    void save(Comment comment);
 
-    void deleteComment(Comment comment);
+    void delete(Comment comment);
 }
