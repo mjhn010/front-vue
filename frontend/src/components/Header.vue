@@ -37,6 +37,7 @@
         class="header-search"
         type="text"
         placeholder="검색어를 입력해보세요"
+        @keydown.enter="(event) => { $emit('query-updated', event.target.value) }"
       />
     </div>
     <ul class="m-menu member-bar">
