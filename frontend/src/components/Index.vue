@@ -79,7 +79,7 @@ export default defineComponent({
         <Carousel :itemsToShow="3.125" :wrapAround="true" :transition="500">
           <Slide v-for="(portfolio, index) in state.weeklyPopularList" :key="index">
             <div class="carousel__item">
-              <img :src="'image/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
+              <img :src="'/src/assets/images/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
               <div class="overlay">
                 <h2>{{ portfolio.title }}</h2>
                 <p>{{ portfolio.nickname }}</p>
@@ -169,18 +169,18 @@ export default defineComponent({
         <ul>
           <li v-for="(portfolio, index) in state.list" :key="index">
             <div class="thumbnail" :data-title="portfolio.title">
-              <img :src="'image/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
+              <img :src="'/src/assets/images/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
             </div>
             <div class="information">
               <div class="portfolio-info-profile">
                 <!-- <img :src="'image/' + portfolio.memberImage" alt="프로필 이미지"> -->
-                <img src="image/BctLFrYLdnFPix7w.jpg" alt="프로필 이미지">
+                <img src="/src/assets/images/BctLFrYLdnFPix7w.jpg" alt="프로필 이미지">
                 <span class="nickname">{{ portfolio.nickname }}</span>
               </div>
               <div class="portfolio-info-counts">
-                <img src="image/eye.png" alt="조회수 이미지">
+                <img src="/src/assets/images/eye.png" alt="조회수 이미지">
                 <span class="hit">{{ portfolio.hit }}</span>
-                <img src="image/heart.png" alt="하트 이미지">
+                <img src="/src/assets/images/heart.png" alt="하트 이미지">
                 <span class="like">{{ portfolio.likeCount }}</span>
               </div>
             </div>
