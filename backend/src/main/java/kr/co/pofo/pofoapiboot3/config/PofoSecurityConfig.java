@@ -9,8 +9,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class PofoSecurityConfig {
-//https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html
-//https://www.baeldung.com/spring-security-thymeleaf
+//docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html
+//www.baeldung.com/spring-security-thymeleaf
    
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -19,7 +19,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-            .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
+            // .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
             .anyRequest().permitAll();
 
     return http.build();

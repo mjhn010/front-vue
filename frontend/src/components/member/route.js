@@ -1,10 +1,12 @@
 import { useUserDetailsStore } from "../../stores/useUserDetailsStore.js";
-import Mypage from './Mypage.vue';
+import Myprofile from './Myprofile.vue';
 import PofoReg from './PortfolioRegister.vue'
 const member = {
   path: "/member", 
   children :[
-    { path : "mypage", component : Mypage },
+    { path : "myprofile", children : [
+        {path : ":id", component: Myprofile}
+    ]},
     { path : "reg", component : PofoReg }
   ],
   beforeEnter(to,from,next) {

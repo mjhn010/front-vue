@@ -26,4 +26,6 @@ public interface PortfolioService {
 
 	//  Detail
 	Portfolio getPortfolioById(Integer id);
+
+	List<Portfolio> getByUserId(int id);
 }

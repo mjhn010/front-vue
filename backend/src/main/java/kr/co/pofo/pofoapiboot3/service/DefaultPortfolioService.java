@@ -74,4 +74,9 @@ public class DefaultPortfolioService implements PortfolioService {
     public Portfolio getPortfolioById(Integer id) {
         return portfolioRepository.findPortfolioById(id);
     }
+
+    @Override
+    public List<Portfolio> getByUserId(int id) {
+        return portfolioRepository.findByUserId(id);
+    }
 }
