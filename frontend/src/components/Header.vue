@@ -163,7 +163,7 @@
           <a href="#" class="mypofo menu-item">나의 포트폴리오</a>
           <a href="#" class="pofile-setting menu-item">설정</a>
           <div class="line-bar"></div>
-          <a href="#" class="menu-item top-border-line">로그아웃</a>
+          <a href="#" class="menu-item top-border-line" @click.prevent="logoutHandler">로그아웃</a>
         </div>
       </div>
     </div>
@@ -181,39 +181,46 @@
 
 <script setup>
 import { vOnClickOutside } from '@vueuse/components'
-import {ref} from 'vue';
-import {useUserDetailsStore} from '../stores/useUserDetailsStore';
-  
+import { ref } from 'vue';
+import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 
-      let isModalOpenMessage= ref(false)
-      let isModalOpenNotify= ref(false)
-      let isModalOpenProfile= ref(false)
-      let modalChange= ref("");
-      let userDetails = useUserDetailsStore();
-  
- function   showModalMessage() {
-      isModalOpenNotify.value = false;
-      isModalOpenMessage.value = true;
-      isModalOpenProfile.value = false;
-      modalChange.value = "noti-content-message";
-    }
-  function showModalNotify() {
-      isModalOpenMessage.value = false;
-      isModalOpenNotify.value = true;
-      isModalOpenProfile.value = false;
-      modalChange.value = "noti-content-notify";
-    }
-    function showModalProfile() {
-      isModalOpenMessage.value = false;
-      isModalOpenNotify.value = false;
-      isModalOpenProfile.value = true;
-      modalChange = "noti-content-profile";
-    }
-    
-    function closeModal() {
-      isModalOpenMessage.value = false;
-      isModalOpenNotify.value = false;
-      isModalOpenProfile.value = false;
-    }
+
+let isModalOpenMessage = ref(false)
+let isModalOpenNotify = ref(false)
+let isModalOpenProfile = ref(false)
+let modalChange = ref("");
+let userDetails = useUserDetailsStore();
+
+function showModalMessage() {
+  isModalOpenNotify.value = false;
+  isModalOpenMessage.value = true;
+  isModalOpenProfile.value = false;
+  modalChange.value = "noti-content-message";
+}
+function showModalNotify() {
+  isModalOpenMessage.value = false;
+  isModalOpenNotify.value = true;
+  isModalOpenProfile.value = false;
+  modalChange.value = "noti-content-notify";
+}
+function showModalProfile() {
+  isModalOpenMessage.value = false;
+  isModalOpenNotify.value = false;
+  isModalOpenProfile.value = true;
+  modalChange = "noti-content-profile";
+}
+
+function closeModal() {
+  isModalOpenMessage.value = false;
+  isModalOpenNotify.value = false;
+  isModalOpenProfile.value = false;
+}
+
+function logoutHandler(){
+  userDetails.logout();
+  isModalOpenMessage.value = false;
+  isModalOpenNotify.value = false;
+  isModalOpenProfile.value = false;
+}
 
 </script>
