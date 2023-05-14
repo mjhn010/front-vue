@@ -9,7 +9,7 @@ let model = reactive({
     myInfo: {},
     list: [[], [], []],
     currentList: [],
-    activities : {}
+    activities: {}
 })
 
 
@@ -115,13 +115,13 @@ function clickCollections() {
             </div>
 
             <div class="portfolio-lists">
-                <div v-for="pofo in model.currentList" class="thumbnail" :data-title="pofo.title">
-                    <router-link :to="'/pofo/' + pofo.id">
+                <router-link :to="'/pofo/' + pofo.id" v-for="pofo in model.currentList">
+                    <div class="thumbnail" :data-title="pofo.title">
                         <span>
                             <img :src="'/src/assets/images/' + pofo.thumbnail">
                         </span>
-                    </router-link>
-                </div>
+                    </div>
+                </router-link>
             </div>
 
         </section>
@@ -147,7 +147,7 @@ function clickCollections() {
     font-size: 1rem;
     padding-left: 5px;
     padding-bottom: 5px;
-    
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
