@@ -13,4 +13,5 @@ public class Member {
     private String pwd;
     private String nickname;
     private String url;
+    private String image;
 }

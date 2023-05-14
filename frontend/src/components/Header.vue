@@ -44,9 +44,11 @@
     </div>
     <ul class="m-menu member-bar">
       <li>
-        <router-link to="/pofo/reg"><button class="btn btn-3 prj-register">
+        <router-link to="/member/reg">
+          <button class="btn btn-3 prj-register">
             프로젝트 등록
-          </button></router-link>
+          </button>
+        </router-link>
       </li>
       <button @click="showModalMessage">
         <li><img class="dm" src="/src/assets/images/email.png" alt="DM" /></li>
@@ -58,7 +60,8 @@
       </button>
       <li>
         <button @click="showModalProfile">
-          <img class="header-profile" src="/src/assets/images/proflie.svg" alt="마이프로필" />
+          <img class="header-profile" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="userDetails.profileSrc==null"/>
+          <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else/>
         </button>
       </li>
       <li>
@@ -148,20 +151,24 @@
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="user-main-wrap">
-          <a href="#" target="_blank" class="">
-            <div class="profile-image-wrap">
+            <div class="profile-image-wrap" v-if="userDetails.profileSrc==null">
               <img src="/src/assets/images/proflie.svg" class="profile-img-mypage" />
             </div>
-          </a>
+            <div class="profile-image-wrap" v-else>
+              <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img-mypage" />
+            </div>
           <div class="user-detail-wrap">
-            <div class="user-detail-id">msi881010</div>
-            <div class="user-detail-email">msi881010@gmail.com</div>
+            <div class="user-detail-nickname">{{ userDetails.nickname }}</div>
+            <div class="user-detail-email">{{ userDetails.email }}</div>
           </div>
         </div>
         <div class="profile-menu-wrap">
-          <a href="#" class="upload menu-item margin-top-5">새로운 포트폴리오 업로드</a>
-          <a href="#" class="mypofo menu-item">나의 포트폴리오</a>
-          <a href="#" class="pofile-setting menu-item">설정</a>
+          <router-link to="/member/reg" class="upload menu-item margin-top-5">
+            새로운 포트폴리오 업로드
+          </router-link>
+          <router-link to="/member/myprofile" class="mypofo menu-item">
+            나의 포트폴리오
+          </router-link>
           <div class="line-bar"></div>
           <a href="#" class="menu-item top-border-line" @click.prevent="logoutHandler">로그아웃</a>
         </div>
@@ -177,6 +184,10 @@
 @import url("/src/assets/css/common/buttons.css");
 @import url("/src/assets/css/compoment/header-modal.css");
 @import url("/src/assets/css/compoment/header.css");
+.profile-img{
+  width: 28px;
+  height: 28px;
+}
 </style>
 
 <script setup>

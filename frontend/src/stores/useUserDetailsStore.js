@@ -4,7 +4,8 @@ export const useUserDetailsStore = defineStore("userDetails", {
   state: () => ({
     id: null,
     email: null,
-    nickname: null
+    nickname: null,
+    profileSrc : null
   }),
   getters: {
     isAuthenticated: (state) => state.email == null ? false : true

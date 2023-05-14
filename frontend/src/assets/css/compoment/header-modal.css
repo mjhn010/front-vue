@@ -37,7 +37,7 @@
   top: 55px;
   right: 5px;
   width: 330px;
-  height: 290px;
+  height: 240px;
   visibility: visible;
   margin-bottom: 7px;
   margin-left: -60px;
@@ -247,7 +247,7 @@
   flex-direction: column;
   margin-left: 16px;
 }
-.user-detail-id {
+.user-detail-nickname {
   align-items: center;
   color: rgb(30, 30, 30);
   cursor: pointer;
