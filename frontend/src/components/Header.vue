@@ -66,7 +66,7 @@
       </li>
     </ul>
   </header>
-  <div class="head-popup" :class="modalChange" v-if="isModalOpenMessage" v-click-outside="closeModal">
+  <div class="head-popup" :class="modalChange" v-if="isModalOpenMessage" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
@@ -106,7 +106,7 @@
         </div> -->
     </div>
   </div>
-  <div class="head-popup" :class="modalChange" v-if="isModalOpenNotify" v-click-outside="closeModal">
+  <div class="head-popup" :class="modalChange" v-if="isModalOpenNotify" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
@@ -143,7 +143,7 @@
         </div> -->
     </div>
   </div>
-  <div class="head-popup" :class="modalChange" v-if="isModalOpenProfile" v-click-outside="closeModal">
+  <div class="head-popup" :class="modalChange" v-if="isModalOpenProfile" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <!-- <div class="noti-title">읽지않은 알림</div> -->
@@ -179,46 +179,41 @@
 @import url("/src/assets/css/compoment/header.css");
 </style>
 
-<script>
-import vClickOutside from "click-outside-vue3";
+<script setup>
+import { vOnClickOutside } from '@vueuse/components'
+import {ref} from 'vue';
 import {useUserDetailsStore} from '../stores/useUserDetailsStore';
-export default {
-  directives: {
-    clickOutside: vClickOutside.directive,
-  },
-  data() {
-    return {
-      isModalOpenMessage: false,
-      isModalOpenNotify: false,
-      isModalOpenProfile: false,
-      modalChange: "",
-      userDetails : useUserDetailsStore()
-    };
-  },
-  methods: {
-    showModalMessage() {
-      this.isModalOpenNotify = false;
-      this.isModalOpenMessage = true;
-      this.isModalOpenProfile = false;
-      this.modalChange = "noti-content-message";
-    },
-    showModalNotify() {
-      this.isModalOpenMessage = false;
-      this.isModalOpenNotify = true;
-      this.isModalOpenProfile = false;
-      this.modalChange = "noti-content-notify";
-    },
-    showModalProfile() {
-      this.isModalOpenMessage = false;
-      this.isModalOpenNotify = false;
-      this.isModalOpenProfile = true;
-      this.modalChange = "noti-content-profile";
-    },
-    closeModal() {
-      this.isModalOpenMessage = false;
-      this.isModalOpenNotify = false;
-      this.isModalOpenProfile = false;
-    },
-  },
-};
+  
+
+      let isModalOpenMessage= ref(false)
+      let isModalOpenNotify= ref(false)
+      let isModalOpenProfile= ref(false)
+      let modalChange= ref("");
+      let userDetails = useUserDetailsStore();
+  
+ function   showModalMessage() {
+      isModalOpenNotify.value = false;
+      isModalOpenMessage.value = true;
+      isModalOpenProfile.value = false;
+      modalChange.value = "noti-content-message";
+    }
+  function showModalNotify() {
+      isModalOpenMessage.value = false;
+      isModalOpenNotify.value = true;
+      isModalOpenProfile.value = false;
+      modalChange.value = "noti-content-notify";
+    }
+    function showModalProfile() {
+      isModalOpenMessage.value = false;
+      isModalOpenNotify.value = false;
+      isModalOpenProfile.value = true;
+      modalChange = "noti-content-profile";
+    }
+    
+    function closeModal() {
+      isModalOpenMessage.value = false;
+      isModalOpenNotify.value = false;
+      isModalOpenProfile.value = false;
+    }
+
 </script>
