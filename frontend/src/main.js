@@ -62,4 +62,3 @@ createApp(App)
   clientId: '35371203623-k8enqllrhlbg9tv17ghiolqbb2t167qt.apps.googleusercontent.com'
 })
 .mount("#app");
-createApp(App).use(router).use(pinia).mount("#app");

@@ -15,7 +15,6 @@ let user = reactive({
 //-------------소셜로그인
 function googleLoginHandler(response) {
   let userData = decodeCredential(response.credential);
-  console.log(userData)
 
   userDetails.username = userData.name;
   userDetails.email = userData.email;
