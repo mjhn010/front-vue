@@ -10,7 +10,7 @@ import java.util.List;
 public interface PortfolioLikeRepository {
     List<Portfolio> findByUserId(int id);
 
-    Integer count(Integer portfolioId);
+    Integer count(int memberId);
 
     void insert(PortfolioLike portfolioLike);
 

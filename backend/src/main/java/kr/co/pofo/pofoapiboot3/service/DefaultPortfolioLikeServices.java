@@ -21,8 +21,8 @@ public class DefaultPortfolioLikeServices implements PortfolioLikeService {
     }
 
     @Override
-    public Integer count(Integer portfolioId) {
-        Integer count = repository.count(portfolioId);
+    public Integer count(int memberId) {
+        Integer count = repository.count(memberId);
         return count;
     }
 

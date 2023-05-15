@@ -15,8 +15,8 @@ public class PortfolioLikeController {
     }
 
     @GetMapping
-    public Integer getCount(@PathVariable("portfolioId") Integer portfolioId) {
-        Integer count = service.count(portfolioId);
+    public Integer getCount(@PathVariable("portfolioId") int memberId) {
+        Integer count = service.count(memberId);
         return count;
     }
 
