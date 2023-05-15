@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
-	private Integer id;
-    private String email;
-    private String pwd;
-    private String nickname;
-    private String url;
-    private String image;
+public class Activities {
+    private int hited;
+    private int liked;
+    private int collected;
 }

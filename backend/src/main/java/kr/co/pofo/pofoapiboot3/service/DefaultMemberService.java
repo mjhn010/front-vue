@@ -35,7 +35,7 @@ public class DefaultMemberService implements MemberService {
     };
 
     public Member getById(int id){
-        return null;
+        return repository.findById(id);
     }
 
     @Override

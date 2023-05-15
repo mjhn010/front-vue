@@ -4,7 +4,7 @@ import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 
 import java.util.List;
 
-public interface PortfolioContentsService {
+public interface PortfolioContentService {
     List<PortfolioContents> getPortfolioContents(Integer portfolioId);
 
     void insert(PortfolioContents portfolioContents);

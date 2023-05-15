@@ -46,4 +46,8 @@ public interface PortfolioRepository {
 
 //	Detail
 	Portfolio findPortfolioById(Integer id);
+
+// myprofile
+    List<Portfolio> findByUserId(int id);
+    int countOfhits(int id);
 }

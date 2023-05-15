@@ -1,4 +1,4 @@
-package kr.co.pofo.pofoapiboot3.controller.member;
+package kr.co.pofo.pofoapiboot3.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +17,13 @@ import kr.co.pofo.pofoapiboot3.entity.Member;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.service.ActivitiesService;
 import kr.co.pofo.pofoapiboot3.service.CollectionsService;
-import kr.co.pofo.pofoapiboot3.service.PortfolioLikeService;
 import kr.co.pofo.pofoapiboot3.service.MemberService;
+import kr.co.pofo.pofoapiboot3.service.PortfolioLikeService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 
 @RestController
-@RequestMapping("/members")
-public class MemberController {
+@RequestMapping("/profile")
+public class ProfileController {
 
     @Autowired
     private MemberService service;
@@ -36,7 +36,7 @@ public class MemberController {
     @Autowired
     private ActivitiesService activitiesService;
 
-    @GetMapping("/myprofile/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Map<String, Object>> myProfile(@PathVariable("id") int id){
         Map<String, Object> map = new HashMap<>();
         Member member = service.getById(id);

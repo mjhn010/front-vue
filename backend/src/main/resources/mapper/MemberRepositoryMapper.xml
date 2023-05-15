@@ -40,6 +40,16 @@
 			nickname = #{nickname}
 	</select>
 
+	<select id="findById" resultType="Member">
+		select
+			*
+		from
+			member
+		where
+			id = ${id} 
+	</select>
+
+
 </mapper>
 
 

@@ -563,7 +563,7 @@ module.exports = {
       },
       pulse: {
         '50%': {
-          opacity: '.5',
+          transform: 'scale(0.85)',
         },
       },
       bounce: {

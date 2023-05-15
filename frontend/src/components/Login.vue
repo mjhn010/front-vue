@@ -40,6 +40,7 @@ async function loginHandler() {
   userDetails.id = json.result.id;
   userDetails.email = json.result.email;
   userDetails.nickname = json.result.nickname;
+  userDetails.profileSrc = json.result.image;
   let returnURL = route.query.returnURL;
 
   if (!userDetails.email) {
