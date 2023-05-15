@@ -4,14 +4,25 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.pofo.pofoapiboot3.repository.PortfolioLikeRepository">
 
-    <select id="count" resultType="Integer">
-        SELECT
-            COUNT(portfolio_id) AS count
-        FROM
-            portfolio_like
-        WHERE
-            portfolio_id = #{portfolioId}
-    </select>
+
+    <select id="findByUserId" resultType="Portfolio">
+		select
+			*
+		from
+			portfolio
+		where
+			id in (select portfolio_id from portfolio_like where member_id = ${id})
+	</select>
+
+    <select id="count" resultType="int">
+		select 
+			count(portfolio_id) 
+		from 
+			portfolio_like
+		where
+			portfolio_id in
+		(select id from portfolio where member_id = ${id})
+	</select>
 
     <insert id="insert">
         INSERT INTO
