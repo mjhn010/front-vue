@@ -15,6 +15,7 @@ export const useUserDetailsStore = defineStore("userDetails", {
       this.id = null;
       this.email = null;
       this.nickname = null;
+      this.profileSrc = null
     },
     hasRole() {
       let result = this.email == null ? false : true;

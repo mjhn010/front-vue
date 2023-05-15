@@ -13,11 +13,21 @@ let user = reactive({
 });
 
 //-------------소셜로그인
-function googleLoginHandler(response) {
-  let userData = decodeCredential(response.credential);
+async function googleLoginHandler(response) {
+  fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`)
+  .then(res=> res.json())
+  .then(credential =>{
+    userDetails.email = credential.email;
+  });
 
-  userDetails.username = userData.name;
-  userDetails.email = userData.email;
+  //구글 아이디로 회원가입을 한적이 있는지 확인해야함
+  let resp = await fetch(`http://localhost:8080/email/checkemail?email=${userDetails.email}`);
+  let result = await resp.text();
+  //우리 DB에 없을 시 회원가입 화면으로 넘어가진다.
+  if(result === "ok"){
+    router.push("/signup?type=oauth");
+    return;
+  }
 
   let returnURL = route.query.returnURL;
   if (returnURL)
@@ -82,7 +92,7 @@ async function loginHandler() {
           </p>
 
           <div class="logos margin-top-1">
-            <GoogleLogin :callback="googleLoginHandler">
+            <GoogleLogin :callback="googleLoginHandler" popup-type="TOKEN">
               <img src="/src/assets/images/google_logo.png" class="social-logo">
             </GoogleLogin>
             <a><img src="/src/assets/images/kakao_logo.png"></a>

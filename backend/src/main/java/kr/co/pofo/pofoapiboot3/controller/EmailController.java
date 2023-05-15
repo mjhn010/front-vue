@@ -27,6 +27,18 @@ public class EmailController {
         }
     }
     
+    
+    @GetMapping("/checkemail")
+    public String checkEmail(String email){
+        //이메일 중복확인 용
+        int result = service.checkEmail(email);
+        if(result == 1)
+            return "no";
+        else {
+            return "ok";
+        }
+    }
+
     //이메일 인증번호 확인
 	@GetMapping("check")
 	public String checkNum(@RequestParam(name="certificationnum") int number, String email) {
