@@ -26,7 +26,7 @@ onMounted(() => {
 
 async function load() {
     let param = route.params.id;
-    let response = await fetch(`http://localhost:8080/member/myprofile/${param}`);
+    let response = await fetch(`http://localhost:8080/members/myprofile/${param}`);
     let json = await response.json();
     model.myInfo = json.member;
     model.list[0] = json.works;
