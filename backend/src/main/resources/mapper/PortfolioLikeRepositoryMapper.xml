@@ -24,6 +24,15 @@
 		(select id from portfolio where member_id = ${id})
 	</select>
 
+    <select id="countByPortfolioId" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            portfolio_like
+        WHERE
+            portfolio_id = #{portfolioId}
+    </select>
+
     <insert id="insert">
         INSERT INTO
             portfolio_like(portfolio_id, member_id)
