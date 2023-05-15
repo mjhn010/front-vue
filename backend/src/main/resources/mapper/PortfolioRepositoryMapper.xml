@@ -108,6 +108,6 @@
     </select>
 
 	<select id="countOfhits" parameterType="int" resultType="int">
-        select sum(hit) from portfolio where member_id = 9;
+        select sum(hit) from portfolio where member_id = ${id};
     </select>
 </mapper>

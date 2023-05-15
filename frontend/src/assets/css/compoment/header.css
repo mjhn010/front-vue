@@ -24,7 +24,7 @@
 }
 .user-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 15%;
   align-items: center;
 }

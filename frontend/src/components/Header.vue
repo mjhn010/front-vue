@@ -21,9 +21,6 @@
           <button class="btn btn-3 sign-up">회원가입</button>
         </router-link>
       </li>
-      <li>
-        <img class="hamburger-bar" src="/imgs/menu.png" alt="">
-      </li>
     </ul>
   </header>
   <!-- 맴버 -->
@@ -61,7 +58,7 @@
       <li>
         <button @click="showModalProfile">
           <img class="header-profile" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="userDetails.profileSrc==null"/>
-          <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else/>
+          <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="header-profile" v-else/>
         </button>
       </li>
       <li>
@@ -194,13 +191,15 @@
 import { vOnClickOutside } from '@vueuse/components'
 import { ref } from 'vue';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
-
+import { useRouter, useRoute } from 'vue-router';
 
 let isModalOpenMessage = ref(false)
 let isModalOpenNotify = ref(false)
 let isModalOpenProfile = ref(false)
 let modalChange = ref("");
 let userDetails = useUserDetailsStore();
+let router = useRouter();
+
 
 function showModalMessage() {
   isModalOpenNotify.value = false;
@@ -232,6 +231,7 @@ function logoutHandler(){
   isModalOpenMessage.value = false;
   isModalOpenNotify.value = false;
   isModalOpenProfile.value = false;
+  router.push("/index");
 }
 
 </script>

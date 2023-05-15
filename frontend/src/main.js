@@ -22,6 +22,9 @@ import PortfolioDetail from "/src/components/PortfolioDetail.vue";
 
 // 회원가입
 import Signup from "/src/components/Signup.vue";
+// 프로필 페이지
+import Profile from "/src/components/Profile.vue";
+
 
 const routes = [
   { path: "/index", component: Index },
@@ -36,6 +39,8 @@ const routes = [
   // 로그인,회원가입,비밀번호찾기
   { path: "/login", component: Login },
   { path: "/signup", component: Signup},
+  // 회원 프로필 페이지
+  { path: "/profile/:id", component : Profile},
   MemberRoute
 ];
 
