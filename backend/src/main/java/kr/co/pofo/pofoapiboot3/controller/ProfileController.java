@@ -17,8 +17,8 @@ import kr.co.pofo.pofoapiboot3.entity.Member;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.service.ActivitiesService;
 import kr.co.pofo.pofoapiboot3.service.CollectionsService;
-import kr.co.pofo.pofoapiboot3.service.LikesService;
 import kr.co.pofo.pofoapiboot3.service.MemberService;
+import kr.co.pofo.pofoapiboot3.service.PortfolioLikeService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 
 @RestController
@@ -30,7 +30,7 @@ public class ProfileController {
     @Autowired
     private PortfolioService pofoService;
     @Autowired
-    private LikesService likesService;
+    private PortfolioLikeService portfolioLikeService;
     @Autowired
     private CollectionsService collectionsService;
     @Autowired
@@ -45,7 +45,7 @@ public class ProfileController {
         List<Portfolio> works = pofoService.getByUserId(id);
         map.put("works", works);
         
-        List<Portfolio> likes = likesService.getByUserId(id);
+        List<Portfolio> likes = portfolioLikeService.getByUserId(id);
         map.put("likes", likes);
         
         List<Portfolio> collections = collectionsService.getByUserId(id);

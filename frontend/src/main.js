@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { createPinia } from "pinia";
-import piniaPersist from 'pinia-plugin-persist'
+import piniaPersist from "pinia-plugin-persist";
 import App from "./App.vue";
 
 // 로그인,회원가입
@@ -18,10 +18,11 @@ import Community from "/src/components/Community.vue";
 import CommunityReg from "/src/components/member/CommunityRegister.vue";
 
 // 포트폴리오 상세정보
-import PortfolioDetail from "/src/components/PortfolioDetail.vue";
+import PortfolioDetail from "/src/components/PortfolioDetail/PortfolioDetail.vue";
 
 // 회원가입
 import Signup from "/src/components/Signup.vue";
+import PortfolioRegister from "@/components/member/PortfolioRegister.vue";
 // 프로필 페이지
 import Profile from "/src/components/Profile.vue";
 
@@ -29,11 +30,11 @@ import Profile from "/src/components/Profile.vue";
 const routes = [
   { path: "/index", component: Index },
 
-  
+  { path: "/pofo/reg", component: PortfolioRegister },
   { path: "/pofo/:id", component: PortfolioDetail },
 
   // community경로
-  { path: "/community", component: Community},
+  { path: "/community", component: Community },
   { path: "/community/reg", component: CommunityReg },
 
   // 로그인,회원가입,비밀번호찾기
@@ -41,7 +42,8 @@ const routes = [
   { path: "/signup", component: Signup},
   // 회원 프로필 페이지
   { path: "/profile/:id", component : Profile},
-  MemberRoute
+  { path: "/signup", component: Signup },
+  MemberRoute,
 ];
 
 const router = createRouter({
@@ -52,7 +54,4 @@ const router = createRouter({
 const pinia = createPinia();
 pinia.use(piniaPersist);
 
-createApp(App)
-.use(router)
-.use(pinia)
-.mount("#app");
+createApp(App).use(router).use(pinia).mount("#app");

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import kr.co.pofo.pofoapiboot3.repository.CommentRepository;
 
 @Service
-public class DefaultCommentService implements CommentService{
+public class DefaultCommentService implements CommentService {
     private final CommentRepository repository;
 
     public DefaultCommentService(CommentRepository repository) {
@@ -29,12 +29,12 @@ public class DefaultCommentService implements CommentService{
     }
 
     @Override
-    public void saveComment(Comment comment) {
-        return;
+    public void save(Comment comment) {
+        repository.save(comment);
     }
 
     @Override
-    public void deleteComment(Comment comment) {
-        return;
+    public void delete(Comment comment) {
+        repository.delete(comment);
     }
 }

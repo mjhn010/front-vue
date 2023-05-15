@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import Header from "./Header.vue";
+import { onMounted, reactive, ref } from "vue";
+import Header from "../Header.vue";
+import CommentWindow from "@/components/PortfolioDetail/components/CommentWindow.vue";
 
 // Mock data
 const member = { nickname: "D.BRONZE", image: "d.bronze.jpg" };
@@ -29,31 +30,48 @@ const portfolios = [
 ];
 
 // Data
-const commentBoxOpen = ref(false);
-const state = reactive({
-  portfolio: {},
-  contents: [],
-  comments: [],
+const props = defineProps({
+  commentBoxOpen: Boolean,
+  portfolio: {
+      type: Object,
+      required: true,
+  },
+  comments: {
+      type: Array,
+      required: true,
+  },
+  portfolios: {
+      type: Array,
+      required: true,
+  },
 });
+
+const state = reactive({
+  commentBoxOpen: props.commentBoxOpen,
+  portfolio: props.portfolio,
+  comments: props.comments,
+  portfolios: props.portfolios,
+});
+
+console.log(state);
 
 // Lifecycle
 onMounted(getData);
-computed(() => state.comments);
 
 // Functions
-function scrollToTop() {
-  window.scrollTo(0, 0);
-}
-
 function toggleCommentBox() {
   commentBoxOpen.value = !commentBoxOpen.value;
+}
+
+function scrollToTop() {
+  window.scrollTo(0, 0);
 }
 
 function contentToHTML(item) {
   if (item.type === "0") {
     return item.content;
   } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image" style="width: 100%"/>`;
+    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
   }
 }
 
@@ -74,9 +92,19 @@ async function getData() {
   await fetch(`http://localhost:8080/pofo/${id}`)
     .then((res) => res.json())
     .then((data) => {
-      state.portfolio = data.portfolio;
-      state.contents = data.contents;
-      state.comments = data.comments;
+      state.portfolio = data;
+    });
+
+  await fetch(`http://localhost:8080/pofo/${id}/contents`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.contents = data;
+    });
+
+  await fetch(`http://localhost:8080/pofo/${id}/comments`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.comments = data;
     });
 
   return state;
@@ -86,11 +114,11 @@ async function getData() {
 <template>
   <Header />
   <div
-    class="absolute grid min-h-full gap-y-2 bg-gray-50 xl:min-w-full xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
+    class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
     <div
-      class="col-start-2 bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
-      :class="commentBoxOpen ? 'xl:col-span-8' : 'xl:col-span-10'"
+      class="w-full bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
+      :class="commentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
       <figure class="flex p-6">
@@ -104,18 +132,22 @@ async function getData() {
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
-          <h1 class="text-2xl font-bold" v-text="state.portfolio.title" />
+          <h1
+            class="text-sm font-bold sm:text-2xl"
+            v-text="state.portfolio.title"
+          />
           <div>
             <router-link to="/nickname">
               <span
-                class="cursor-pointer text-lg font-semibold hover:text-gray-500"
+                class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
                 v-text="member.nickname"
               />
             </router-link>
+            <span class="text-xs sm:text-lg">ᆞ</span>
             <span
-              class="cursor-pointer text-lg font-semibold hover:text-gray-500"
+              class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-              >ᆞ팔로우</span
+              >팔로우</span
             >
           </div>
         </figcaption>
@@ -163,7 +195,7 @@ async function getData() {
       >
         <div class="flex w-32 justify-evenly">
           <div class="mb-2 cursor-pointer rounded-full border-2 bg-white">
-            <div class="heart-icon hover:animate-ping" />
+            <div class="heart-icon hover:animate-pulse" />
           </div>
           <div
             class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50"
@@ -181,7 +213,11 @@ async function getData() {
         <span
           class="text-xs font-semibold text-white sm:text-sm"
           v-if="state.portfolio.awardDate != null"
-          v-text="`${state.portfolio.awardDate} | 그래픽 디자인 · UI/UX`"
+          v-text="
+            `${state.portfolio.awardDate
+              .substring(0, 10)
+              .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
+          "
         />
         <span class="text-xs font-semibold text-white sm:text-sm" v-else
           >그래픽 디자인 · UI/UX</span
@@ -208,35 +244,41 @@ async function getData() {
       </div>
 
       <!-- Member's portfolio list -->
-      <div
-        class="scroll-container scrollbar-hide mx-8 flex h-60 overflow-x-scroll scroll-smooth"
-        style="column-gap: 2.38rem"
-      >
+      <div class="w-full">
         <div
-          class="chevron-left-icon absolute bottom-40 left-56 cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
-          @click="scrollLeft"
-        />
-        <figure
-          class="h-48 w-96 cursor-pointer"
-          :key="memberPortfolio.id"
-          v-for="memberPortfolio in portfolios"
+          class="scroll-container scrollbar-hide mx-8 flex h-60 overflow-x-scroll scroll-smooth"
+          style="column-gap: 2.38rem"
         >
-          <router-link :to="`/pofo/${memberPortfolio.id}`">
-            <img
-              :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
-              alt="#"
-              class="h-full w-72 rounded-t-lg"
-            />
-            <figcaption
-              class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
-              v-text="memberPortfolio.title"
-            />
-          </router-link>
-        </figure>
-        <div
-          class="chevron-right-icon absolute bottom-40 cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
-          @click="scrollRight"
-        />
+          <figure
+            class="h-48 w-96 cursor-pointer"
+            :key="memberPortfolio.id"
+            v-for="memberPortfolio in portfolios"
+          >
+            <router-link :to="`/pofo/${memberPortfolio.id}`">
+              <img
+                :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
+                alt="#"
+                class="h-full w-72 rounded-t-lg"
+              />
+              <figcaption
+                class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
+                v-text="memberPortfolio.title"
+              />
+            </router-link>
+          </figure>
+        </div>
+
+        <!-- Scroll buttons -->
+        <div class="relative bottom-40 flex h-0 w-full justify-between px-4">
+          <div
+            class="chevron-left-icon cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            @click="scrollLeft"
+          />
+          <div
+            class="chevron-right-icon col-start-12 cursor-pointer justify-self-center border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            @click="scrollRight"
+          />
+        </div>
       </div>
     </div>
 
@@ -266,7 +308,7 @@ async function getData() {
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div class="mb-2 rounded-full border-2 bg-white">
-          <div class="heart-icon cursor-pointer hover:animate-ping" />
+          <div class="heart-icon cursor-pointer hover:animate-pulse" />
         </div>
         좋아요
       </div>
@@ -297,80 +339,8 @@ async function getData() {
       </div>
     </div>
 
-    <!-- Comment box -->
-    <div
-      class="comment-box fixed hidden overflow-y-auto rounded-lg border bg-white"
-      :class="commentBoxOpen ? 'xl:block' : 'xl:hidden'"
-    >
-      <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
-        <div
-          class="x-mark-icon absolute cursor-pointer"
-          @click="toggleCommentBox"
-        />
-        <div class="col-span-7 flex h-16 flex-col justify-between">
-          <h2
-            class="text-md col-span-7 font-bold"
-            v-text="state.portfolio.title"
-          />
-          <span class="col-span-7 mb-5 text-xs font-bold text-gray-500">
-            UI/UX · 그래픽 디자인
-          </span>
-        </div>
-        <div class="heart-icon mb-2 cursor-pointer" />
-        <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
-        <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
-        <span class="col-span-2 my-5 font-bold">댓글(0)</span>
-        <textarea
-          class="col-span-7 mb-5 h-36 min-w-fit resize-none rounded-lg border border-black px-5 py-3 text-sm font-normal"
-          placeholder="이 작업에 대한 댓글을 남겨주세요."
-        />
-        <button
-          class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
-        >
-          댓글 작성
-        </button>
-        <div
-          class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold"
-        >
-          취소
-        </div>
-      </div>
-
-      <!-- Comment component -->
-      <div
-        class="mx-5 border-t py-5"
-        :key="comment.id"
-        v-for="comment in state.comments"
-      >
-        <div class="grid grid-cols-7 grid-rows-2">
-          <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a href="#" class="row-span-2">
-              <img
-                class="h-12 w-12 rounded-full"
-                :src="`/src/assets/images/temp/${comment.memberImage}`"
-                alt="Profile image"
-              />
-            </a>
-            <div
-              class="col-start-2 font-bold"
-              v-text="comment.memberNickname"
-            />
-            <div
-              class="col-start-2 text-xs font-semibold text-gray-500"
-              v-text="
-                comment.regDate.trim().substring(0, 10).replace(/-/g, '.')
-              "
-            />
-          </figure>
-          <p class="col-span-7 my-4 text-sm" v-text="comment.content" />
-          <div
-            class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
-          >
-            답글 남기기
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Comment window -->
+    <comment-window />
   </div>
 </template>
 
@@ -383,15 +353,15 @@ main:deep(section) {
 }
 
 main:deep(img) {
-  @apply mb-12 h-1/5 w-fit;
+  @apply mb-12 h-1/5 w-full;
 }
 
-section:deep(h2) {
-  @apply text-lg font-bold;
+main:deep(h2) {
+  @apply text-lg font-bold sm:text-2xl;
 }
 
-section:deep(p) {
-  @apply my-4 text-xs;
+main:deep(p) {
+  @apply my-4 text-xs sm:text-base;
 }
 
 .sidebar {
