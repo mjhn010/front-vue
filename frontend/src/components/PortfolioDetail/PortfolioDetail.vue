@@ -1,113 +1,94 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import Header from "../Header.vue";
-import CommentWindow from "@/components/PortfolioDetail/components/CommentWindow.vue";
 
 // Mock data
 const member = { nickname: "D.BRONZE", image: "d.bronze.jpg" };
 const usedSkills = [
-  { engName: "HTML" },
-  { engName: "CSS" },
-  { engName: "JavaScript" },
+    { engName: "HTML" },
+    { engName: "CSS" },
+    { engName: "JavaScript" },
 ];
 const portfolioCopyright = [
-  { name: "cc" },
-  { name: "by" },
-  { name: "nc" },
-  { name: "nd" },
+    { name: "cc" },
+    { name: "by" },
+    { name: "nc" },
+    { name: "nd" },
 ];
 const portfolios = [
-  { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
-  { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
-  { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
-  { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
-  { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
-  { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
-  { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
-  { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
-  { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
-  { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
+    { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
+    { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
+    { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
+    { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
+    { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
+    { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
+    { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
+    { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
+    { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
+    { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
 ];
 
 // Data
-const props = defineProps({
-  commentBoxOpen: Boolean,
-  portfolio: {
-      type: Object,
-      required: true,
-  },
-  comments: {
-      type: Array,
-      required: true,
-  },
-  portfolios: {
-      type: Array,
-      required: true,
-  },
-});
-
+const commentBoxOpen = ref(false);
 const state = reactive({
-  commentBoxOpen: props.commentBoxOpen,
-  portfolio: props.portfolio,
-  comments: props.comments,
-  portfolios: props.portfolios,
+    portfolio: {},
+    contents: [],
+    comments: [],
 });
-
-console.log(state);
 
 // Lifecycle
 onMounted(getData);
 
 // Functions
-function toggleCommentBox() {
-  commentBoxOpen.value = !commentBoxOpen.value;
+function scrollToTop() {
+    window.scrollTo(0, 0);
 }
 
-function scrollToTop() {
-  window.scrollTo(0, 0);
+function toggleCommentBox() {
+    commentBoxOpen.value = !commentBoxOpen.value;
 }
 
 function contentToHTML(item) {
-  if (item.type === "0") {
-    return item.content;
-  } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
-  }
+    if (item.type === "0") {
+        return item.content;
+    } else if (item.type === "1") {
+        return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
+    }
 }
 
 function scrollLeft() {
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft -= 326;
+    const scrollContainer = document.querySelector(".scroll-container");
+    scrollContainer.scrollLeft -= 326;
 }
 
 function scrollRight() {
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft += 326;
+    const scrollContainer = document.querySelector(".scroll-container");
+    scrollContainer.scrollLeft += 326;
 }
 
 async function getData() {
-  const url = window.location.href;
-  const id = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+    const url = window.location.href;
+    const id = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-  await fetch(`http://localhost:8080/pofo/${id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.portfolio = data;
-    });
+    await fetch(`http://localhost:8080/pofo/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.portfolio = data;
+        });
 
-  await fetch(`http://localhost:8080/pofo/${id}/contents`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.contents = data;
-    });
+    await fetch(`http://localhost:8080/pofo/${id}/contents`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.contents = data;
+        });
 
-  await fetch(`http://localhost:8080/pofo/${id}/comments`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.comments = data;
-    });
+    await fetch(`http://localhost:8080/pofo/${id}/comments`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.comments = data;
+        });
 
-  return state;
+    return state;
 }
 </script>
 
@@ -128,7 +109,7 @@ async function getData() {
             :src="`/src/assets/images/temp/${member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          />
+          >
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -147,15 +128,17 @@ async function getData() {
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-              >팔로우</span
-            >
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template :key="content.id" v-for="content in state.contents">
+        <template
+          :key="content.id"
+          v-for="content in state.contents"
+        >
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -185,7 +168,7 @@ async function getData() {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          />
+          >
         </div>
       </div>
       <!-- Banner -->
@@ -204,8 +187,7 @@ async function getData() {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-          >POFO PICK 선정</span
-        >
+        >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -219,9 +201,10 @@ async function getData() {
               .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
           "
         />
-        <span class="text-xs font-semibold text-white sm:text-sm" v-else
-          >그래픽 디자인 · UI/UX</span
-        >
+        <span
+          class="text-xs font-semibold text-white sm:text-sm"
+          v-else
+        >그래픽 디자인 · UI/UX</span>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -232,14 +215,12 @@ async function getData() {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500"
-            >프로필 자세히 보기</span
-          >
+          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          />
+          >
         </router-link>
       </div>
 
@@ -259,7 +240,7 @@ async function getData() {
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              />
+              >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="memberPortfolio.title"
@@ -269,13 +250,13 @@ async function getData() {
         </div>
 
         <!-- Scroll buttons -->
-        <div class="relative bottom-40 flex h-0 w-full justify-between px-4">
+        <div class="relative h-0 bottom-40 px-4 flex w-full justify-between">
           <div
             class="chevron-left-icon cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
             @click="scrollLeft"
           />
           <div
-            class="chevron-right-icon col-start-12 cursor-pointer justify-self-center border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            class="chevron-right-icon justify-self-center col-start-12 cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
             @click="scrollRight"
           />
         </div>
@@ -297,7 +278,7 @@ async function getData() {
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          />
+          >
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -339,8 +320,84 @@ async function getData() {
       </div>
     </div>
 
-    <!-- Comment window -->
-    <comment-window />
+    <!-- Comment box -->
+    <div
+      class="comment-box fixed hidden overflow-y-auto rounded-lg border bg-white"
+      :class="commentBoxOpen ? 'xl:block' : 'xl:hidden'"
+    >
+      <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
+        <div
+          class="x-mark-icon absolute cursor-pointer"
+          @click="toggleCommentBox"
+        />
+        <div class="col-span-7 flex h-16 flex-col justify-between">
+          <h2
+            class="text-md col-span-7 font-bold"
+            v-text="state.portfolio.title"
+          />
+          <span class="col-span-7 mb-5 text-xs font-bold text-gray-500">
+            UI/UX · 그래픽 디자인
+          </span>
+        </div>
+        <div class="heart-icon mb-2 cursor-pointer" />
+        <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
+        <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
+        <span class="col-span-2 my-5 font-bold">댓글(0)</span>
+        <textarea
+          class="col-span-7 mb-5 h-36 min-w-fit resize-none rounded-lg border border-black px-5 py-3 text-sm font-normal"
+          placeholder="이 작업에 대한 댓글을 남겨주세요."
+        />
+        <button
+          class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
+        >
+          댓글 작성
+        </button>
+        <div
+          class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold"
+        >
+          취소
+        </div>
+      </div>
+
+      <!-- Comment component -->
+      <div
+        class="mx-5 border-t py-5"
+        :key="comment.id"
+        v-for="comment in state.comments"
+      >
+        <div class="grid grid-cols-7 grid-rows-2">
+          <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
+            <a
+              href="#"
+              class="row-span-2"
+            >
+              <img
+                class="h-12 w-12 rounded-full"
+                :src="`/src/assets/images/temp/${comment.memberImage}`"
+                alt="Profile image"
+              >
+            </a>
+            <div
+              class="col-start-2 font-bold"
+              v-text="comment.memberNickname"
+            />
+            <div
+              class="col-start-2 text-xs font-semibold text-gray-500"
+              v-text="comment.regDate.substring(0, 10).replace(/-/g, '.')"
+            />
+          </figure>
+          <p
+            class="col-span-7 my-4 text-sm"
+            v-text="comment.content"
+          />
+          <div
+            class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
+          >
+            답글 남기기
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -348,107 +405,107 @@ async function getData() {
 @import url("/src/assets/css/tailwind.css");
 
 main:deep(section) {
-  @apply mx-6 mb-12 xl:mx-12;
-  line-height: 2rem;
+    @apply mx-6 mb-12 xl:mx-12;
+    line-height: 2rem;
 }
 
 main:deep(img) {
-  @apply mb-12 h-1/5 w-full;
+    @apply mb-12 h-1/5 w-full;
 }
 
 main:deep(h2) {
-  @apply text-lg font-bold sm:text-2xl;
+    @apply text-lg font-bold sm:text-2xl;
 }
 
 main:deep(p) {
-  @apply my-4 text-xs sm:text-base;
+    @apply my-4 text-xs sm:text-base;
 }
 
 .sidebar {
-  margin-left: 80%;
+    margin-left: 80%;
 }
 
 .comment-box {
-  width: 26rem;
-  height: 85.9%;
-  margin-left: 63.8%;
+    width: 26rem;
+    height: 85.9%;
+    margin-left: 63.8%;
 }
 
 .chevron-left-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/chevron-left.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  border-radius: 100%;
+    width: 48px;
+    height: 48px;
+    background-image: url("/src/assets/images/chevron-left.svg");
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    border-radius: 100%;
 }
 
 .chevron-right-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/chevron-right.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  border-radius: 100%;
-  right: 23.7rem;
+    width: 48px;
+    height: 48px;
+    background-image: url("/src/assets/images/chevron-right.svg");
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    border-radius: 100%;
+    right: 23.7rem;
 }
 
 .heart-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/heart.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
+    width: 48px;
+    height: 48px;
+    background-image: url("/src/assets/images/heart.svg");
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
 }
 
 .collection-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/folder.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  border-radius: 100%;
+    width: 48px;
+    height: 48px;
+    background-image: url("/src/assets/images/folder.svg");
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    border-radius: 100%;
 }
 
 .comment-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/chat-bubble-left.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
+    width: 48px;
+    height: 48px;
+    background-image: url("/src/assets/images/chat-bubble-left.svg");
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
 }
 
 .share-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/share-icon.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  border-radius: 100%;
+    width: 48px;
+    height: 48px;
+    background-image: url("/src/assets/images/share-icon.svg");
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    border-radius: 100%;
 }
 
 .x-mark-icon {
-  width: 28px;
-  height: 28px;
-  margin-left: 82%;
-  margin-top: -1%;
-  background-image: url("/src/assets/images/x-mark.svg");
+    width: 28px;
+    height: 28px;
+    margin-left: 82%;
+    margin-top: -1%;
+    background-image: url("/src/assets/images/x-mark.svg");
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 /* For IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 </style>
