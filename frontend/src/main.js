@@ -42,7 +42,6 @@ const routes = [
   { path: "/signup", component: Signup},
   // 회원 프로필 페이지
   { path: "/profile/:id", component : Profile},
-  { path: "/signup", component: Signup },
   MemberRoute,
 ];
 
