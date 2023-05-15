@@ -4,6 +4,8 @@ import { createPinia } from "pinia";
 import piniaPersist from 'pinia-plugin-persist'
 import App from "./App.vue";
 
+import vue3GoogleLogin from 'vue3-google-login'
+
 // 로그인,회원가입
 import Login from "/src/components/Login.vue";
 
@@ -50,4 +52,7 @@ pinia.use(piniaPersist);
 createApp(App)
 .use(router)
 .use(pinia)
+.use(vue3GoogleLogin, {
+  clientId: '35371203623-k8enqllrhlbg9tv17ghiolqbb2t167qt.apps.googleusercontent.com'
+})
 .mount("#app");
