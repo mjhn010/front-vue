@@ -75,6 +75,7 @@
         </div>
         <div class="alarm-item">
           <div class="alarm-content">
+          <!-- 메시지 모달 -->
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
@@ -98,6 +99,7 @@
               </div>
             </div>
             <div class="bottom-line"></div>
+              <!-- 메시지모달끝 -->
           </div>
         </div>
       </div>
