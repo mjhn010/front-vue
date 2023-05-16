@@ -17,4 +17,6 @@ public interface PortfolioLikeRepository {
     void insert(PortfolioLike portfolioLike);
 
     void delete(PortfolioLike portfolioLike);
+
+    List<PortfolioLike> findByPortfolioId(Integer portfolioId);
 }

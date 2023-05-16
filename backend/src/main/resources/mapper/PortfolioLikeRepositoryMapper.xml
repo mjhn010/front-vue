@@ -14,6 +14,15 @@
 			id in (select portfolio_id from portfolio_like where member_id = ${id})
 	</select>
 
+    <select id="findByPortfolioId" resultType="PortfolioLike">
+        SELECT
+            *
+        FROM
+            portfolio_like
+        WHERE
+            portfolio_id = #{portfolioId}
+    </select>
+
     <select id="count" resultType="int">
 		select 
 			count(portfolio_id) 
