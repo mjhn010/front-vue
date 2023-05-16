@@ -100,25 +100,31 @@ async function getData() {
 }
 
 function saveNewComment() {
-  const url = window.location.href;
-  const portfolioId = parseInt(
-    url.replace("http://127.0.0.1:5173/#/pofo/", "")
-  );
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  } else if (!document.querySelector("#comment-input").value) {
+    return alert("댓글을 입력해주세요.");
+  } else {
+    const url = window.location.href;
+    const portfolioId = parseInt(
+      url.replace("http://127.0.0.1:5173/#/pofo/", "")
+    );
 
-  const comment = {
+    const comment = {
       memberId: useUserDetailsStore().id,
       portfolioId: portfolioId,
       content: document.querySelector("#comment-input").value,
-  }
+    };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
-    mode: "cors",
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify(comment),
-  }).then(getData);
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(comment),
+    }).then(getData);
+  }
 }
 
 // Lifecycle
