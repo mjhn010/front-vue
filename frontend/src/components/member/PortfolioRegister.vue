@@ -1,45 +1,68 @@
 <script setup>
 import Header from "../Header.vue";
-import { reactive, ref} from "vue";
+import { onMounted, onUpdated, reactive, ref } from "vue";
 // 보였다가 없어짐
 let showModal = ref(false)
-let addPlus = ref([]);
-let hoverIndex = ref(null)
+let list = reactive([])
+let listIndex = 0
+let erase = ref(true)
+let eraseImg = ref(false)
 
-let imageSrc = ref('');
-let fileInputRef = ref("");
-function onFileSelected(){
-  console.log(flies[0])
-  let file = fileInputRef.value.files[0];
-  if(file){
-    let imageUrl = URL.createObjectURL(file)
-    imageSrc.value = imageUrl
-  }
+
+
+function arrayRemove(event, index) {
+  list.splice(index, 1)
 }
-
-
-
-function hvoerHandler(index){
-  hoverIndex.value = index;
+function imgPlusHandler() {
+  list.push({ type: "img", text: "", img: [], order: listIndex })
+  listIndex++
 }
-function arrayRemove(event,index){
-  
-    addPlus.value.splice(index,1)
+function textPlusHandler() {
+  list.push({ type: "text", text: "", img: [], order: listIndex })
+  listIndex++
 }
-
-function imgPlusHandler(){
-  addPlus.value.push(0);
-  console.log(addPlus.value)
-  
-}
-function textPlusHandler(){
-  addPlus.value.push(1);
-  
-}
-
-function showModalHandler(){
+function showModalHandler() {
   showModal.value = !showModal.value;
 }
+
+function imgClickHandler(e) {
+  console.log(e.target)
+  let previousElement = e.target.previousElementSibling;
+  previousElement.click()
+
+}
+function imgInputHandler(e, index) {
+  let urls = []
+  let files = e.target.files
+  console.log(files)
+  for (let file of files) {
+    urls.push(URL.createObjectURL(file))
+  }
+  list[index].img = urls;
+  let element1 = e.target.parentElement
+  while (element1.className != 'sub-box')
+    element1 = element1.parentElement;
+  element1.classList.add("d-none")
+
+  let element2 = e.target.parentElement
+  while (element2.className != 'start-app')
+    element2 = element2.parentElement;
+  element2.nextElementSibling.classList.add("d-none")
+  erase.value = false
+  eraseImg.value = true
+}
+
+function addDnone(e) {
+  let hoverMouse = e.target.querySelector(".erase-box")
+  hoverMouse.classList.add("d-none")
+}
+function removeDnone(e) {
+  let hoverMouse = e.target.querySelector(".erase-box")
+  if (hoverMouse == null)
+    hoverMouse = e.currentTarget.querySelector(".erase-box")
+  hoverMouse.classList.remove("d-none")
+}
+
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
@@ -48,55 +71,28 @@ function showModalHandler(){
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
-          <input
-            class="reg-title"
-            type="text"
-            placeholder="제목을 입력해주세요."
-          >
+          <input class="reg-title" type="text" placeholder="제목을 입력해주세요.">
         </div>
         <!--  -->
         <section class="reg-content">
-          <section
-            v-if="addPlus.length==0"
-            class="default-box"
-          >
+          <section v-if="list.length == 0" class="default-box">
             <div class="main-title">
               <span> 이미지 or 텍스트를 선택하여 업로드를 시작하세요. </span>
             </div>
             <div class="start-app">
               <div class="margin-right-5 sub-box">
-                <div
-                  @click="imgPlusHandler"
-                  class="app-box"
-                >
-                  <img
-                    class="hover"
-                    src="/src/assets/images/img.png"
-                    alt=""
-                  ><img
-                    class="hover d-none"
-                    src="/src/assets/images/fff-img.png"
-                    alt=""
-                  >
+                <div @click="imgPlusHandler" class="app-box">
+                  <img class="hover" src="/src/assets/images/img.png" alt=""><img class="hover d-none"
+                    src="/src/assets/images/fff-img.png" alt="">
                 </div>
                 <div class="app-box-font">
                   이미지
                 </div>
               </div>
               <div class="sub-box">
-                <div
-                  @click="textPlusHandler"
-                  class="app-box"
-                >
-                  <img
-                    class="hover"
-                    src="/src/assets/images/text.png"
-                    alt=""
-                  ><img
-                    class="hover d-none"
-                    src="/src/assets/images/fff-text.png"
-                    alt=""
-                  >
+                <div @click="textPlusHandler" class="app-box">
+                  <img class="hover" src="/src/assets/images/text.png" alt=""><img class="hover d-none"
+                    src="/src/assets/images/fff-text.png" alt="">
                 </div>
                 <div class="app-box-font">
                   텍스트
@@ -104,71 +100,46 @@ function showModalHandler(){
               </div>
             </div>
           </section>
-          <!-- 이미지 클릭했을때 나오는 박스 -->
 
-          <section 
-           v-for="(item,index) in addPlus" v-on:mouseover.prevent="hvoerHandler(index)" v-on:mouseleave="hvoerHandler(null)"
-            class="default-box click-img-box"
-          ><div v-if="item==0">
-            <div class="start-app">
-              <div class="sub-box">
-                <div class="app-box">
-                  <label for="click-file">
-                    <img
-                    class="hover"
-                    src="/src/assets/images/img.png"
-                    alt=""
-                  >
-                  </label>
-                  <input @change="onFileSelected" ref="fileInputRef" class="d-none" id="click-file" type="file" name="files[]" multiple accept="jpg,gif,png">
-                  <img
-                    src="imageSrc"
-                    alt="Image"
-                    v-if="imageSrc"
-                  >
+          <!-- 이미지 클릭했을때 나오는 박스 -->
+          <section class="vue-for-box" v-for="(pofo, index) in list">
+
+            <section v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
+              class="default-box click-img-box">
+              <div @click.prevent="arrayRemove($event, index)" class="erase-box">
+                <img class="erase" src="/src/assets/images/erase.png" alt="">
+              </div>
+              <div class="upload-d-none" v-if="pofo.type == 'img'">
+                <div class="min-height">
+                  <img v-for="src in pofo.img" class=" upload-img" :src="src" alt="Image">
+                </div>
+                <div class="start-app">
+                  <div class="sub-box">
+                    <div class="app-box">
+                      <input @input="imgInputHandler($event, index)" class="d-none" type="file" name="files[]" multiple
+                        accept="jpg,gif,png">
+                      <img @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt="">
+                    </div>
+                  </div>
+                </div>
+                <div :id="'text' + index" class="main-title">
+                  <span class="img-upLoad-comment margin-top-1">
+                    이미지(최대10장)을 업로드 또는 드래그하세요.
+                  </span>
+                  <span class="img-upLoad-comment margin-top-1 color-eee">
+                    JPEG,JPG,GIF 이미지파일
+                  </span>
                 </div>
               </div>
-            </div>
-            <div class="main-title">
-              <span class="img-upLoad-comment margin-top-1">
-                이미지(최대10장)을 업로드 또는 드래그하세요.
-              </span>
-              <span class="img-upLoad-comment margin-top-1 color-eee">
-                JPEG,JPG,GIF 이미지파일
-              </span>
-            </div>
-            <button @click.prevent="arrayRemove($event,index)" v-if="hoverIndex === index" class="erase-box">
-            <img class="erase" src="/src/assets/images/erase.png" alt="">
-            <!-- <div class="diamond"></div> -->
-          </button>
-          </div>
-          
-          <!-- 텍스트 눌렀을때 나오는 텍스트박스 -->
-          <section
-          v-else
-          class="click-text-box margin-top-3"
-          >
-          <div class="start-app">
-            <!-- <textarea class="click-text" type="text" placeholder="여기에 텍스트를 입력하세요."> -->
-              <textarea
-              class="click-text"
-              name=""
-              id=""
-              cols="30"
-              rows="16"
-              placeholder="여기에 텍스트를 입력하세요."
-              />
-              <button @click.prevent="arrayRemove($event,index)" v-if="hoverIndex === index" class="erase-text-box">
-              <img class="erase" src="/src/assets/images/erase.png" alt="">
-              <!-- <div class="diamond"></div> -->
-            </button>
-            </div>
+              <!-- 텍스트 눌렀을때 나오는 텍스트박스 -->
+              <section style="height: 100%;" v-else-if="pofo.type == 'text'" class="click-text-box margin-top-3">
+                <div class="start-app">
+                  <textarea class="click-text" name="" id="" cols="30" rows="16" placeholder="여기에 텍스트를 입력하세요." />
+                </div>
+              </section>
+            </section>
           </section>
-          <!-- <div class="erase-box">
-            <img class="erase" src="/src/assets/images/erase.png" alt="">
-            <div class="diamond"></div>
-          </div> -->
-        </section>
+
           <!--  -->
         </section>
       </main>
@@ -177,40 +148,24 @@ function showModalHandler(){
           <ul class="content-select">
             <li class="aside-li border-none">
               <button @click.prevent="imgPlusHandler" class="aside-btn">
-                <img
-                  class="aside-img"
-                  src="/src/assets/images/img.png"
-                  alt=""
-                >이미지추가
+                <img class="aside-img" src="/src/assets/images/img.png" alt="">이미지추가
               </button>
             </li>
             <li class="aside-li border-none">
               <button @click.prevent="textPlusHandler" class="aside-btn">
-                <img
-                  class="aside-img"
-                  src="/src/assets/images/text.png"
-                  alt=""
-                >텍스트추가
+                <img class="aside-img" src="/src/assets/images/text.png" alt="">텍스트추가
               </button>
             </li>
           </ul>
           <ul class="content-select">
             <li class="aside-li">
               <button class="aside-btn">
-                <img
-                  class="aside-img"
-                  src="/src/assets/images/content.svg"
-                  alt=""
-                >콘텐츠재정렬
+                <img class="aside-img" src="/src/assets/images/content.svg" alt="">콘텐츠재정렬
               </button>
             </li>
             <li class="aside-li">
               <button class="aside-btn">
-                <img
-                  class="aside-img"
-                  src="/src/assets/images/preview.png"
-                  alt=""
-                >미리보기
+                <img class="aside-img" src="/src/assets/images/preview.png" alt="">미리보기
               </button>
             </li>
           </ul>
@@ -226,64 +181,68 @@ function showModalHandler(){
         <span>작업 업로드 및 수정은 PC버전에서만 지원이 가능합니다.</span>
       </div>
     </div>
-   <div v-show="showModal" class="reg-modal-box">
-    <div class="modal-h1">
-      <p class="modal-s-title">세부 정보 입력</p>
-      <button @click="showModalHandler" class="modal-close"></button>
-    </div>
-    <div class="reg-modal">
-      <div class="modal-flex">
-      <div class="thumbnail-box">
-        <div class="modal-thumbnail-text">
-          <span class="thumbnail-span">커버</span><span class="thumbnail-color">(필수)</span>
+    <div v-show="showModal" class="reg-modal-box">
+      <div class="modal-h1">
+        <p class="modal-s-title">세부 정보 입력</p>
+        <button @click.prevent="showModalHandler" class="modal-close"></button>
+      </div>
+      <div class="reg-modal">
+        <div class="modal-flex">
+          <div class="thumbnail-box">
+            <div class="modal-thumbnail-text">
+              <span class="thumbnail-span">커버</span><span class="thumbnail-color">(필수)</span>
+            </div>
+            <div class="thumbnail-img-box margin-top-5">
+              <img class="thumbnail-img" src="" alt="">
+              <input class="d-none" type="file">
+            </div>
+          </div>
+          <div class="border-right"></div>
         </div>
-        <div class="thumbnail-img-box margin-top-5">
-          <img class="thumbnail-img" src="" alt="">
-          <input class="d-none" type="file">
+        <!-- 모달 -->
+        <div class="modal-main-box">
+          <div class="modal-main-text margin-top-3">
+            <span class="thumbnail-span">제목</span><span class="thumbnail-color">(필수)</span>
+          </div>
+          <input class="modal-main-title margin-top-2" type="text" placeholder="제목을 입력하세요">
+          <div class="modal-main-text margin-top-5">
+            <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
+          </div>
+          <div class="check-box margin-top-2">
+            <label class="skill-label"><input class="cb" type="checkbox" value="java" checked="checked">java</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="javaScript">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="python">python</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="C">C</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="C#">C#</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="VisualBasic">VisualBasic</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="HTML">HTML</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="CSS">CSS</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="spring">Spring</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="springBoot">SpringBoot</label>
+          </div>
+          <div class="modal-main-text margin-top-5">
+            <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
+          </div>
+          <div class="team-info margin-top-3">
+            <input type="checkbox" name="singgle" value="0">개인
+            <input type="checkbox" name="team" value="1">팀
+          </div>
+          <div class="modal-main-text margin-top-5">
+            <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
+          </div>
+          <input class="modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
+          <div class="submit-box margin-top-7">
+            <input class="modal-submit-btn" type="submit" value="업로드">
+          </div>
         </div>
       </div>
-      <div class="border-right"></div>
-    </div>
-      <!-- 모달 -->
-      <div class="modal-main-box">
-        <div class="modal-main-text margin-top-3">
-          <span class="thumbnail-span">제목</span><span class="thumbnail-color">(필수)</span>
-        </div>
-        <input class="modal-main-title margin-top-2" type="text" placeholder="제목을 입력하세요">
-        <div class="modal-main-text margin-top-5">
-          <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
-        </div>
-        <div class="check-box margin-top-2">
-          <label class="skill-label"><input class="cb" type="checkbox" value="java" checked="checked">java</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="javaScript">javaScript</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="python">python</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="C">C</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="C#">C#</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="VisualBasic">VisualBasic</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="HTML">HTML</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="CSS">CSS</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="spring">Spring</label>
-          <label class="skill-label"><input class="cb" type="checkbox" value="springBoot">SpringBoot</label>
-        </div>
-        <div class="modal-main-text margin-top-5">
-          <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
-        </div>
-        <div class="team-info margin-top-3">
-          <input type="checkbox" name="singgle" value="0">개인
-          <input type="checkbox" name="team" value="1">팀
-        </div>
-        <div class="modal-main-text margin-top-5">
-          <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
-        </div>
-        <input class="modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
-        <div class="submit-box margin-top-7">
-          <input class="modal-submit-btn" type="submit" value="업로드">
-        </div>
-      </div>
-    </div>
     </div>
   </form>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/register.css");
+
+.d-none {
+  display: none;
+}
 </style>
