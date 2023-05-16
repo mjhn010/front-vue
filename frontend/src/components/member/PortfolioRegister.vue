@@ -106,7 +106,7 @@ function removeDnone(e) {
 
             <section v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
               class="default-box click-img-box">
-              <div @click.prevent="arrayRemove($event, index)" class="erase-box">
+              <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">
               </div>
               <div class="upload-d-none" v-if="pofo.type == 'img'">
@@ -169,7 +169,7 @@ function removeDnone(e) {
               </button>
             </li>
           </ul>
-          <button @click="showModalHandler" class="register-btn btn-1 margin-top-5">
+          <button @click.prevent="showModalHandler" class="register-btn btn-1 margin-top-5">
             등록하기
           </button>
           <button class="register-btn-1 btn-1 margin-top-5">
