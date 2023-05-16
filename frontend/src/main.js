@@ -9,6 +9,10 @@ import vue3GoogleLogin from 'vue3-google-login'
 // 로그인,회원가입
 import Login from "/src/components/Login.vue";
 
+//비밀번호 찾기
+import PwdSendMail from "/src/components/PwdResetLink.vue";
+import ResetPwd from "/src/components/ResetPwd.vue";
+
 // 유저
 import Index from "/src/components/Index.vue";
 
@@ -28,7 +32,6 @@ import PortfolioRegister from "@/components/member/PortfolioRegister.vue";
 // 프로필 페이지
 import Profile from "/src/components/Profile.vue";
 
-
 const routes = [
   { path: "/index", component: Index },
 
@@ -41,9 +44,12 @@ const routes = [
 
   // 로그인,회원가입,비밀번호찾기
   { path: "/login", component: Login },
-  { path: "/signup", component: Signup},
+  { path: "/signup", component: Signup },
   // 회원 프로필 페이지
-  { path: "/profile/:id", component : Profile},
+  { path: "/profile/:id", component: Profile },
+  { path: "/sendlink", component: PwdSendMail },
+  { path: "/pwdreset", component: ResetPwd },
+
   MemberRoute,
 ];
 

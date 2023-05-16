@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Purple Admin</title>
+    <title>Pofo Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="/vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css" />
@@ -49,13 +49,7 @@
             <form class="d-flex align-items-center h-100" action="#">
               <div class="input-group">
                 <div class="input-group-prepend bg-transparent">
-                  <i class="input-group-text border-0 mdi mdi-magnify"></i>
                 </div>
-                <input
-                  type="text"
-                  class="form-control bg-transparent border-0"
-                  placeholder="검색"
-                />
               </div>
             </form>
           </div>
@@ -69,7 +63,7 @@
                 aria-expanded="false"
               >
                 <div class="nav-profile-img">
-                  <img src="/images/faces/face28.png" alt="image" />
+                  <img src="images/faces/face28.png" alt="image" />
                   <span class="availability-status online"></span>
                 </div>
                 <div class="nav-profile-text">
@@ -241,6 +235,16 @@
                 <h6 class="p-3 mb-0 text-center">See all notifications</h6>
               </div>
             </li>
+            <li class="nav-item nav-logout d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-power"></i>
+              </a>
+            </li>
+            <li class="nav-item nav-settings d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-format-line-spacing"></i>
+              </a>
+            </li>
           </ul>
           <button
             class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
@@ -288,18 +292,10 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="pages/icons/mdi.html">
-                <span class="menu-title">UserManagement</span>
-                <i class="mdi mdi-contacts menu-icon"></i>
-              </a>
             </li>
             <li class="nav-item">
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="pages/charts/chartjs.html">
-                <span class="menu-title">Charts</span>
-                <i class="mdi mdi-chart-bar menu-icon"></i>
-              </a>
             </li>
             <li class="nav-item">
             </li>
@@ -491,223 +487,10 @@
             
             <div class="row">
               <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Recent Tickets</h4>
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Assignee</th>
-                            <th>Subject</th>
-                            <th>Status</th>
-                            <th>Last Update</th>
-                            <th>Tracking ID</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <img
-                                src="/images/faces/face1.jpg"
-                                class="me-2"
-                                alt="image"
-                              />
-                              David Grey
-                            </td>
-                            <td>Fund is not recieved</td>
-                            <td>
-                              <label class="badge badge-gradient-success"
-                                >DONE</label
-                              >
-                            </td>
-                            <td>Dec 5, 2017</td>
-                            <td>WD-12345</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <img
-                                src="/images/faces/face2.jpg"
-                                class="me-2"
-                                alt="image"
-                              />
-                              Stella Johnson
-                            </td>
-                            <td>High loading time</td>
-                            <td>
-                              <label class="badge badge-gradient-warning"
-                                >PROGRESS</label
-                              >
-                            </td>
-                            <td>Dec 12, 2017</td>
-                            <td>WD-12346</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <img
-                                src="/images/faces/face3.jpg"
-                                class="me-2"
-                                alt="image"
-                              />
-                              Marina Michel
-                            </td>
-                            <td>Website down for one week</td>
-                            <td>
-                              <label class="badge badge-gradient-info"
-                                >ON HOLD</label
-                              >
-                            </td>
-                            <td>Dec 16, 2017</td>
-                            <td>WD-12347</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <img
-                                src="/images/faces/face4.jpg"
-                                class="me-2"
-                                alt="image"
-                              />
-                              John Doe
-                            </td>
-                            <td>Loosing control on server</td>
-                            <td>
-                              <label class="badge badge-gradient-danger"
-                                >REJECTED</label
-                              >
-                            </td>
-                            <td>Dec 3, 2017</td>
-                            <td>WD-12348</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-7 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Project Status</h4>
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Due Date</th>
-                            <th>Progress</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Herman Beck</td>
-                            <td>May 15, 2015</td>
-                            <td>
-                              <div class="progress">
-                                <div
-                                  class="progress-bar bg-gradient-success"
-                                  role="progressbar"
-                                  style="width: 25%"
-                                  aria-valuenow="25"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Messsy Adam</td>
-                            <td>Jul 01, 2015</td>
-                            <td>
-                              <div class="progress">
-                                <div
-                                  class="progress-bar bg-gradient-danger"
-                                  role="progressbar"
-                                  style="width: 75%"
-                                  aria-valuenow="75"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>John Richards</td>
-                            <td>Apr 12, 2015</td>
-                            <td>
-                              <div class="progress">
-                                <div
-                                  class="progress-bar bg-gradient-warning"
-                                  role="progressbar"
-                                  style="width: 90%"
-                                  aria-valuenow="90"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td>Peter Meggik</td>
-                            <td>May 15, 2015</td>
-                            <td>
-                              <div class="progress">
-                                <div
-                                  class="progress-bar bg-gradient-primary"
-                                  role="progressbar"
-                                  style="width: 50%"
-                                  aria-valuenow="50"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>5</td>
-                            <td>Edward</td>
-                            <td>May 03, 2015</td>
-                            <td>
-                              <div class="progress">
-                                <div
-                                  class="progress-bar bg-gradient-danger"
-                                  role="progressbar"
-                                  style="width: 35%"
-                                  aria-valuenow="35"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>5</td>
-                            <td>Ronald</td>
-                            <td>Jun 05, 2015</td>
-                            <td>
-                              <div class="progress">
-                                <div
-                                  class="progress-bar bg-gradient-info"
-                                  role="progressbar"
-                                  style="width: 65%"
-                                  aria-valuenow="65"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
