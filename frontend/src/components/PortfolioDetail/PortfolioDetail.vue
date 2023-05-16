@@ -64,6 +64,7 @@ function scrollRight() {
   scrollContainer.scrollLeft += 326;
 }
 
+// Get data
 async function getData() {
   const url = window.location.href;
   const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
@@ -99,6 +100,13 @@ async function getData() {
   return state;
 }
 
+async function getMorePortfolios() {
+}
+
+async function getLikes(){
+}
+
+// Save data
 function saveNewComment() {
   if (!useUserDetailsStore().id) {
     return alert("로그인 후 이용해주세요.");
