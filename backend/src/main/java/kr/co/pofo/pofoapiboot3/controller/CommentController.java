@@ -1,6 +1,7 @@
 package kr.co.pofo.pofoapiboot3.controller;
 
 import kr.co.pofo.pofoapiboot3.entity.Comment;
+import kr.co.pofo.pofoapiboot3.entity.CommentDto;
 import kr.co.pofo.pofoapiboot3.entity.CommentView;
 import kr.co.pofo.pofoapiboot3.service.CommentService;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class CommentController {
     }
 
     @PostMapping
-    public void save(@RequestBody Comment comment) {
-        service.save(comment);
+    public void save(@RequestBody CommentDto commentDto) {
+        service.save(commentDto);
     }
 
     @DeleteMapping

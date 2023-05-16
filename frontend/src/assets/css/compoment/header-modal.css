@@ -13,6 +13,7 @@
   border: 1px solid rgb(229, 229, 229);
   border-radius: 8px;
   z-index: 100;
+  overflow: auto;
 }
 .noti-content-notify {
   display: flex;
@@ -128,6 +129,7 @@
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
+  overflow: auto;
 }
 .modal-thumbnail-circle {
   border-radius: 50%;

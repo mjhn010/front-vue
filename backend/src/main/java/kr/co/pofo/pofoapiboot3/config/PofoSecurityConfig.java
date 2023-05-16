@@ -19,7 +19,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-            // .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
+            .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
             .anyRequest().permitAll();
 
     return http.build();

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.co.pofo.pofoapiboot3.repository.CommunityPostRepository">
+
+    <insert id="insert" parameterType="CommunityPost">
+        insert into community_post(member_id, title, location_type, location_info, period, team_size, thumbnail)
+        values(#{memberId}, #{title}, #{locationType}, #{locationInfo}, #{period}, #{teamSize}, #{thumbnail})
+    </insert>
+</mapper>
+    

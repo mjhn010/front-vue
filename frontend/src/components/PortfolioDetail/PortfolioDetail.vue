@@ -1,10 +1,9 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import Header from "../Header.vue";
-import CommentWindow from "@/components/PortfolioDetail/components/CommentWindow.vue";
+import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
 
 // Mock data
-const member = { nickname: "D.BRONZE", image: "d.bronze.jpg" };
 const usedSkills = [
   { engName: "HTML" },
   { engName: "CSS" },
@@ -30,41 +29,21 @@ const portfolios = [
 ];
 
 // Data
-const props = defineProps({
-  commentBoxOpen: Boolean,
-  portfolio: {
-      type: Object,
-      required: true,
-  },
-  comments: {
-      type: Array,
-      required: true,
-  },
-  portfolios: {
-      type: Array,
-      required: true,
-  },
-});
-
+const commentBoxOpen = ref(false);
 const state = reactive({
-  commentBoxOpen: props.commentBoxOpen,
-  portfolio: props.portfolio,
-  comments: props.comments,
-  portfolios: props.portfolios,
+  member: {},
+  portfolio: {},
+  contents: [],
+  comments: [],
 });
-
-console.log(state);
-
-// Lifecycle
-onMounted(getData);
 
 // Functions
-function toggleCommentBox() {
-  commentBoxOpen.value = !commentBoxOpen.value;
-}
-
 function scrollToTop() {
   window.scrollTo(0, 0);
+}
+
+function toggleCommentBox() {
+  commentBoxOpen.value = !commentBoxOpen.value;
 }
 
 function contentToHTML(item) {
@@ -85,30 +64,79 @@ function scrollRight() {
   scrollContainer.scrollLeft += 326;
 }
 
+// Get data
 async function getData() {
   const url = window.location.href;
-  const id = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-  await fetch(`http://localhost:8080/pofo/${id}`)
+  await fetch(`http://localhost:8080/pofo/${portfolioId}`)
     .then((res) => res.json())
     .then((data) => {
-      state.portfolio = data;
+      state.portfolio = data.portfolio;
+      state.member = data.member;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 
-  await fetch(`http://localhost:8080/pofo/${id}/contents`)
+  await fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
     .then((res) => res.json())
     .then((data) => {
       state.contents = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 
-  await fetch(`http://localhost:8080/pofo/${id}/comments`)
+  await fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
     .then((res) => res.json())
     .then((data) => {
       state.comments = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 
   return state;
 }
+
+async function getMorePortfolios() {
+}
+
+async function getLikes(){
+}
+
+// Save data
+function saveNewComment() {
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  } else if (!document.querySelector("#comment-input").value) {
+    return alert("댓글을 입력해주세요.");
+  } else {
+    const url = window.location.href;
+    const portfolioId = parseInt(
+      url.replace("http://127.0.0.1:5173/#/pofo/", "")
+    );
+
+    const comment = {
+      memberId: useUserDetailsStore().id,
+      portfolioId: portfolioId,
+      content: document.querySelector("#comment-input").value,
+    };
+
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(comment),
+    }).then(getData);
+  }
+}
+
+// Lifecycle
+onMounted(getData);
 </script>
 
 <template>
@@ -122,13 +150,13 @@ async function getData() {
     >
       <!-- Profile -->
       <figure class="flex p-6">
-        <router-link :to="`/${member.nickname.toLowerCase()}`">
+        <router-link :to="`/profile/${state.member.id}`">
           <img
             class="mr-4 mt-2 h-12 w-12 cursor-pointer rounded-full duration-300 hover:opacity-50"
-            :src="`/src/assets/images/temp/${member.image}`"
+            :src="`/src/assets/images/temp/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          />
+          >
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -140,22 +168,24 @@ async function getData() {
             <router-link to="/nickname">
               <span
                 class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
-                v-text="member.nickname"
+                v-text="state.member.nickname"
               />
             </router-link>
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-              >팔로우</span
-            >
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template :key="content.id" v-for="content in state.contents">
+        <template
+          :key="content.id"
+          v-for="content in state.contents"
+        >
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -185,7 +215,7 @@ async function getData() {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          />
+          >
         </div>
       </div>
       <!-- Banner -->
@@ -204,8 +234,7 @@ async function getData() {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-          >POFO PICK 선정</span
-        >
+        >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -219,9 +248,10 @@ async function getData() {
               .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
           "
         />
-        <span class="text-xs font-semibold text-white sm:text-sm" v-else
-          >그래픽 디자인 · UI/UX</span
-        >
+        <span
+          class="text-xs font-semibold text-white sm:text-sm"
+          v-else
+        >그래픽 디자인 · UI/UX</span>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -232,14 +262,12 @@ async function getData() {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500"
-            >프로필 자세히 보기</span
-          >
+          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          />
+          >
         </router-link>
       </div>
 
@@ -259,7 +287,7 @@ async function getData() {
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              />
+              >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="memberPortfolio.title"
@@ -297,7 +325,7 @@ async function getData() {
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          />
+          >
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -339,8 +367,89 @@ async function getData() {
       </div>
     </div>
 
-    <!-- Comment window -->
-    <comment-window />
+    <!-- Comment box -->
+    <div
+      class="comment-box fixed hidden overflow-y-auto rounded-lg border bg-white"
+      :class="commentBoxOpen ? 'xl:block' : 'xl:hidden'"
+    >
+      <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
+        <div
+          class="x-mark-icon absolute cursor-pointer"
+          @click="toggleCommentBox"
+        />
+        <div class="col-span-7 flex h-16 flex-col justify-between">
+          <h2
+            class="text-md col-span-7 font-bold"
+            v-text="state.portfolio.title"
+          />
+          <span class="col-span-7 mb-5 text-xs font-bold text-gray-500">
+            UI/UX · 그래픽 디자인
+          </span>
+        </div>
+        <div class="heart-icon mb-2 cursor-pointer" />
+        <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
+        <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
+        <span
+          class="col-span-2 my-5 font-bold"
+          v-text="`댓글(${state.comments.length})`"
+        />
+        <textarea
+          id="comment-input"
+          class="col-span-7 mb-5 h-36 min-w-fit resize-none rounded-lg border border-black px-5 py-3 text-sm font-normal"
+          placeholder="이 작업에 대한 댓글을 남겨주세요."
+        />
+        <button
+          class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
+          @click="saveNewComment(comment)"
+        >
+          댓글 작성
+        </button>
+        <div
+          class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold"
+        >
+          취소
+        </div>
+      </div>
+
+      <!-- Comment component -->
+      <div
+        class="mx-5 border-t py-5"
+        :key="comment.id"
+        v-for="comment in state.comments"
+      >
+        <div class="grid grid-cols-7 grid-rows-2">
+          <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
+            <a
+              href="#"
+              class="row-span-2"
+            >
+              <img
+                class="h-12 w-12 rounded-full"
+                :src="`/src/assets/images/temp/${comment.memberImage}`"
+                alt="Profile image"
+              >
+            </a>
+            <div
+              class="col-start-2 font-bold"
+              v-text="comment.memberNickname"
+            />
+            <div
+              class="col-start-2 text-xs font-semibold text-gray-500"
+              v-text="comment.regDate.substring(0, 10).replace(/-/g, '.')"
+            />
+          </figure>
+          <p
+            class="col-span-7 my-4 text-sm"
+            v-text="comment.content"
+          />
+          <div
+            class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
+          >
+            답글 남기기
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

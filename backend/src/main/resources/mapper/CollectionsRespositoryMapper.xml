@@ -20,7 +20,7 @@
 			portfolio_bookmark
 		where
 			portfolio_id in
-		(select id from portfolio where member_id = 9)
+		(select id from portfolio where member_id = ${id})
 	</select>
 
 </mapper>

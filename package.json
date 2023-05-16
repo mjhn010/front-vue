@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "pinia": "^2.0.36",
-    "pinia-plugin-persist": "^1.0.0"
+    "pinia-plugin-persist": "^1.0.0",
+    "vue3-google-login": "^2.0.15"
   }
 }

@@ -8,7 +8,11 @@ import kr.co.pofo.pofoapiboot3.entity.PortfolioLike;
 public interface PortfolioLikeService {
     List<Portfolio> getByUserId(int id);
 
-    Integer count(Integer portfolioId);
+    List<PortfolioLike> getByPortfolioId(Integer portfolioId);
+
+    Integer count(int memberId);
+
+    Integer countByPortfolioId(Integer portfolioId);
 
     void insert(PortfolioLike portfolioLike);
 

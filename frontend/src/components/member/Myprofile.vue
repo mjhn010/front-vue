@@ -1,6 +1,12 @@
 <script setup>
 import Header from '../Header.vue'
 import { onMounted, reactive, ref, shallowRef, triggerRef, watch } from 'vue';
+import {useRoute} from 'vue-router';
+import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
+
+let userDetails = useUserDetailsStore();
+let route = useRoute();
+
 //현재 클릭되어있는 TAB
 let current = ref();
 
@@ -19,7 +25,8 @@ onMounted(() => {
 
 
 async function load() {
-    let response = await fetch('http://localhost:8080/member/myprofile/9');
+    let param = route.params.id;
+    let response = await fetch(`http://localhost:8080/members/myprofile/${param}`);
     let json = await response.json();
     model.myInfo = json.member;
     model.list[0] = json.works;
@@ -27,7 +34,7 @@ async function load() {
     model.list[2] = json.collections;
     model.currentList = json.works;
     model.activities = json.activities;
-    console.log(json.activities);
+    console.log(userDetails.profileSrc);
 }
 
 function clickWork() {
@@ -53,7 +60,8 @@ function clickCollections() {
         <section class="margin-right-5 profile">
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
-                <img class="profile-img" src="/src/assets/images/logo.png">
+                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="userDetails.profileSrc==null"/>
+                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else/>
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>

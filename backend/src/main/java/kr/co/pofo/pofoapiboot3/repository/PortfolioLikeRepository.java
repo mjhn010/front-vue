@@ -10,9 +10,13 @@ import java.util.List;
 public interface PortfolioLikeRepository {
     List<Portfolio> findByUserId(int id);
 
-    Integer count(Integer portfolioId);
+    Integer count(int memberId);
+
+    Integer countByPortfolioId(Integer portfolioId);
 
     void insert(PortfolioLike portfolioLike);
 
     void delete(PortfolioLike portfolioLike);
+
+    List<PortfolioLike> findByPortfolioId(Integer portfolioId);
 }

@@ -22,7 +22,7 @@ import kr.co.pofo.pofoapiboot3.service.MemberService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
 
     @Autowired
