@@ -1,6 +1,7 @@
 package kr.co.pofo.pofoapiboot3.service;
 
 import kr.co.pofo.pofoapiboot3.entity.Comment;
+import kr.co.pofo.pofoapiboot3.entity.CommentDto;
 import kr.co.pofo.pofoapiboot3.entity.CommentView;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface CommentService {
 
     List<CommentView> getCommentViews(Integer portfolioId);
 
-    void save(Comment comment);
+    void save(CommentDto commentDto);
 
     void delete(Comment comment);
 }
