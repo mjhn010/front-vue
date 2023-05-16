@@ -58,13 +58,13 @@ async function fetchPortfolios() {
       <div class="slider">
         <Carousel :itemsToShow="3.125" :wrapAround="true" :transition="500">
           <Slide v-for="(portfolio, index) in state.weeklyPopularList" :key="index">
-            <div class="carousel__item">
+            <router-link :to="'/pofo/:' + portfolio.id" class="carousel__item">
               <img :src="'/src/assets/images/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
               <div class="overlay">
                 <h2>{{ portfolio.title }}</h2>
                 <p>{{ portfolio.nickname }}</p>
               </div>
-            </div>
+            </router-link>
           </Slide>
 
           <template #addons>
@@ -148,14 +148,16 @@ async function fetchPortfolios() {
         <h1 class="d-none">포트폴리오 리스트 섹션</h1>
         <ul>
           <li v-for="(portfolio, index) in state.list" :key="index">
-            <div class="thumbnail" :data-title="portfolio.title">
+            <router-link :to="'/pofo/:' + portfolio.id" class="thumbnail" :data-title="portfolio.title">
               <img :src="'/src/assets/images/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
-            </div>
+            </router-link>
             <div class="information">
               <div class="portfolio-info-profile">
                 <!-- <img :src="'image/' + portfolio.memberImage" alt="프로필 이미지"> -->
-                <img src="/src/assets/images/BctLFrYLdnFPix7w.jpg" alt="프로필 이미지">
-                <span class="nickname">{{ portfolio.nickname }}</span>
+                <router-link :to="'/profile/' + portfolio.memberId">
+                  <img src="/src/assets/images/BctLFrYLdnFPix7w.jpg" alt="프로필 이미지">
+                </router-link>
+                <router-link :to="'/profile/' + portfolio.memberId" class="nickname">{{ portfolio.nickname }}</router-link>
               </div>
               <div class="portfolio-info-counts">
                 <img src="/src/assets/images/eye.png" alt="조회수 이미지">
