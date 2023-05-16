@@ -99,43 +99,26 @@ async function getData() {
   return state;
 }
 
-function saveComment() {
+function saveNewComment() {
   const url = window.location.href;
-
   const portfolioId = parseInt(
     url.replace("http://127.0.0.1:5173/#/pofo/", "")
   );
 
-  const commentInput = document.querySelector("#comment-input");
-  const content = commentInput.value;
-  const memberId = useUserDetailsStore().id;
   const comment = {
-    id: {
-      type: Number,
-      required: false,
-    },
-    memberId: memberId,
-    portfolioId: portfolioId,
-    content: content,
-    regDate: {
-      type: Date,
-      required: false,
-    },
-  };
+      memberId: useUserDetailsStore().id,
+      portfolioId: portfolioId,
+      content: document.querySelector("#comment-input").value,
+  }
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+    mode: "cors",
     method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
     body: JSON.stringify(comment),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
-  return comment;
+  }).then(getData);
 }
 
 // Lifecycle
@@ -159,7 +142,7 @@ onMounted(getData);
             :src="`/src/assets/images/temp/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          />
+          >
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -178,15 +161,17 @@ onMounted(getData);
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-              >팔로우</span
-            >
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template :key="content.id" v-for="content in state.contents">
+        <template
+          :key="content.id"
+          v-for="content in state.contents"
+        >
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -216,7 +201,7 @@ onMounted(getData);
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          />
+          >
         </div>
       </div>
       <!-- Banner -->
@@ -235,8 +220,7 @@ onMounted(getData);
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-          >POFO PICK 선정</span
-        >
+        >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -250,9 +234,10 @@ onMounted(getData);
               .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
           "
         />
-        <span class="text-xs font-semibold text-white sm:text-sm" v-else
-          >그래픽 디자인 · UI/UX</span
-        >
+        <span
+          class="text-xs font-semibold text-white sm:text-sm"
+          v-else
+        >그래픽 디자인 · UI/UX</span>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -263,14 +248,12 @@ onMounted(getData);
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500"
-            >프로필 자세히 보기</span
-          >
+          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          />
+          >
         </router-link>
       </div>
 
@@ -290,7 +273,7 @@ onMounted(getData);
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              />
+              >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="memberPortfolio.title"
@@ -328,7 +311,7 @@ onMounted(getData);
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          />
+          >
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -403,7 +386,7 @@ onMounted(getData);
         />
         <button
           class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
-          @click="saveComment"
+          @click="saveNewComment(comment)"
         >
           댓글 작성
         </button>
@@ -422,12 +405,15 @@ onMounted(getData);
       >
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a href="#" class="row-span-2">
+            <a
+              href="#"
+              class="row-span-2"
+            >
               <img
                 class="h-12 w-12 rounded-full"
                 :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              />
+              >
             </a>
             <div
               class="col-start-2 font-bold"
@@ -438,7 +424,10 @@ onMounted(getData);
               v-text="comment.regDate.substring(0, 10).replace(/-/g, '.')"
             />
           </figure>
-          <p class="col-span-7 my-4 text-sm" v-text="comment.content" />
+          <p
+            class="col-span-7 my-4 text-sm"
+            v-text="comment.content"
+          />
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
