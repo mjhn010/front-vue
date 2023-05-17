@@ -36,7 +36,7 @@ const state = reactive({
   contents: [],
   likes: [],
   comments: [],
-  onLiked: Boolean,
+  onLiked: false,
 });
 console.log(state);
 
@@ -105,6 +105,7 @@ async function getData() {
     .then((data) => {
       state.likes = data;
     })
+    .then(checkLikes)
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -120,19 +121,22 @@ function toggleLikes() {
 
   if (!state.onLiked) {
     saveLike();
-    return state.onLiked(true);
+    return (state.onLiked = true);
   } else {
     deleteLikes();
-    return state.onLiked(false);
+    return (state.onLiked = false);
   }
 }
 
 async function checkLikes() {
+  console.log(state.likes);
   state.likes.forEach((like) => {
     if (like.memberId === useUserDetailsStore().id) {
-      return state.onLiked(true);
+      console.log("true");
+      return (state.onLiked = true);
     } else {
-      return state.onLiked(false);
+      console.log("false");
+      return (state.onLiked = false);
     }
   });
 }
@@ -199,10 +203,7 @@ function saveComment() {
 }
 
 // Lifecycle
-onMounted(async () => {
-  await getData();
-  await checkLikes();
-});
+onMounted(getData);
 </script>
 
 <template>
@@ -403,15 +404,17 @@ onMounted(async () => {
       >
         <div
           class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border-2"
-          :class="state.onLiked ? 'bg-black' : 'bg-white'"
+          :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
           @click="toggleLikes"
         >
-          <div
-            class="bg-heart bg-center bg-no-repeat hover:animate-pulse"
-            :class="state.onLiked ? 'mt-1 h-4 w-4' : 'h-6 w-6'"
-          />
+          <div class="absolute w-12 h-12 flex justify-center items-center hover:animate-pulse">
+            <div
+              class="bg-heart bg-center bg-no-repeat mb-4"
+              :class="state.onLiked ? 'mt-1 h-4 w-4' : 'h-6 w-6'"
+            />
+          </div>
           <span
-            class="relative text-xs font-bold text-white"
+            class="text-xs font-bold text-white mt-4"
             :class="state.onLiked ? 'bottom-0.5 block' : 'bottom-0.5 hidden'"
             v-text="state.likes.length"
           />
