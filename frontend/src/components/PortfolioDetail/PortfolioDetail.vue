@@ -100,11 +100,9 @@ async function getData() {
   return state;
 }
 
-async function getMorePortfolios() {
-}
+async function getMorePortfolios() {}
 
-async function getLikes(){
-}
+async function getLikes() {}
 
 // Save data
 function saveNewComment() {
@@ -364,6 +362,14 @@ onMounted(getData);
           class="share-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
         />
         공유하기
+      </div>
+      <div
+        class="my-6 flex flex-col items-center text-center text-sm font-bold"
+      >
+        <div class="w-12 h-12 flex justify-center items-center mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50">
+            <div class="bg-fire w-8 h-8"/>
+        </div>
+        신고하기
       </div>
     </div>
 
