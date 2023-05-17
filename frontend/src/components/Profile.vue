@@ -25,7 +25,8 @@ let model = reactive({
 
 onMounted(() => {
     load();
-    followCheck();
+    if(userDetails.id!=null)
+        followCheck();
 });
 
 async function followCheck() {
