@@ -35,11 +35,13 @@
     <insert id="insert">
         INSERT INTO
             comment
-        VALUES (
+        VALUES(
+            DEFAULT,
             #{memberId},
             #{portfolioId},
-            #{content}
-        )
+            #{content},
+            DEFAULT
+        );
     </insert>
 
     <delete id="delete">

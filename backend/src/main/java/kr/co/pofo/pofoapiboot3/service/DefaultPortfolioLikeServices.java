@@ -21,8 +21,20 @@ public class DefaultPortfolioLikeServices implements PortfolioLikeService {
     }
 
     @Override
+    public List<PortfolioLike> getByPortfolioId(Integer portfolioId) {
+        List<PortfolioLike> portfolioLikes = repository.findByPortfolioId(portfolioId);
+        return portfolioLikes;
+    }
+
+    @Override
     public Integer count(int memberId) {
         Integer count = repository.count(memberId);
+        return count;
+    }
+
+    @Override
+    public Integer countByPortfolioId(Integer portfolioId) {
+        Integer count = repository.countByPortfolioId(portfolioId);
         return count;
     }
 

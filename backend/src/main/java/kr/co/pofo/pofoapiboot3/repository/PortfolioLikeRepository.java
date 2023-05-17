@@ -12,7 +12,11 @@ public interface PortfolioLikeRepository {
 
     Integer count(int memberId);
 
+    Integer countByPortfolioId(Integer portfolioId);
+
     void insert(PortfolioLike portfolioLike);
 
     void delete(PortfolioLike portfolioLike);
+
+    List<PortfolioLike> findByPortfolioId(Integer portfolioId);
 }

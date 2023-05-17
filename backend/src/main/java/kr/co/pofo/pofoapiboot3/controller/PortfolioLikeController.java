@@ -4,6 +4,8 @@ import kr.co.pofo.pofoapiboot3.entity.PortfolioLike;
 import kr.co.pofo.pofoapiboot3.service.PortfolioLikeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/pofo/{portfolioId}/likes")
@@ -15,8 +17,14 @@ public class PortfolioLikeController {
     }
 
     @GetMapping
-    public Integer getCount(@PathVariable("portfolioId") int memberId) {
-        Integer count = service.count(memberId);
+    public List<PortfolioLike> getPortfolioLikesByPortfolioId(@PathVariable("portfolioId") Integer portfolioId) {
+        List<PortfolioLike> portfolioLikes = service.getByPortfolioId(portfolioId);
+        return portfolioLikes;
+    }
+
+    @GetMapping("count")
+    public Integer getCountByPortfolioId(@PathVariable("portfolioId") int portfolioId) {
+        Integer count = service.countByPortfolioId(portfolioId);
         return count;
     }
 
