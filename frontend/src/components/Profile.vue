@@ -1,7 +1,7 @@
 <script setup>
 import Header from './Header.vue'
 import { onMounted, reactive, ref, shallowRef, triggerRef, watch } from 'vue';
-import {useRoute} from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 
 let userDetails = useUserDetailsStore();
@@ -9,7 +9,8 @@ let userDetails = useUserDetailsStore();
 //현재 클릭되어있는 TAB
 let current = ref();
 let route = useRoute();
-
+let isFollow = ref(true);
+let isFollowing = ref(false);
 
 
 let model = reactive({
@@ -51,6 +52,18 @@ function clickCollections() {
     current.value = 2;
     model.currentList = model.list[2];
 }
+function followBtnClickHandler() {
+    console.log("test")
+    console.log(userDetails.id)
+    console.log(userDetails.nickname)
+
+    isFollow.value = !isFollow.value
+    isFollowing.value = !isFollowing.value
+
+    
+    
+
+}
 
 </script>
 <template>
@@ -60,15 +73,19 @@ function clickCollections() {
         <section class="margin-right-5 profile">
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
-                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="model.myInfo.image==null"/>
-                <img :src="'http://localhost:8080/profileImage/' + model.myInfo.image" class="profile-img" v-else/>
+                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필" v-if="model.myInfo.image == null" />
+                <img :src="'http://localhost:8080/profileImage/' + model.myInfo.image" class="profile-img" v-else />
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>
                 <a :href="model.myInfo.url" class="url" :hash="false">{{ model.myInfo.url }}</a>
                 <div>
-                    <button class="btn btn-0 font-size-15 btn-height font-weight-700">+ 팔로우</button>
-                    <button class="d-none">팔로우</button>
+                    <button class="btnfollow font-size-15 btn-height font-weight-700" @click.prevent="followBtnClickHandler"
+                        v-if="isFollow">+ 팔로우</button>
+                    <button class="btnfollowing font-size-15 btn-height font-weight-700" @click.prevent="followBtnClickHandler"
+                        v-if="isFollowing">팔로잉</button>
+
+                    <!-- <button class="d-none">팔로우</button> -->
                 </div>
             </div>
 
@@ -161,7 +178,7 @@ function clickCollections() {
     text-overflow: ellipsis;
 }
 
-.font-weight-700{
+.font-weight-700 {
     font-weight: 700;
     font-size: 0.9rem;
 }
