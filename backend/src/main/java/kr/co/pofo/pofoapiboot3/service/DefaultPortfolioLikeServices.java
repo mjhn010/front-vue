@@ -45,7 +45,7 @@ public class DefaultPortfolioLikeServices implements PortfolioLikeService {
     }
 
     @Override
-    public void delete(PortfolioLike portfolioLike) {
-        repository.delete(portfolioLike);
+    public void delete(LikeDto likeDto) {
+        repository.delete(likeDto);
     }
 }

@@ -1,205 +1,226 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import {onMounted, reactive, ref} from "vue";
 import Header from "../Header.vue";
-import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
+import {useUserDetailsStore} from "@/stores/useUserDetailsStore";
 
 // Mock data
 const usedSkills = [
-  { engName: "HTML" },
-  { engName: "CSS" },
-  { engName: "JavaScript" },
+    {engName: "HTML"},
+    {engName: "CSS"},
+    {engName: "JavaScript"},
 ];
 const portfolioCopyright = [
-  { name: "cc" },
-  { name: "by" },
-  { name: "nc" },
-  { name: "nd" },
+    {name: "cc"},
+    {name: "by"},
+    {name: "nc"},
+    {name: "nd"},
 ];
 const portfolios = [
-  { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
-  { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
-  { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
-  { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
-  { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
-  { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
-  { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
-  { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
-  { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
-  { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
+    {id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png"},
+    {id: 3, title: "포트폴리오3", thumbnail: "calm.jpg"},
+    {id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg"},
+    {id: 5, title: "포트폴리오5", thumbnail: "corn.jpg"},
+    {id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png"},
+    {id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg"},
+    {id: 8, title: "포트폴리오8", thumbnail: "calm.jpg"},
+    {id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg"},
+    {id: 10, title: "포트폴리오10", thumbnail: "corn.jpg"},
+    {id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png"},
 ];
 
 // Data
 const onCommentBoxOpen = ref(false);
 const state = reactive({
-  member: {},
-  portfolio: {},
-  contents: [],
-  likes: [],
-  comments: [],
-  onLiked: false,
+    member: {},
+    portfolio: {},
+    contents: [],
+    likes: [],
+    comments: [],
+    onLiked: false,
 });
 console.log(state);
 
 // Functions
 function scrollToTop() {
-  window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 }
 
 function toggleCommentBox() {
-  onCommentBoxOpen.value = !onCommentBoxOpen.value;
+    onCommentBoxOpen.value = !onCommentBoxOpen.value;
 }
 
 function contentToHTML(item) {
-  if (item.type === "0") {
-    return item.content;
-  } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
-  }
+    if (item.type === "0") {
+        return item.content;
+    } else if (item.type === "1") {
+        return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
+    }
 }
 
 function scrollLeft() {
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft -= 326;
+    const scrollContainer = document.querySelector(".scroll-container");
+    scrollContainer.scrollLeft -= 326;
 }
 
 function scrollRight() {
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft += 326;
+    const scrollContainer = document.querySelector(".scroll-container");
+    scrollContainer.scrollLeft += 326;
 }
 
 // Get data
 async function getData() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.portfolio = data.portfolio;
-      state.member = data.member;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.portfolio = data.portfolio;
+            state.member = data.member;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.contents = data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.contents = data;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.comments = data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.comments = data;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.likes = data;
-    })
-    .then(checkLikes)
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.likes = data;
+        })
+        .then(checkLikes)
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }
 
-async function getMorePortfolios() {}
+async function getMorePortfolios() {
+}
 
 // Likes
 function toggleLikes() {
-  if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
-  }
+    if (!useUserDetailsStore().id) {
+        return alert("로그인 후 이용해주세요.");
+    }
 
-  if (!state.onLiked) {
-    saveLike();
-    return (state.onLiked = true);
-  } else {
-    deleteLikes();
-    return (state.onLiked = false);
-  }
+    if (!state.onLiked) {
+        saveLike();
+        return (state.onLiked = true);
+    } else {
+        deleteLikes();
+        return (state.onLiked = false);
+    }
 }
 
 async function checkLikes() {
-  console.log(state.likes);
-  state.likes.forEach((like) => {
-    if (like.memberId === useUserDetailsStore().id) {
-      console.log("true");
-      return (state.onLiked = true);
-    } else {
-      console.log("false");
-      return (state.onLiked = false);
-    }
-  });
-}
-
-async function saveLike() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
-
-  const like = {
-    memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
-  };
-
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
-    mode: "cors",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(like),
-  })
-    .catch((error) => {
-      console.error("Error:", error);
-    })
-    .finally(() => {
-      getData();
+    console.log(state.likes);
+    state.likes.forEach((like) => {
+        if (like.memberId === useUserDetailsStore().id) {
+            console.log("true");
+            return (state.onLiked = true);
+        } else {
+            console.log("false");
+            return (state.onLiked = false);
+        }
     });
 }
 
+async function saveLike() {
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+
+    const like = {
+        memberId: useUserDetailsStore().id,
+        portfolioId: portfolioId,
+    };
+
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(like),
+    })
+        .catch((error) => {
+            console.error("Error:", error);
+        })
+        .finally(() => {
+            getData();
+        });
+}
+
 async function deleteLikes() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+
+    const like = {
+        memberId: useUserDetailsStore().id,
+        portfolioId: portfolioId,
+    };
+
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+        mode: "cors",
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(like),
+    })
+        .catch((error) => {
+            console.error("Error:", error);
+        })
+        .finally(() => {
+            getData();
+        });
 }
 
 // Save data
 function saveComment() {
-  if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
-  } else if (!document.querySelector("#comment-input").value) {
-    return alert("댓글을 입력해주세요.");
-  } else {
-    const url = window.location.href;
-    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+    if (!useUserDetailsStore().id) {
+        return alert("로그인 후 이용해주세요.");
+    } else if (!document.querySelector("#comment-input").value) {
+        return alert("댓글을 입력해주세요.");
+    } else {
+        const url = window.location.href;
+        const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-    const comment = {
-      memberId: useUserDetailsStore().id,
-      portfolioId: portfolioId,
-      content: document.querySelector("#comment-input").value,
-    };
+        const comment = {
+            memberId: useUserDetailsStore().id,
+            portfolioId: portfolioId,
+            content: document.querySelector("#comment-input").value,
+        };
 
-    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(comment),
-    })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(getData);
-  }
+        return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+            mode: "cors",
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify(comment),
+        })
+            .catch((error) => {
+                console.error("Error:", error);
+            })
+            .finally(getData);
+    }
 }
 
 // Lifecycle
@@ -223,7 +244,7 @@ onMounted(getData);
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          />
+          >
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -242,15 +263,17 @@ onMounted(getData);
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-              >팔로우</span
-            >
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template :key="content.id" v-for="content in state.contents">
+        <template
+          :key="content.id"
+          v-for="content in state.contents"
+        >
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -280,7 +303,7 @@ onMounted(getData);
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          />
+          >
         </div>
       </div>
       <!-- Banner -->
@@ -299,8 +322,7 @@ onMounted(getData);
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-          >POFO PICK 선정</span
-        >
+        >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -314,9 +336,10 @@ onMounted(getData);
               .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
           "
         />
-        <span class="text-xs font-semibold text-white sm:text-sm" v-else
-          >그래픽 디자인 · UI/UX</span
-        >
+        <span
+          class="text-xs font-semibold text-white sm:text-sm"
+          v-else
+        >그래픽 디자인 · UI/UX</span>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -327,14 +350,12 @@ onMounted(getData);
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500"
-            >프로필 자세히 보기</span
-          >
+          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          />
+          >
         </router-link>
       </div>
 
@@ -354,7 +375,7 @@ onMounted(getData);
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              />
+              >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="memberPortfolio.title"
@@ -392,7 +413,7 @@ onMounted(getData);
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          />
+          >
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -407,14 +428,16 @@ onMounted(getData);
           :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
           @click="toggleLikes"
         >
-          <div class="absolute w-12 h-12 flex justify-center items-center hover:animate-pulse">
+          <div
+            class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
+          >
             <div
-              class="bg-heart bg-center bg-no-repeat mb-4"
-              :class="state.onLiked ? 'mt-1 h-4 w-4' : 'h-6 w-6'"
+              class="bg-heart bg-center bg-no-repeat"
+              :class="state.onLiked ? 'mt-1 mb-4 h-4 w-4' : 'h-6 w-6'"
             />
           </div>
           <span
-            class="text-xs font-bold text-white mt-4"
+            class="mt-4 text-xs font-bold text-white"
             :class="state.onLiked ? 'bottom-0.5 block' : 'bottom-0.5 hidden'"
             v-text="state.likes.length"
           />
@@ -514,12 +537,15 @@ onMounted(getData);
       >
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a href="#" class="row-span-2">
+            <a
+              href="#"
+              class="row-span-2"
+            >
               <img
                 class="h-12 w-12 rounded-full"
                 :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              />
+              >
             </a>
             <div
               class="col-start-2 font-bold"
@@ -530,7 +556,10 @@ onMounted(getData);
               v-text="comment.regDate.substring(0, 10).replace(/-/g, '.')"
             />
           </figure>
-          <p class="col-span-7 my-4 text-sm" v-text="comment.content" />
+          <p
+            class="col-span-7 my-4 text-sm"
+            v-text="comment.content"
+          />
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >

@@ -17,5 +17,5 @@ public interface PortfolioLikeService {
 
     void insert(LikeDto likeDto);
 
-    void delete(PortfolioLike portfolioLike);
+    void delete(LikeDto likeDto);
 }

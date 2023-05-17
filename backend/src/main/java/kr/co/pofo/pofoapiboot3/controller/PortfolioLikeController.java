@@ -35,7 +35,7 @@ public class PortfolioLikeController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody PortfolioLike portfolioLike) {
-        service.delete(portfolioLike);
+    public void delete(@RequestBody LikeDto likeDto) {
+        service.delete(likeDto);
     }
 }
