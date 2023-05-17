@@ -10,7 +10,8 @@ let title = ref('');
 let list = reactive([]);
 let listIndex = 0;
 // 체크박스 선택 하나만
-let selectChecked = ref(true);
+let singgle = ref(true);
+let team = ref(false);
 
 function arrayRemove(event, index) {
   list.splice(index, 1);
@@ -97,12 +98,21 @@ function dropHandler(event, index) {
 }
 
 // 체크박스 하나만 선택해서 하기 선택자 사용하지않고 짜증나네
-// function checked(e){
-  
+function singgleChecked(e){  
+  if(e.target == singgle.value){
+    console.log(e.target)
+    singgle.value.checked = true;
+    team.value.checked = false;
+  }
+}
+function teamChecked(e){
+  if(e.target == team.value){
+  console.log(e.target)
+  team.value.checked = true;
+  singgle.value.checked = false;
+}
 
-//   selectChecked.value.checked != selectChecked.value.checked
-
-// }
+}
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
@@ -268,8 +278,8 @@ function dropHandler(event, index) {
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="select-team team-info margin-top-3">
-            <label class="skill-label singgle"><input ref="selectChecked"  @click="checked($event)" class="cb" type="checkbox" checked name="singgle" value="0">개인</label>
-            <label class="skill-label team"><input ref="selectChecked" @click="checked($event)" class="cb" type="checkbox" name="team" value="1">팀</label>
+            <label class="skill-label singgle"><input ref="singgle"  @click="singgleChecked($event)" class="cb" type="checkbox" checked name="singgle" value="0">개인</label>
+            <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox" name="team" value="1">팀</label>
             <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
             <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
           </div>
