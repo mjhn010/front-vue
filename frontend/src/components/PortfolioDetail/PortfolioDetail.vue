@@ -40,6 +40,11 @@ const state = reactive({
 });
 
 // Functions
+function copyLink() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url);
+  alert("링크가 복사되었습니다.");
+}
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
@@ -64,6 +69,20 @@ function scrollLeft() {
 function scrollRight() {
   const scrollContainer = document.querySelector(".scroll-container");
   scrollContainer.scrollLeft += 326;
+}
+
+function toggleLike() {
+    if (!useUserDetailsStore().id) {
+        return alert("로그인 후 이용해주세요.");
+    }
+
+    if (!state.onLiked) {
+        saveLike();
+        return (state.onLiked = true);
+    } else {
+        deleteLikes();
+        return (state.onLiked = false);
+    }
 }
 
 // Get data
@@ -113,20 +132,6 @@ async function getData() {
 async function getMorePortfolios() {}
 
 // Likes
-function toggleLikes() {
-  if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
-  }
-
-  if (!state.onLiked) {
-    saveLike();
-    return (state.onLiked = true);
-  } else {
-    deleteLikes();
-    return (state.onLiked = false);
-  }
-}
-
 async function checkLikes() {
   state.likes.forEach((like) => {
     if (like.memberId === useUserDetailsStore().id) {
@@ -315,7 +320,7 @@ onMounted(getData);
             :class="
               state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'
             "
-            @click="toggleLikes"
+            @click="toggleLike"
           >
             <div
               class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
@@ -446,7 +451,7 @@ onMounted(getData);
           class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center
           justify-center rounded-full border-2"
           :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
-          @click="toggleLikes"
+          @click="toggleLike"
         >
           <div
             class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
@@ -489,6 +494,7 @@ onMounted(getData);
         <div
           class="share-icon mb-2 cursor-pointer rounded-full border-2 bg-white
           duration-300 hover:bg-blue-50"
+          @click="copyLink"
         />
         공유하기
       </div>
@@ -528,7 +534,7 @@ onMounted(getData);
           class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center
           justify-center rounded-full border-2"
           :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
-          @click="toggleLikes"
+          @click="toggleLike"
         >
           <div
             class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
