@@ -29,7 +29,7 @@ public class PortfolioLikeController {
     }
 
     @PostMapping
-    public void insert(PortfolioLike portfolioLike) {
+    public void post(PortfolioLike portfolioLike) {
         service.insert(portfolioLike);
     }
 
