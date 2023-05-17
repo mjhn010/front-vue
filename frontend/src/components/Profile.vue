@@ -190,7 +190,7 @@ function followingBtnMouseLeaveHandler() {
                 <router-link :to="'/pofo/' + pofo.id" v-for="pofo in model.currentList">
                     <div class="thumbnail" :data-title="pofo.title">
                         <span>
-                            <img :src="'/src/assets/images/' + pofo.thumbnail">
+                            <img :src="'http://localhost:8080/portfolio/thumbnails/' + pofo.thumbnail">
                         </span>
                     </div>
                 </router-link>

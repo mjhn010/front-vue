@@ -44,9 +44,9 @@
 
     <insert id="insert">
         INSERT INTO
-            portfolio_like(portfolio_id, member_id)
+            portfolio_like
         VALUES
-            (#{portfolioId}, #{memberId})
+            (#{portfolioId}, #{memberId}, DEFAULT)
     </insert>
 
     <delete id="delete">

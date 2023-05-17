@@ -1,6 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch, onUpdated, onMounted  } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import Modal from './Modal.vue';
 
 let email = ref('');
@@ -10,6 +11,10 @@ let subPWd = ref('');
 let showModal = ref(false);
 
 let router = useRouter();
+let route = useRoute();
+let userDetails = useUserDetailsStore();
+
+
 let certiNum = ref();
 let minutes = ref(2);
 let seconds = ref(0);
@@ -49,8 +54,17 @@ watch(email, () => {
     buttonText.value = '인증번호 전송';
     emailCount = ref();
     emailRegTest.value = false;
+    if(route.query.type === 'oauth'){
+        buttonText.value = '인증 완료';
+    }
 })
 
+onMounted(() => {
+    if(route.query.type==='oauth'){
+        email.value = userDetails.email;
+        isDisabled.value = true;
+    }
+}),
 
 async function signupHandler() {
     if(!resultOfCertification.value || !isPassword() || nickNameCount.value===1 || nickname.value=='' || pwd.value !== subPWd.value){

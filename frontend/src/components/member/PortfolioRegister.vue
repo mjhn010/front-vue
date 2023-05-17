@@ -1,66 +1,69 @@
 <script setup>
 import Header from "../Header.vue";
 import { onMounted, onUpdated, reactive, ref } from "vue";
-// 보였다가 없어짐
-let showModal = ref(false)
-let list = reactive([])
-let listIndex = 0
-let erase = ref(true)
-let eraseImg = ref(false)
 
-
+let showModal = ref(false);
+let list = reactive([]);
+let listIndex = 0;
 
 function arrayRemove(event, index) {
-  list.splice(index, 1)
+  list.splice(index, 1);
 }
 function imgPlusHandler() {
-  list.push({ type: "img", text: "", img: [], order: listIndex })
-  listIndex++
+  list.push({ type: "img", text: "", img: [], order: listIndex });
+  listIndex++;
 }
 function textPlusHandler() {
-  list.push({ type: "text", text: "", img: [], order: listIndex })
-  listIndex++
+  list.push({ type: "text", text: "", img: [], order: listIndex });
+  listIndex++;
 }
 function showModalHandler() {
   showModal.value = !showModal.value;
 }
 
 function imgClickHandler(e) {
-  console.log(e.target)
   let previousElement = e.target.previousElementSibling;
-  previousElement.click()
+  previousElement.click();
 
 }
 function imgInputHandler(e, index) {
-  let urls = []
-  let files = e.target.files
-  console.log(files)
+  let urls = [];
+  let files = e.target.files;
   for (let file of files) {
-    urls.push(URL.createObjectURL(file))
+    urls.push(URL.createObjectURL(file));
   }
   list[index].img = urls;
-  let element1 = e.target.parentElement
+  let element1 = e.target.parentElement;
   while (element1.className != 'sub-box')
     element1 = element1.parentElement;
-  element1.classList.add("d-none")
+  element1.classList.add("d-none");
 
-  let element2 = e.target.parentElement
+  let element2 = e.target.parentElement;
   while (element2.className != 'start-app')
     element2 = element2.parentElement;
-  element2.nextElementSibling.classList.add("d-none")
-  erase.value = false
-  eraseImg.value = true
+  element2.nextElementSibling.classList.add("d-none");
 }
 
 function addDnone(e) {
-  let hoverMouse = e.target.querySelector(".erase-box")
-  hoverMouse.classList.add("d-none")
+  let hoverMouse = e.target.querySelector(".erase-box");
+  hoverMouse.classList.add("d-none");
 }
 function removeDnone(e) {
-  let hoverMouse = e.target.querySelector(".erase-box")
+  let hoverMouse = e.target.querySelector(".erase-box");
   if (hoverMouse == null)
-    hoverMouse = e.currentTarget.querySelector(".erase-box")
-  hoverMouse.classList.remove("d-none")
+    hoverMouse = e.currentTarget.querySelector(".erase-box");
+  hoverMouse.classList.remove("d-none");
+}
+
+function dropHandler(event, index) {
+  event.preventDefault();
+  let objecUrls = [];
+  let files = [...event.dataTransfer.files];
+  for (let flie of files) 
+    objecUrls.push(URL.createObjectURL(flie))
+  
+  list[index].img = objecUrls;
+  console.log(event.target)
 }
 
 </script>
@@ -104,7 +107,8 @@ function removeDnone(e) {
           <!-- 이미지 클릭했을때 나오는 박스 -->
           <section class="vue-for-box" v-for="(pofo, index) in list">
 
-            <section v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
+            <section @dragover.stop.prevent="onDragover" @drop.stop.prevent="dropHandler($event, index)"
+              v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
               class="default-box click-img-box">
               <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">

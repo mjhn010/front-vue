@@ -1,138 +1,226 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import {onMounted, reactive, ref} from "vue";
 import Header from "../Header.vue";
-import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
+import {useUserDetailsStore} from "@/stores/useUserDetailsStore";
 
 // Mock data
 const usedSkills = [
-  { engName: "HTML" },
-  { engName: "CSS" },
-  { engName: "JavaScript" },
+    {engName: "HTML"},
+    {engName: "CSS"},
+    {engName: "JavaScript"},
 ];
 const portfolioCopyright = [
-  { name: "cc" },
-  { name: "by" },
-  { name: "nc" },
-  { name: "nd" },
+    {name: "cc"},
+    {name: "by"},
+    {name: "nc"},
+    {name: "nd"},
 ];
 const portfolios = [
-  { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
-  { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
-  { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
-  { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
-  { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
-  { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
-  { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
-  { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
-  { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
-  { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
+    {id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png"},
+    {id: 3, title: "포트폴리오3", thumbnail: "calm.jpg"},
+    {id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg"},
+    {id: 5, title: "포트폴리오5", thumbnail: "corn.jpg"},
+    {id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png"},
+    {id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg"},
+    {id: 8, title: "포트폴리오8", thumbnail: "calm.jpg"},
+    {id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg"},
+    {id: 10, title: "포트폴리오10", thumbnail: "corn.jpg"},
+    {id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png"},
 ];
 
 // Data
-const commentBoxOpen = ref(false);
+const onCommentBoxOpen = ref(false);
 const state = reactive({
-  member: {},
-  portfolio: {},
-  contents: [],
-  comments: [],
+    member: {},
+    portfolio: {},
+    contents: [],
+    likes: [],
+    comments: [],
+    onLiked: false,
 });
+console.log(state);
 
 // Functions
 function scrollToTop() {
-  window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 }
 
 function toggleCommentBox() {
-  commentBoxOpen.value = !commentBoxOpen.value;
+    onCommentBoxOpen.value = !onCommentBoxOpen.value;
 }
 
 function contentToHTML(item) {
-  if (item.type === "0") {
-    return item.content;
-  } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
-  }
+    if (item.type === "0") {
+        return item.content;
+    } else if (item.type === "1") {
+        return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
+    }
 }
 
 function scrollLeft() {
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft -= 326;
+    const scrollContainer = document.querySelector(".scroll-container");
+    scrollContainer.scrollLeft -= 326;
 }
 
 function scrollRight() {
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft += 326;
+    const scrollContainer = document.querySelector(".scroll-container");
+    scrollContainer.scrollLeft += 326;
 }
 
 // Get data
 async function getData() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-  await fetch(`http://localhost:8080/pofo/${portfolioId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.portfolio = data.portfolio;
-      state.member = data.member;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.portfolio = data.portfolio;
+            state.member = data.member;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 
-  await fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.contents = data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.contents = data;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 
-  await fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
-    .then((res) => res.json())
-    .then((data) => {
-      state.comments = data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.comments = data;
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 
-  return state;
+    fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
+        .then((res) => res.json())
+        .then((data) => {
+            state.likes = data;
+        })
+        .then(checkLikes)
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }
 
 async function getMorePortfolios() {
 }
 
-async function getLikes(){
+// Likes
+function toggleLikes() {
+    if (!useUserDetailsStore().id) {
+        return alert("로그인 후 이용해주세요.");
+    }
+
+    if (!state.onLiked) {
+        saveLike();
+        return (state.onLiked = true);
+    } else {
+        deleteLikes();
+        return (state.onLiked = false);
+    }
+}
+
+async function checkLikes() {
+    console.log(state.likes);
+    state.likes.forEach((like) => {
+        if (like.memberId === useUserDetailsStore().id) {
+            console.log("true");
+            return (state.onLiked = true);
+        } else {
+            console.log("false");
+            return (state.onLiked = false);
+        }
+    });
+}
+
+async function saveLike() {
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+
+    const like = {
+        memberId: useUserDetailsStore().id,
+        portfolioId: portfolioId,
+    };
+
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(like),
+    })
+        .catch((error) => {
+            console.error("Error:", error);
+        })
+        .finally(() => {
+            getData();
+        });
+}
+
+async function deleteLikes() {
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+
+    const like = {
+        memberId: useUserDetailsStore().id,
+        portfolioId: portfolioId,
+    };
+
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+        mode: "cors",
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(like),
+    })
+        .catch((error) => {
+            console.error("Error:", error);
+        })
+        .finally(() => {
+            getData();
+        });
 }
 
 // Save data
-function saveNewComment() {
-  if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
-  } else if (!document.querySelector("#comment-input").value) {
-    return alert("댓글을 입력해주세요.");
-  } else {
-    const url = window.location.href;
-    const portfolioId = parseInt(
-      url.replace("http://127.0.0.1:5173/#/pofo/", "")
-    );
+function saveComment() {
+    if (!useUserDetailsStore().id) {
+        return alert("로그인 후 이용해주세요.");
+    } else if (!document.querySelector("#comment-input").value) {
+        return alert("댓글을 입력해주세요.");
+    } else {
+        const url = window.location.href;
+        const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-    const comment = {
-      memberId: useUserDetailsStore().id,
-      portfolioId: portfolioId,
-      content: document.querySelector("#comment-input").value,
-    };
+        const comment = {
+            memberId: useUserDetailsStore().id,
+            portfolioId: portfolioId,
+            content: document.querySelector("#comment-input").value,
+        };
 
-    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(comment),
-    }).then(getData);
-  }
+        return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+            mode: "cors",
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify(comment),
+        })
+            .catch((error) => {
+                console.error("Error:", error);
+            })
+            .finally(getData);
+    }
 }
 
 // Lifecycle
@@ -146,14 +234,14 @@ onMounted(getData);
   >
     <div
       class="w-full bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
-      :class="commentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
+      :class="onCommentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
       <figure class="flex p-6">
         <router-link :to="`/profile/${state.member.id}`">
           <img
             class="mr-4 mt-2 h-12 w-12 cursor-pointer rounded-full duration-300 hover:opacity-50"
-            :src="`/src/assets/images/temp/${state.member.image}`"
+            :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
           >
@@ -313,7 +401,7 @@ onMounted(getData);
     <!-- Sidebar -->
     <div
       class="sidebar fixed hidden flex-col text-xs"
-      :class="commentBoxOpen ? 'xl:hidden' : 'xl:block'"
+      :class="onCommentBoxOpen ? 'xl:hidden' : 'xl:block'"
     >
       <figure class="">
         <router-link
@@ -335,8 +423,24 @@ onMounted(getData);
       <div
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
-        <div class="mb-2 rounded-full border-2 bg-white">
-          <div class="heart-icon cursor-pointer hover:animate-pulse" />
+        <div
+          class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border-2"
+          :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
+          @click="toggleLikes"
+        >
+          <div
+            class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
+          >
+            <div
+              class="bg-heart bg-center bg-no-repeat"
+              :class="state.onLiked ? 'mt-1 mb-4 h-4 w-4' : 'h-6 w-6'"
+            />
+          </div>
+          <span
+            class="mt-4 text-xs font-bold text-white"
+            :class="state.onLiked ? 'bottom-0.5 block' : 'bottom-0.5 hidden'"
+            v-text="state.likes.length"
+          />
         </div>
         좋아요
       </div>
@@ -365,12 +469,22 @@ onMounted(getData);
         />
         공유하기
       </div>
+      <div
+        class="my-6 flex flex-col items-center text-center text-sm font-bold"
+      >
+        <div
+          class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 bg-white hover:bg-blue-50"
+        >
+          <div class="h-8 w-8 bg-fire" />
+        </div>
+        신고하기
+      </div>
     </div>
 
     <!-- Comment box -->
     <div
       class="comment-box fixed hidden overflow-y-auto rounded-lg border bg-white"
-      :class="commentBoxOpen ? 'xl:block' : 'xl:hidden'"
+      :class="onCommentBoxOpen ? 'xl:block' : 'xl:hidden'"
     >
       <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
         <div
@@ -386,7 +500,11 @@ onMounted(getData);
             UI/UX · 그래픽 디자인
           </span>
         </div>
-        <div class="heart-icon mb-2 cursor-pointer" />
+        <div
+          class="mb-2 flex h-12 w-12 cursor-pointer rounded-full border-2 bg-white"
+        >
+          <div class="heart-icon hover:animate-pulse" />
+        </div>
         <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
         <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
         <span
@@ -400,7 +518,7 @@ onMounted(getData);
         />
         <button
           class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
-          @click="saveNewComment(comment)"
+          @click="saveComment"
         >
           댓글 작성
         </button>

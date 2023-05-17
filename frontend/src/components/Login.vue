@@ -102,7 +102,7 @@ async function loginHandler() {
 
         <div class="margin-top-20">
           <span class="margin-right-22 font-size1">아직 포폴의 회원이 아니세요?</span>
-          <a><span class="font-size1 margin-left-5 underline"> 회원가입 하기</span></a>
+          <router-link to="/signup"><span class="font-size1 margin-left-5 underline"> 회원가입 하기</span></router-link>
         </div>
       </div>
     </div>

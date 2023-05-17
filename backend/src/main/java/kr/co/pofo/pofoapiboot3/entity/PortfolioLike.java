@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Data
 public class PortfolioLike {
-    private Integer id;
     private Integer memberId;
     private Integer portfolioId;
     private Date likedDate;
