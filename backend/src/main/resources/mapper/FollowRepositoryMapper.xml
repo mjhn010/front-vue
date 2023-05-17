@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.pofo.pofoapiboot3.repository.FollowRepository">
+
+    <insert id="insert" parameterType="Follow">
+		insert into 
+            follow (requester_id,requested_id)
+		values(#{requesterId},#{requestedId})
+	</insert>
+
+     <delete id="delete" parameterType="Follow">
+		delete from
+            follow 
+        where 
+            requested_id= #{requestedId}
+        and
+            requester_id=#{requesterId}
+	</delete>
+
+    <select id="count" parameterType="Follow" resultType="int">
+        select
+            count(requester_id)
+        from
+            follow
+        where 
+            requested_id= #{requestedId}
+        and
+            requester_id=#{requesterId}
+    </select>
+
+
+    <select id="countFollower" resultType="int">
+        select
+            count(requester_id)
+        from
+            follow
+        where
+            requested_id = ${id}
+    </select>
+</mapper>
