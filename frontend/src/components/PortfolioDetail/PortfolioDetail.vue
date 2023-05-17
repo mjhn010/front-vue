@@ -1,226 +1,221 @@
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import { onMounted, reactive, ref } from "vue";
 import Header from "../Header.vue";
-import {useUserDetailsStore} from "@/stores/useUserDetailsStore";
+import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
 
 // Mock data
 const usedSkills = [
-    {engName: "HTML"},
-    {engName: "CSS"},
-    {engName: "JavaScript"},
+  { engName: "HTML" },
+  { engName: "CSS" },
+  { engName: "JavaScript" },
 ];
 const portfolioCopyright = [
-    {name: "cc"},
-    {name: "by"},
-    {name: "nc"},
-    {name: "nd"},
+  { name: "cc" },
+  { name: "by" },
+  { name: "nc" },
+  { name: "nd" },
 ];
 const portfolios = [
-    {id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png"},
-    {id: 3, title: "포트폴리오3", thumbnail: "calm.jpg"},
-    {id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg"},
-    {id: 5, title: "포트폴리오5", thumbnail: "corn.jpg"},
-    {id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png"},
-    {id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg"},
-    {id: 8, title: "포트폴리오8", thumbnail: "calm.jpg"},
-    {id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg"},
-    {id: 10, title: "포트폴리오10", thumbnail: "corn.jpg"},
-    {id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png"},
+  { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
+  { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
+  { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
+  { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
+  { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
+  { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
+  { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
+  { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
+  { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
+  { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
 ];
 
 // Data
 const onCommentBoxOpen = ref(false);
 const state = reactive({
-    member: {},
-    portfolio: {},
-    contents: [],
-    likes: [],
-    comments: [],
-    onLiked: false,
+  member: {},
+  portfolio: {},
+  contents: [],
+  likes: [],
+  comments: [],
+  onLiked: false,
 });
-console.log(state);
 
 // Functions
 function scrollToTop() {
-    window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 
 function toggleCommentBox() {
-    onCommentBoxOpen.value = !onCommentBoxOpen.value;
+  onCommentBoxOpen.value = !onCommentBoxOpen.value;
 }
 
 function contentToHTML(item) {
-    if (item.type === "0") {
-        return item.content;
-    } else if (item.type === "1") {
-        return `<img class="mb-12 w-fit" src="/src/assets/images/temp/${item.content}" alt="Content image"/>`;
-    }
+  if (item.type === "0") {
+    return item.content;
+  } else if (item.type === "1") {
+    return `<img class="mb-12 w-fit" src="http://localhost:8080/portfolio/contents/${item.content}" alt="Content image"/>`;
+  }
 }
 
 function scrollLeft() {
-    const scrollContainer = document.querySelector(".scroll-container");
-    scrollContainer.scrollLeft -= 326;
+  const scrollContainer = document.querySelector(".scroll-container");
+  scrollContainer.scrollLeft -= 326;
 }
 
 function scrollRight() {
-    const scrollContainer = document.querySelector(".scroll-container");
-    scrollContainer.scrollLeft += 326;
+  const scrollContainer = document.querySelector(".scroll-container");
+  scrollContainer.scrollLeft += 326;
 }
 
 // Get data
 async function getData() {
-    const url = window.location.href;
-    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  const url = window.location.href;
+  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-    fetch(`http://localhost:8080/pofo/${portfolioId}`)
-        .then((res) => res.json())
-        .then((data) => {
-            state.portfolio = data.portfolio;
-            state.member = data.member;
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+  fetch(`http://localhost:8080/pofo/${portfolioId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.portfolio = data.portfolio;
+      state.member = data.member;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
-    fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
-        .then((res) => res.json())
-        .then((data) => {
-            state.contents = data;
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+  fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.contents = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
-    fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
-        .then((res) => res.json())
-        .then((data) => {
-            state.comments = data;
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+  fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.comments = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
-    fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
-        .then((res) => res.json())
-        .then((data) => {
-            state.likes = data;
-        })
-        .then(checkLikes)
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-}
-
-async function getMorePortfolios() {
-}
-
-// Likes
-function toggleLikes() {
-    if (!useUserDetailsStore().id) {
-        return alert("로그인 후 이용해주세요.");
-    }
-
-    if (!state.onLiked) {
-        saveLike();
-        return (state.onLiked = true);
-    } else {
-        deleteLikes();
-        return (state.onLiked = false);
-    }
-}
-
-async function checkLikes() {
-    console.log(state.likes);
-    state.likes.forEach((like) => {
-        if (like.memberId === useUserDetailsStore().id) {
-            console.log("true");
-            return (state.onLiked = true);
-        } else {
-            console.log("false");
-            return (state.onLiked = false);
-        }
+  fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.likes = data;
+    })
+    .then(checkLikes)
+    .catch((error) => {
+      console.error("Error:", error);
     });
 }
 
+async function getMorePortfolios() {}
+
+// Likes
+function toggleLikes() {
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  }
+
+  if (!state.onLiked) {
+    saveLike();
+    return (state.onLiked = true);
+  } else {
+    deleteLikes();
+    return (state.onLiked = false);
+  }
+}
+
+async function checkLikes() {
+  state.likes.forEach((like) => {
+    if (like.memberId === useUserDetailsStore().id) {
+      return (state.onLiked = true);
+    } else {
+      return (state.onLiked = false);
+    }
+  });
+}
+
 async function saveLike() {
-    const url = window.location.href;
-    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  const url = window.location.href;
+  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-    const like = {
-        memberId: useUserDetailsStore().id,
-        portfolioId: portfolioId,
-    };
+  const like = {
+    memberId: useUserDetailsStore().id,
+    portfolioId: portfolioId,
+  };
 
-    return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
-        mode: "cors",
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(like),
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(like),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
     })
-        .catch((error) => {
-            console.error("Error:", error);
-        })
-        .finally(() => {
-            getData();
-        });
+    .finally(() => {
+      getData();
+    });
 }
 
 async function deleteLikes() {
-    const url = window.location.href;
-    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  const url = window.location.href;
+  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-    const like = {
-        memberId: useUserDetailsStore().id,
-        portfolioId: portfolioId,
-    };
+  const like = {
+    memberId: useUserDetailsStore().id,
+    portfolioId: portfolioId,
+  };
 
-    return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
-        mode: "cors",
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(like),
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(like),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
     })
-        .catch((error) => {
-            console.error("Error:", error);
-        })
-        .finally(() => {
-            getData();
-        });
+    .finally(() => {
+      getData();
+    });
 }
 
 // Save data
 function saveComment() {
-    if (!useUserDetailsStore().id) {
-        return alert("로그인 후 이용해주세요.");
-    } else if (!document.querySelector("#comment-input").value) {
-        return alert("댓글을 입력해주세요.");
-    } else {
-        const url = window.location.href;
-        const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  } else if (!document.querySelector("#comment-input").value) {
+    return alert("댓글을 입력해주세요.");
+  } else {
+    const url = window.location.href;
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-        const comment = {
-            memberId: useUserDetailsStore().id,
-            portfolioId: portfolioId,
-            content: document.querySelector("#comment-input").value,
-        };
+    const comment = {
+      memberId: useUserDetailsStore().id,
+      portfolioId: portfolioId,
+      content: document.querySelector("#comment-input").value,
+    };
 
-        return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
-            mode: "cors",
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-            },
-            body: JSON.stringify(comment),
-        })
-            .catch((error) => {
-                console.error("Error:", error);
-            })
-            .finally(getData);
-    }
+    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(comment),
+    })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(getData);
+  }
 }
 
 // Lifecycle
@@ -230,7 +225,8 @@ onMounted(getData);
 <template>
   <Header />
   <div
-    class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
+    class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12
+    xl:px-16 xl:pb-8 xl:pt-12"
   >
     <div
       class="w-full bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
@@ -290,7 +286,8 @@ onMounted(getData);
             :to="`/search?text=${skill.engName.toLowerCase()}`"
           >
             <div
-              class="block w-fit cursor-pointer rounded-full border px-3 py-1 font-semibold text-gray-600 hover:bg-blue-50"
+              class="block w-fit cursor-pointer rounded-full border px-3 py-1
+              font-semibold text-gray-600 hover:bg-blue-50"
               v-text="skill.engName"
             />
           </router-link>
@@ -312,11 +309,31 @@ onMounted(getData);
         :class="state.portfolio.awardDate ? 'sm:h-64' : 'sm:h-56'"
       >
         <div class="flex w-32 justify-evenly">
-          <div class="mb-2 cursor-pointer rounded-full border-2 bg-white">
-            <div class="heart-icon hover:animate-pulse" />
+          <div
+            class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center
+            justify-center rounded-full"
+            :class="
+              state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'
+            "
+            @click="toggleLikes"
+          >
+            <div
+              class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
+            >
+              <div
+                class="bg-heart bg-center bg-no-repeat"
+                :class="state.onLiked ? 'mb-4 mt-1 h-4 w-4' : 'h-6 w-6'"
+              />
+            </div>
+            <span
+              class="mt-4 text-xs font-bold text-white"
+              :class="state.onLiked ? 'bottom-0.5 block' : 'bottom-0.5 hidden'"
+              v-text="state.likes.length"
+            />
           </div>
           <div
-            class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50"
+            class="collection-icon mb-2 cursor-pointer rounded-full
+            border-2 bg-white hover:bg-blue-50"
           />
         </div>
         <span
@@ -387,11 +404,13 @@ onMounted(getData);
         <!-- Scroll buttons -->
         <div class="relative bottom-40 flex h-0 w-full justify-between px-4">
           <div
-            class="chevron-left-icon cursor-pointer border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            class="chevron-left-icon cursor-pointer border bg-white shadow-lg
+            hover:bg-blue-50 hover:duration-300"
             @click="scrollLeft"
           />
           <div
-            class="chevron-right-icon col-start-12 cursor-pointer justify-self-center border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            class="chevron-right-icon col-start-12 cursor-pointer justify-self-center
+            border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
             @click="scrollRight"
           />
         </div>
@@ -424,7 +443,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border-2"
+          class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center
+          justify-center rounded-full border-2"
           :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
           @click="toggleLikes"
         >
@@ -433,7 +453,7 @@ onMounted(getData);
           >
             <div
               class="bg-heart bg-center bg-no-repeat"
-              :class="state.onLiked ? 'mt-1 mb-4 h-4 w-4' : 'h-6 w-6'"
+              :class="state.onLiked ? 'mb-4 mt-1 h-4 w-4' : 'h-6 w-6'"
             />
           </div>
           <span
@@ -448,7 +468,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          class="collection-icon mb-2 cursor-pointer rounded-full
+          border-2 bg-white duration-300 hover:bg-blue-50"
         />
         컬렉션
       </div>
@@ -456,7 +477,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="comment-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          class="comment-icon mb-2 cursor-pointer rounded-full border-2
+          bg-white duration-300 hover:bg-blue-50"
           @click="toggleCommentBox"
         />
         댓글
@@ -465,7 +487,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="share-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          class="share-icon mb-2 cursor-pointer rounded-full border-2 bg-white
+          duration-300 hover:bg-blue-50"
         />
         공유하기
       </div>
@@ -473,7 +496,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 bg-white hover:bg-blue-50"
+          class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center
+          rounded-full border-2 bg-white hover:bg-blue-50 duration-300"
         >
           <div class="h-8 w-8 bg-fire" />
         </div>
@@ -501,9 +525,24 @@ onMounted(getData);
           </span>
         </div>
         <div
-          class="mb-2 flex h-12 w-12 cursor-pointer rounded-full border-2 bg-white"
+          class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center
+          justify-center rounded-full border-2"
+          :class="state.onLiked ? 'bg-gray-800 hover:bg-gray-900' : 'bg-white'"
+          @click="toggleLikes"
         >
-          <div class="heart-icon hover:animate-pulse" />
+          <div
+            class="absolute flex h-12 w-12 items-center justify-center hover:animate-pulse"
+          >
+            <div
+              class="bg-heart bg-center bg-no-repeat"
+              :class="state.onLiked ? 'mb-4 mt-1 h-4 w-4' : 'h-6 w-6'"
+            />
+          </div>
+          <span
+            class="mt-4 text-xs font-bold text-white"
+            :class="state.onLiked ? 'bottom-0.5 block' : 'bottom-0.5 hidden'"
+            v-text="state.likes.length"
+          />
         </div>
         <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
         <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
@@ -513,17 +552,20 @@ onMounted(getData);
         />
         <textarea
           id="comment-input"
-          class="col-span-7 mb-5 h-36 min-w-fit resize-none rounded-lg border border-black px-5 py-3 text-sm font-normal"
+          class="col-span-7 mb-5 h-36 min-w-fit resize-none rounded-lg
+          border border-black px-5 py-3 text-sm font-normal"
           placeholder="이 작업에 대한 댓글을 남겨주세요."
         />
         <button
-          class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
+          class="col-span-2 col-start-5 mr-1 flex h-9 items-center
+          justify-center rounded-full border text-center text-sm font-semibold"
           @click="saveComment"
         >
           댓글 작성
         </button>
         <div
-          class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold"
+          class="col-start-7 flex cursor-pointer items-center justify-center
+          rounded-full border text-sm font-semibold"
         >
           취소
         </div>
