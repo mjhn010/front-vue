@@ -55,7 +55,10 @@ function removeDnone(e) {
   hoverMouse.classList.remove("d-none");
 }
 
+
 function dropHandler(event, index) {
+  let startApp = event.target.closest(".start-app");
+  let mainTitle = startApp.nextElementSibling;
   event.preventDefault();
   let objecUrls = [];
   let files = [...event.dataTransfer.files];
@@ -63,7 +66,9 @@ function dropHandler(event, index) {
     objecUrls.push(URL.createObjectURL(flie))
   
   list[index].img = objecUrls;
-  console.log(event.target)
+
+  startApp.classList.add("d-none");
+  mainTitle.classList.add("d-none");
 }
 
 </script>
@@ -122,7 +127,7 @@ function dropHandler(event, index) {
                     <div class="app-box">
                       <input @input="imgInputHandler($event, index)" class="d-none" type="file" name="files[]" multiple
                         accept="jpg,gif,png">
-                      <img @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt="">
+                      <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover" src="/src/assets/images/img.png" alt="">
                     </div>
                   </div>
                 </div>
