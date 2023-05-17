@@ -1,5 +1,6 @@
 package kr.co.pofo.pofoapiboot3.repository;
 
+import kr.co.pofo.pofoapiboot3.entity.LikeDto;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioLike;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +15,7 @@ public interface PortfolioLikeRepository {
 
     Integer countByPortfolioId(Integer portfolioId);
 
-    void insert(PortfolioLike portfolioLike);
+    void insert(LikeDto likeDto);
 
     void delete(PortfolioLike portfolioLike);
 

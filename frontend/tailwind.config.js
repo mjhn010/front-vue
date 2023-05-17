@@ -56,6 +56,7 @@ module.exports = {
       'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
       'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))',
       'fire': "url('/src/assets/images/fire-icon.svg')",
+      'heart': "url('/src/assets/images/heart.svg')",
     },
     backgroundOpacity: ({ theme }) => theme('opacity'),
     backgroundPosition: {

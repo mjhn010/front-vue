@@ -2,6 +2,7 @@ package kr.co.pofo.pofoapiboot3.service;
 
 import java.util.List;
 
+import kr.co.pofo.pofoapiboot3.entity.LikeDto;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioLike;
 import kr.co.pofo.pofoapiboot3.repository.PortfolioLikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class DefaultPortfolioLikeServices implements PortfolioLikeService {
     }
 
     @Override
-    public void insert(PortfolioLike portfolioLike) {
-        repository.insert(portfolioLike);
+    public void insert(LikeDto likeDto) {
+        repository.insert(likeDto);
     }
 
     @Override

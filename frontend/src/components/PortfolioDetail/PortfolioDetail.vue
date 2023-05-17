@@ -29,13 +29,16 @@ const portfolios = [
 ];
 
 // Data
-const commentBoxOpen = ref(false);
+const onCommentBoxOpen = ref(false);
 const state = reactive({
   member: {},
   portfolio: {},
   contents: [],
+  likes: [],
   comments: [],
+  onLiked: Boolean,
 });
+console.log(state);
 
 // Functions
 function scrollToTop() {
@@ -43,7 +46,7 @@ function scrollToTop() {
 }
 
 function toggleCommentBox() {
-  commentBoxOpen.value = !commentBoxOpen.value;
+  onCommentBoxOpen.value = !onCommentBoxOpen.value;
 }
 
 function contentToHTML(item) {
@@ -69,7 +72,7 @@ async function getData() {
   const url = window.location.href;
   const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
-  await fetch(`http://localhost:8080/pofo/${portfolioId}`)
+  fetch(`http://localhost:8080/pofo/${portfolioId}`)
     .then((res) => res.json())
     .then((data) => {
       state.portfolio = data.portfolio;
@@ -79,7 +82,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  await fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
+  fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
     .then((res) => res.json())
     .then((data) => {
       state.contents = data;
@@ -88,7 +91,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  await fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
+  fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
     .then((res) => res.json())
     .then((data) => {
       state.comments = data;
@@ -97,24 +100,82 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  return state;
+  fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.likes = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 async function getMorePortfolios() {}
 
-async function getLikes() {}
+// Likes
+function toggleLikes() {
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  }
+
+  if (!state.onLiked) {
+    saveLike();
+    return state.onLiked(true);
+  } else {
+    deleteLikes();
+    return state.onLiked(false);
+  }
+}
+
+async function checkLikes() {
+  state.likes.forEach((like) => {
+    if (like.memberId === useUserDetailsStore().id) {
+      return state.onLiked(true);
+    } else {
+      return state.onLiked(false);
+    }
+  });
+}
+
+async function saveLike() {
+  const url = window.location.href;
+  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+
+  const like = {
+    memberId: useUserDetailsStore().id,
+    portfolioId: portfolioId,
+  };
+
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(like),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(() => {
+      getData();
+    });
+}
+
+async function deleteLikes() {
+  const url = window.location.href;
+  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+}
 
 // Save data
-function saveNewComment() {
+function saveComment() {
   if (!useUserDetailsStore().id) {
     return alert("로그인 후 이용해주세요.");
   } else if (!document.querySelector("#comment-input").value) {
     return alert("댓글을 입력해주세요.");
   } else {
     const url = window.location.href;
-    const portfolioId = parseInt(
-      url.replace("http://127.0.0.1:5173/#/pofo/", "")
-    );
+    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
 
     const comment = {
       memberId: useUserDetailsStore().id,
@@ -129,12 +190,19 @@ function saveNewComment() {
         "Content-type": "application/json",
       },
       body: JSON.stringify(comment),
-    }).then(getData);
+    })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(getData);
   }
 }
 
 // Lifecycle
-onMounted(getData);
+onMounted(async () => {
+  await getData();
+  await checkLikes();
+});
 </script>
 
 <template>
@@ -144,17 +212,17 @@ onMounted(getData);
   >
     <div
       class="w-full bg-white pb-4 xl:ml-36 xl:rounded-lg xl:border"
-      :class="commentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
+      :class="onCommentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
       <figure class="flex p-6">
         <router-link :to="`/profile/${state.member.id}`">
           <img
             class="mr-4 mt-2 h-12 w-12 cursor-pointer rounded-full duration-300 hover:opacity-50"
-            :src="`/src/assets/images/temp/${state.member.image}`"
+            :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          >
+          />
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -173,17 +241,15 @@ onMounted(getData);
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleCommentBox"
-            >팔로우</span>
+              >팔로우</span
+            >
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template
-          :key="content.id"
-          v-for="content in state.contents"
-        >
+        <template :key="content.id" v-for="content in state.contents">
           <div v-html="contentToHTML(content)" />
         </template>
       </main>
@@ -213,7 +279,7 @@ onMounted(getData);
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          >
+          />
         </div>
       </div>
       <!-- Banner -->
@@ -232,7 +298,8 @@ onMounted(getData);
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-        >POFO PICK 선정</span>
+          >POFO PICK 선정</span
+        >
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -246,10 +313,9 @@ onMounted(getData);
               .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
           "
         />
-        <span
-          class="text-xs font-semibold text-white sm:text-sm"
-          v-else
-        >그래픽 디자인 · UI/UX</span>
+        <span class="text-xs font-semibold text-white sm:text-sm" v-else
+          >그래픽 디자인 · UI/UX</span
+        >
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -260,12 +326,14 @@ onMounted(getData);
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
+          <span class="block text-sm font-semibold text-gray-500"
+            >프로필 자세히 보기</span
+          >
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="h-4 w-4 opacity-50"
-          >
+          />
         </router-link>
       </div>
 
@@ -285,7 +353,7 @@ onMounted(getData);
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              >
+              />
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="memberPortfolio.title"
@@ -311,7 +379,7 @@ onMounted(getData);
     <!-- Sidebar -->
     <div
       class="sidebar fixed hidden flex-col text-xs"
-      :class="commentBoxOpen ? 'xl:hidden' : 'xl:block'"
+      :class="onCommentBoxOpen ? 'xl:hidden' : 'xl:block'"
     >
       <figure class="">
         <router-link
@@ -323,7 +391,7 @@ onMounted(getData);
             class="mb-2 h-12 w-12 rounded-full border-2"
             src="/src/assets/images/temp/d.bronze.jpg"
             alt="Profile image"
-          >
+          />
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -333,8 +401,20 @@ onMounted(getData);
       <div
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
-        <div class="mb-2 rounded-full border-2 bg-white">
-          <div class="heart-icon cursor-pointer hover:animate-pulse" />
+        <div
+          class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border-2"
+          :class="state.onLiked ? 'bg-black' : 'bg-white'"
+          @click="toggleLikes"
+        >
+          <div
+            class="bg-heart bg-center bg-no-repeat hover:animate-pulse"
+            :class="state.onLiked ? 'mt-1 h-4 w-4' : 'h-6 w-6'"
+          />
+          <span
+            class="relative text-xs font-bold text-white"
+            :class="state.onLiked ? 'bottom-0.5 block' : 'bottom-0.5 hidden'"
+            v-text="state.likes.length"
+          />
         </div>
         좋아요
       </div>
@@ -366,8 +446,10 @@ onMounted(getData);
       <div
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
-        <div class="w-12 h-12 flex justify-center items-center mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50">
-            <div class="bg-fire w-8 h-8"/>
+        <div
+          class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 bg-white hover:bg-blue-50"
+        >
+          <div class="h-8 w-8 bg-fire" />
         </div>
         신고하기
       </div>
@@ -376,7 +458,7 @@ onMounted(getData);
     <!-- Comment box -->
     <div
       class="comment-box fixed hidden overflow-y-auto rounded-lg border bg-white"
-      :class="commentBoxOpen ? 'xl:block' : 'xl:hidden'"
+      :class="onCommentBoxOpen ? 'xl:block' : 'xl:hidden'"
     >
       <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
         <div
@@ -392,7 +474,11 @@ onMounted(getData);
             UI/UX · 그래픽 디자인
           </span>
         </div>
-        <div class="heart-icon mb-2 cursor-pointer" />
+        <div
+          class="mb-2 flex h-12 w-12 cursor-pointer rounded-full border-2 bg-white"
+        >
+          <div class="heart-icon hover:animate-pulse" />
+        </div>
         <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
         <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
         <span
@@ -406,7 +492,7 @@ onMounted(getData);
         />
         <button
           class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
-          @click="saveNewComment(comment)"
+          @click="saveComment"
         >
           댓글 작성
         </button>
@@ -425,15 +511,12 @@ onMounted(getData);
       >
         <div class="grid grid-cols-7 grid-rows-2">
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
-            <a
-              href="#"
-              class="row-span-2"
-            >
+            <a href="#" class="row-span-2">
               <img
                 class="h-12 w-12 rounded-full"
                 :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              >
+              />
             </a>
             <div
               class="col-start-2 font-bold"
@@ -444,10 +527,7 @@ onMounted(getData);
               v-text="comment.regDate.substring(0, 10).replace(/-/g, '.')"
             />
           </figure>
-          <p
-            class="col-span-7 my-4 text-sm"
-            v-text="comment.content"
-          />
+          <p class="col-span-7 my-4 text-sm" v-text="comment.content" />
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
