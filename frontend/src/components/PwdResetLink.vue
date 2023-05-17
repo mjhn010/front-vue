@@ -1,6 +1,59 @@
+<script setup>
+import { reactive, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import Modal from "./Modal.vue";
+
+//--------------데이터
+let email = ref("");
+let showModal = ref(false);
+let title = ref("");
+let router = useRouter();
+let route = useRoute();
+
+async function checkEmail() {
+  let response = await fetch(
+    `http://localhost:8080/email/checkemail?email=${email.value}`
+  );
+  let result = await response.text();
+  if (result === "ok") {
+    showModal.value = true;
+    title.value = "이메일이 존재하지 않습니다. 다시 확인해주세요";
+  } else {
+    let sendLink = await fetch(
+      `http://localhost:8080/email/findpwd?email=${email.value}`,
+      {
+        method: "POST",
+      }
+    );
+    let sendResult = await sendLink.text();
+    console.log(sendResult);
+    if (sendResult === "OK") {
+      showModal.value = true;
+      title.value = "이메일을 발송했습니다. 메일함을 확인해주세요";
+    } else {
+      showModal.value = true;
+      title.value = "이메일 발송에 실패했습니다. 다시 시도해주세요";
+    }
+  }
+}
+// async function sendEmailHandler() {
+//   let form = documnet.querySelector("#reset-form");
+
+//   let response = await fetch(
+//     `http://localhost:8080/email/checkemail${user.email}`
+//   );
+//   let result = await response.text();
+//   if (result === "ok") {
+//     router.push("/pwdresetlink");
+//   } else {
+//     showModal.value = true;
+//   }
+// }
+</script>
+
 <template>
   <!DOCTYPE html>
-  <html xmlns:th="http://www.thymeleaf.org">
+  <html>
     <head>
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -27,9 +80,11 @@
                 placeholder="이메일 입력"
                 name="email"
                 autocomplete="off"
+                v-model="email"
               />
               <span id="pwd-validation" class="block-red margin-top-2"></span>
               <input
+                v-on:click="checkEmail()"
                 class="margin-top-10 btn btn-1"
                 type="button"
                 value="이메일 전송"
@@ -50,6 +105,7 @@
       </section>
     </body>
   </html>
+  <Modal :show="showModal" @ok="showModal = false" type="1" :title="title" />
 </template>
 
 <style scoped>
