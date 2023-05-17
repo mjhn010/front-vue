@@ -37,6 +37,8 @@ const state = reactive({
   likes: [],
   comments: [],
   onLiked: false,
+  onBookmarked: false,
+  onReported: false,
 });
 
 // Functions
@@ -132,7 +134,7 @@ async function getData() {
 
 async function getMorePortfolios() {}
 
-// Likes
+// Like
 async function checkLikes() {
   state.likes.forEach((like) => {
     if (like.memberId === useUserDetailsStore().id) {
@@ -193,7 +195,7 @@ async function deleteLikes() {
     });
 }
 
-// Save data
+// Comment
 function saveComment() {
   if (!useUserDetailsStore().id) {
     return alert("로그인 후 이용해주세요.");
@@ -222,6 +224,126 @@ function saveComment() {
       })
       .finally(getData);
   }
+}
+
+// Bookmark
+function toggleBookmark() {
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  }
+
+  if (!state.onBookmarked) {
+    postBookmark();
+    return (state.onBookmarked = true);
+  } else {
+    deleteBookmark();
+    return (state.onBookmarked = false);
+  }
+}
+
+function postBookmark() {
+  const portfolioId = window.location.hash.split("/")[2];
+
+  const bookmark = {
+    memberId: useUserDetailsStore().id,
+    portfolioId: portfolioId,
+  };
+
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmark`, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookmark),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+function deleteBookmark() {
+  const portfolioId = window.location.hash.split("/")[2];
+
+  const bookmark = {
+    memberId: useUserDetailsStore().id,
+    portfolioId: portfolioId,
+  };
+
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmark`, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookmark),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+// Report
+function toggleReport() {
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  }
+
+  if (!state.onReported) {
+    postReport();
+    return (state.onReported = true);
+  } else {
+    deleteReport();
+    return (state.onReported = false);
+  }
+}
+
+function postReport() {
+  const url = "http://localhost:8080/report";
+
+  const report = {
+    memberId: useUserDetailsStore().id,
+    url: window.location.href,
+  };
+
+  console.log(report);
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(report),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+function deleteReport() {
+  const url = "http://localhost:8080/report";
+
+  const report = {
+      memberId: useUserDetailsStore().id,
+      url: window.location.href,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(report),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
 }
 
 // Lifecycle
@@ -468,6 +590,7 @@ onMounted(getData);
       >
         <div
           class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          @click="toggleBookmark"
         />
         북마크
       </div>
@@ -494,6 +617,7 @@ onMounted(getData);
       >
         <div
           class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          @click="toggleReport"
         >
           <div class="h-7 w-7 bg-fire" />
         </div>
