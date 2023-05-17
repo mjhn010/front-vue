@@ -7,7 +7,7 @@
         INSERT INTO
             report
         VALUES
-            (DEFAULT, #{url}, #{content}, #{regDate})
+            (DEFAULT, #{memberId}, #{url}, DEFAULT)
     </insert>
 
     <delete id="delete">
