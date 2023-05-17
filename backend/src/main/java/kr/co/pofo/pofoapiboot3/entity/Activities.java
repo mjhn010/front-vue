@@ -11,4 +11,7 @@ public class Activities {
     private int hited;
     private int liked;
     private int collected;
+    private int follower;
+    private int following;
+    
 }

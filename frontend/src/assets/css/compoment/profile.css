@@ -156,14 +156,6 @@ body{
     font-size: 0.8rem;
     padding: 3.%;
 }
-.btnfollowing{
-    background-color: #ffffff;
-    border-radius: 27px;
-    /* 외곽선 없애기 */
-    border: solid 2px;
-    color : #000000;
-    font-family: 'Noto Sans KR', sans-serif;
-    width: 290px;
-    font-size: 0.8rem;
-    padding: 3.%;
+.bg-change:hover{
+    background-color: rgb(222, 26, 59);
 }
