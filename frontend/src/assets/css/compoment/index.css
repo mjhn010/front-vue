@@ -386,6 +386,10 @@
     filter: brightness(80%);
 }
 
+.pointer:hover{
+    cursor: pointer;
+}
+
 /* 화면의 너비가 1920px 이하일 때 */
 @media (max-width: 1920px) {
     .list-section li {
@@ -440,5 +444,6 @@
         max-height: none;
     }
 }
+
 
 /* --------------------------------------------------------- */

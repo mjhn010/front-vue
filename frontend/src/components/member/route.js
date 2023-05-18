@@ -7,7 +7,7 @@ import Register from './community/Register.vue'
 const member = {
   path: "/member", 
   children :[
-    { path : "myprofile", children : [
+    { path : "profile", children : [
         {path : ":id", component: Myprofile}
     ]},
     { path : "reg", component : PofoReg },

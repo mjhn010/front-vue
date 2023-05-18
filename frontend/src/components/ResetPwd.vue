@@ -1,11 +1,56 @@
+<script setup>
+import { reactive, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import Modal from "./Modal.vue";
+
+//--------------데이터
+let email = ref("");
+let title = ref("");
+let showModal = ref(false);
+
+let router = useRouter();
+let route = useRoute();
+
+onMounted(() => {
+  async function checkuuid() {
+    let query = route.query.uuid;
+    let response = await fetch(
+      `http://localhost:8080/email/uuidcheck?uuid=${query}`
+    );
+    let result = await response.text();
+    console.log(result);
+    if (result == "ok") {
+      router.push("/pwdreset");
+    } else {
+      showModal.value = true;
+      title.value = "주소가 유효하지 않습니다. main화면으로 이동합니다";
+      router.push("/index");
+    }
+  }
+  checkuuid();
+});
+
+// if (result === "ok") {
+//   showModal.value = true;
+//   title.value = "이메일이 존재하지 않습니다. 다시 확인해주세요";
+// } else {
+//   let sendLink = await fetch(
+//     `http://localhost:8080/email/findpwd?email=${email.value}`,
+//     {
+//       method: "POST",
+//     }
+//   );
+// }
+</script>
+
 <template>
   <!DOCTYPE html>
-  <html xmlns:th="http://www.thymeleaf.org">
+  <html>
     <head>
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Document</title>
+      <title>ResetPasswordPage</title>
     </head>
 
     <body>
@@ -16,7 +61,7 @@
           </h1>
           <h2 class="margin-top-9">비밀번호 변경</h2>
 
-          <form id="reset-form">
+          <form id="reset-form" style="display: inline-grid">
             <div class="margin-top-9">
               <input
                 class="input-text input-text-placeholder"
@@ -58,6 +103,7 @@
       </section>
     </body>
   </html>
+  <Modal :show="showModal" @ok="showModal = false" type="1" :title="title" />
 </template>
 
 <style scoped>

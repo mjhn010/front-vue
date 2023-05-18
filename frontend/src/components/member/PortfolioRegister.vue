@@ -1,68 +1,118 @@
 <script setup>
 import Header from "../Header.vue";
 import { onMounted, onUpdated, reactive, ref } from "vue";
-// 보였다가 없어짐
-let showModal = ref(false)
-let list = reactive([])
-let listIndex = 0
-let erase = ref(true)
-let eraseImg = ref(false)
 
-
+let showModal = ref(false);
+let thumbnail = ref('');
+let imgUpLoad = ref(false);
+// 제목 양방향 바인딩 추가
+let title = ref('');
+let list = reactive([]);
+let listIndex = 0;
+// 체크박스 선택 하나만
+let singgle = ref(true);
+let team = ref(false);
 
 function arrayRemove(event, index) {
-  list.splice(index, 1)
+  list.splice(index, 1);
 }
 function imgPlusHandler() {
-  list.push({ type: "img", text: "", img: [], order: listIndex })
-  listIndex++
+  list.push({ type: "img", text: "", img: [], order: listIndex });
+  listIndex++;
 }
 function textPlusHandler() {
-  list.push({ type: "text", text: "", img: [], order: listIndex })
-  listIndex++
+  list.push({ type: "text", text: "", img: [], order: listIndex });
+  listIndex++;
 }
 function showModalHandler() {
   showModal.value = !showModal.value;
 }
 
 function imgClickHandler(e) {
-  console.log(e.target)
   let previousElement = e.target.previousElementSibling;
-  previousElement.click()
+  previousElement.click();
+}
 
+function thumbmailClick(e){
+  let upSibling = e.target.previousSibling
+  let thumClick = upSibling.firstElementChild
+  thumClick.click()
 }
 function imgInputHandler(e, index) {
-  let urls = []
-  let files = e.target.files
-  console.log(files)
+  let urls = [];
+  let files = e.target.files;
   for (let file of files) {
-    urls.push(URL.createObjectURL(file))
+    urls.push(URL.createObjectURL(file));
   }
   list[index].img = urls;
-  let element1 = e.target.parentElement
+  let element1 = e.target.parentElement;
   while (element1.className != 'sub-box')
     element1 = element1.parentElement;
-  element1.classList.add("d-none")
+  element1.classList.add("d-none");
 
-  let element2 = e.target.parentElement
+  let element2 = e.target.parentElement;
   while (element2.className != 'start-app')
     element2 = element2.parentElement;
-  element2.nextElementSibling.classList.add("d-none")
-  erase.value = false
-  eraseImg.value = true
+  element2.nextElementSibling.classList.add("d-none");
+}
+
+function thumbnailImg(e){
+  let file = e.target.files[0];
+   thumbnail.value = URL.createObjectURL(file);
+   imgUpLoad.value = true;
+  
+}
+function thumbmailDrop(e){
+  e.preventDefault();
+  let file = e.dataTransfer.files[0];
+  console.log(file)
+   thumbnail.value = URL.createObjectURL(file);
+   imgUpLoad.value = true;
 }
 
 function addDnone(e) {
-  let hoverMouse = e.target.querySelector(".erase-box")
-  hoverMouse.classList.add("d-none")
+  let hoverMouse = e.target.querySelector(".erase-box");
+  hoverMouse.classList.add("d-none");
 }
 function removeDnone(e) {
-  let hoverMouse = e.target.querySelector(".erase-box")
+  let hoverMouse = e.target.querySelector(".erase-box");
   if (hoverMouse == null)
-    hoverMouse = e.currentTarget.querySelector(".erase-box")
-  hoverMouse.classList.remove("d-none")
+    hoverMouse = e.currentTarget.querySelector(".erase-box");
+  hoverMouse.classList.remove("d-none");
 }
 
+
+function dropHandler(event, index) {
+  let startApp = event.target.closest(".start-app");
+  let mainTitle = startApp.nextElementSibling;
+  event.preventDefault();
+  let objecUrls = [];
+  let files = [...event.dataTransfer.files];
+  for (let flie of files) 
+    objecUrls.push(URL.createObjectURL(flie))
+  
+  list[index].img = objecUrls;
+
+  startApp.classList.add("d-none");
+  mainTitle.classList.add("d-none");
+}
+
+// 체크박스 하나만 선택해서 하기 선택자 사용하지않고 짜증나네
+function singgleChecked(e){  
+  if(e.target == singgle.value){
+    console.log(e.target)
+    singgle.value.checked = true;
+    team.value.checked = false;
+  }
+}
+function teamChecked(e){
+  if(e.target == team.value){
+  console.log(e.target)
+  team.value.checked = true;
+  singgle.value.checked = false;
+}
+
+}
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
@@ -71,7 +121,7 @@ function removeDnone(e) {
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
-          <input class="reg-title" type="text" placeholder="제목을 입력해주세요.">
+          <input v-model="title" class="reg-title" type="text" placeholder="제목을 입력해주세요.">
         </div>
         <!--  -->
         <section class="reg-content">
@@ -104,7 +154,8 @@ function removeDnone(e) {
           <!-- 이미지 클릭했을때 나오는 박스 -->
           <section class="vue-for-box" v-for="(pofo, index) in list">
 
-            <section v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
+            <section @dragover.stop.prevent="onDragover" @drop.stop.prevent="dropHandler($event, index)"
+              v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
               class="default-box click-img-box">
               <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">
@@ -118,7 +169,7 @@ function removeDnone(e) {
                     <div class="app-box">
                       <input @input="imgInputHandler($event, index)" class="d-none" type="file" name="files[]" multiple
                         accept="jpg,gif,png">
-                      <img @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt="">
+                      <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover" src="/src/assets/images/img.png" alt="">
                     </div>
                   </div>
                 </div>
@@ -187,15 +238,18 @@ function removeDnone(e) {
         <button @click.prevent="showModalHandler" class="modal-close"></button>
       </div>
       <div class="reg-modal">
-        <div class="modal-flex">
+        <div class="modal-flex m-r-5">
           <div class="thumbnail-box">
             <div class="modal-thumbnail-text">
               <span class="thumbnail-span">커버</span><span class="thumbnail-color">(필수)</span>
             </div>
-            <div class="thumbnail-img-box margin-top-5">
-              <img class="thumbnail-img" src="" alt="">
-              <input class="d-none" type="file">
+            <div  @dragover.stop.prevent="onDragover" @drop.stop.prevent="thumbmailDrop($event)" class="thumbnail-img-box margin-top-5">
+              <input @input="thumbnailImg($event,index)" class="d-none thumbnailInput" type="file" name="thumbmail" 
+              accept="jpg,gif,png">
+              <!-- <img  @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt=""> -->
+              <img v-if="imgUpLoad" :src="thumbnail" alt="" class="thumnailImg-upload">
             </div>
+            <button class="modal-submit-btn thum-btn" @click.prevent="thumbmailClick($event)" type="button">이미지업로드</button>
           </div>
           <div class="border-right"></div>
         </div>
@@ -204,28 +258,30 @@ function removeDnone(e) {
           <div class="modal-main-text margin-top-3">
             <span class="thumbnail-span">제목</span><span class="thumbnail-color">(필수)</span>
           </div>
-          <input class="modal-main-title margin-top-2" type="text" placeholder="제목을 입력하세요">
+          <input v-model="title" class="modal-main-title margin-top-2" type="text" placeholder="제목을 입력하세요">
           <div class="modal-main-text margin-top-5">
             <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="check-box margin-top-2">
-            <label class="skill-label"><input class="cb" type="checkbox" value="java" checked="checked">java</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="javaScript">javaScript</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="python">python</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="C">C</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="C#">C#</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="VisualBasic">VisualBasic</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="HTML">HTML</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="CSS">CSS</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="spring">Spring</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="springBoot">SpringBoot</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="1" checked="checked">java</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="2">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="3">python</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="4">C</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="5">C#</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="6">VisualBasic</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="7">HTML</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="8">CSS</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="9">Spring</label>
+            <label class="skill-label"><input class="cb" type="checkbox" value="10">SpringBoot</label>
           </div>
           <div class="modal-main-text margin-top-5">
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
-          <div class="team-info margin-top-3">
-            <input type="checkbox" name="singgle" value="0">개인
-            <input type="checkbox" name="team" value="1">팀
+          <div class="select-team team-info margin-top-3">
+            <label class="skill-label singgle"><input ref="singgle"  @click="singgleChecked($event)" class="cb" type="checkbox" checked name="singgle" value="0">개인</label>
+            <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox" name="team" value="1">팀</label>
+            <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
+            <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
           </div>
           <div class="modal-main-text margin-top-5">
             <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
@@ -244,5 +300,32 @@ function removeDnone(e) {
 
 .d-none {
   display: none;
+}
+.thumnailImg-upload{
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+.thum-btn{
+  padding: 3%;
+  margin-top: 5%;
+  margin-left: 30%;
+}
+.m-r-5{
+  margin-right: 5%;
+}
+.singgle{
+font-size: 14px;
+font-weight: 400;
+
+}
+.team{
+  font-size: 14px;
+  font-weight: 400;
+}
+.select-team{
+  display: flex;
+  justify-content: space-around;
+  width: 30%;
 }
 </style>

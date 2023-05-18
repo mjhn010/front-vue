@@ -3,6 +3,8 @@ import { reactive, onMounted, ref, watch, defineComponent } from 'vue';
 import Header from './Header.vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { useRouter, useRoute } from 'vue-router';
+import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 
 // --- Variables ---------------------------------------
 let state = reactive({
@@ -18,6 +20,8 @@ let state = reactive({
   limit: 15, // 한 번에 가져올 리스트의 개수
 });
 
+let userDetails = useUserDetailsStore();
+let router = useRouter();
 
 // --- Life Cycles -------------------------------------
 onMounted(fetchPortfolios);
@@ -46,6 +50,14 @@ async function fetchPortfolios() {
   state.list = json.list;
   state.weeklyPopularList = json.weeklyPopularList;
 }
+
+function profileIdClickHandler(e, memberId){
+  if(memberId === userDetails.id)
+    router.push("/member/profile/"+memberId);
+  else
+    router.push("profile/"+memberId);
+}
+
 
 </script>
 
@@ -154,10 +166,10 @@ async function fetchPortfolios() {
             <div class="information">
               <div class="portfolio-info-profile">
                 <!-- <img :src="'image/' + portfolio.memberImage" alt="프로필 이미지"> -->
-                <router-link :to="'/profile/' + portfolio.memberId">
+                <span @click.prevent="profileIdClickHandler($event,portfolio.memberId)" class="pointer">
                   <img src="/src/assets/images/BctLFrYLdnFPix7w.jpg" alt="프로필 이미지">
-                </router-link>
-                <router-link :to="'/profile/' + portfolio.memberId" class="nickname">{{ portfolio.nickname }}</router-link>
+                </span>
+                <span @click.prevent="profileIdClickHandler($event,portfolio.memberId)" class="pointer">{{ portfolio.nickname }}</span>
               </div>
               <div class="portfolio-info-counts">
                 <img src="/src/assets/images/eye.png" alt="조회수 이미지">

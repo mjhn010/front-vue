@@ -1,7 +1,7 @@
 <script setup>
 import Header from './Header.vue'
 import { onMounted, reactive, ref, shallowRef, triggerRef, watch } from 'vue';
-import {useRoute} from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 
 let userDetails = useUserDetailsStore();
@@ -9,6 +9,9 @@ let userDetails = useUserDetailsStore();
 //현재 클릭되어있는 TAB
 let current = ref();
 let route = useRoute();
+let isFollow = ref(true);
+let isFollowing = ref(false);
+let followingText = ref("팔로잉");
 
 
 
@@ -22,8 +25,24 @@ let model = reactive({
 
 onMounted(() => {
     load();
+    if(userDetails.id!=null)
+        followCheck();
 });
 
+async function followCheck() {
+    let response = await fetch(`http://localhost:8080/profile/isFollowed`, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: `requesterId=${userDetails.id}&requestedId=${route.params.id}`
+    });
+    let result = await response.text();
+    if (result === 'yes') {
+        isFollow.value = false;
+        isFollowing.value = true;
+    }
+}
 
 async function load() {
     let param = route.params.id;
@@ -52,6 +71,44 @@ function clickCollections() {
     model.currentList = model.list[2];
 }
 
+
+
+//팔로우버튼 클릭 이벤트핸들러
+async function followBtnClickHandler() {
+    //팔로우 안되있을시
+    if (isFollow.value) {
+        await fetch("http://localhost:8080/profile/follow", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded"
+            },
+            body: `requesterId=${userDetails.id}&requestedId=${route.params.id}`
+        });
+    }
+    //팔로우취소시
+    if (isFollowing.value) {
+        await fetch("http://localhost:8080/profile/follow", {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded"
+            },
+            body: `requesterId=${userDetails.id}&requestedId=${route.params.id}`
+        });
+    }
+
+    isFollow.value = !isFollow.value;
+    isFollowing.value = !isFollowing.value;
+    load();
+}
+
+function followingBtnMouseOverHandler() {
+    followingText.value = "팔로우 취소"
+}
+
+function followingBtnMouseLeaveHandler() {
+    followingText.value = "팔로잉"
+}
+
 </script>
 <template>
     <Header></Header>
@@ -60,15 +117,23 @@ function clickCollections() {
         <section class="margin-right-5 profile">
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
-                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="model.myInfo.image==null"/>
-                <img :src="'http://localhost:8080/profileImage/' + model.myInfo.image" class="profile-img" v-else/>
+                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
+                    v-if="model.myInfo.image == null" />
+                <img :src="'http://localhost:8080/profileImage/' + model.myInfo.image" class="profile-img" v-else />
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>
                 <a :href="model.myInfo.url" class="url" :hash="false">{{ model.myInfo.url }}</a>
                 <div>
-                    <button class="btn btn-0 font-size-15 btn-height font-weight-700">+ 팔로우</button>
-                    <button class="d-none">팔로우</button>
+                    <button class="btn btn-0 font-size-15 btn-height font-weight-700" @click.prevent="followBtnClickHandler"
+                        v-if="isFollow">+ 팔로우</button>
+                    <button class="btn btn-0 font-size-15 btn-height font-weight-700 bg-change"
+                        @click.prevent="followBtnClickHandler" v-if="isFollowing"
+                        @mouseover.stop.prevent="followingBtnMouseOverHandler"
+                        @mouseleave.stop.prevent="followingBtnMouseLeaveHandler">{{ followingText }}
+                    </button>
+
+                    <!-- <button class="d-none">팔로우</button> -->
                 </div>
             </div>
 
@@ -94,8 +159,8 @@ function clickCollections() {
                     <div class="font-size-14 font-gray">팔로잉</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">0</div>
-                    <div class="font-size-14 font-gray">팔로우</div>
+                    <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.follower }}</div>
+                    <div class="font-size-14 font-gray">팔로워</div>
                 </div>
             </div>
         </section>
@@ -126,7 +191,7 @@ function clickCollections() {
                 <router-link :to="'/pofo/' + pofo.id" v-for="pofo in model.currentList">
                     <div class="thumbnail" :data-title="pofo.title">
                         <span>
-                            <img :src="'/src/assets/images/' + pofo.thumbnail">
+                            <img :src="'http://localhost:8080/portfolio/thumbnails/' + pofo.thumbnail">
                         </span>
                     </div>
                 </router-link>
@@ -161,7 +226,7 @@ function clickCollections() {
     text-overflow: ellipsis;
 }
 
-.font-weight-700{
+.font-weight-700 {
     font-weight: 700;
     font-size: 0.9rem;
 }

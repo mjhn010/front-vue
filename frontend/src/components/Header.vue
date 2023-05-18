@@ -165,7 +165,7 @@
           <router-link to="/member/reg" class="upload menu-item margin-top-5">
             새로운 포트폴리오 업로드
           </router-link>
-          <router-link :to="'/member/myprofile/' + userDetails.id" class="mypofo menu-item">
+          <router-link :to="'/member/profile/' + userDetails.id" class="mypofo menu-item">
             나의 포트폴리오
           </router-link>
           <div class="line-bar"></div>

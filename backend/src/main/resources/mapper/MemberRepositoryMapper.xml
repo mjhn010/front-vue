@@ -49,7 +49,14 @@
 			id = ${id} 
 	</select>
 
-
+	<update id="insertUUID" parameterType="String">
+		update 
+			member 
+		set 
+			uuid = #{uuid}
+		where 
+			email = #{email};
+	</update>
 </mapper>
 
 
