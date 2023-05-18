@@ -3,19 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.pofo.pofoapiboot3.repository.ReportRepository">
+    <select id="selectByPortfolioId" resultType="Report">
+        SELECT
+            *
+        FROM
+            report
+        WHERE
+            portfolio_id = #{portfolioId}
+    </select>
+
     <insert id="insert">
         INSERT INTO
             report
         VALUES
-            (DEFAULT, #{memberId}, #{url}, DEFAULT)
+            (DEFAULT, #{memberId}, #{portfolioId}, #{recruitId}, DEFAULT)
     </insert>
 
     <delete id="delete">
         DELETE FROM
             report
         WHERE
-            member_id = #{memberId}
+            (portfolio_id = #{portfolioId} OR recruit_id = #{recruitId})
         AND
-            url = #{url}
+            member_id = #{memberId}
     </delete>
 </mapper>

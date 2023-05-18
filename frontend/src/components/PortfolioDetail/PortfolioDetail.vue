@@ -34,8 +34,10 @@ const state = reactive({
   member: {},
   portfolio: {},
   contents: [],
-  likes: [],
   comments: [],
+  likes: [],
+  bookmarks: [],
+  reports: [],
   onLiked: false,
   onBookmarked: false,
   onReported: false,
@@ -74,10 +76,16 @@ function scrollRight() {
   scrollContainer.scrollLeft += 326;
 }
 
+function check(){
+  checkLikes();
+  checkBookmarks();
+  checkReports();
+}
+
 // Get data
 async function getData() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  const portfolioId = window.location.hash.split("/")[2];
+  const memberId = useUserDetailsStore().id;
 
   fetch(`http://localhost:8080/pofo/${portfolioId}`)
     .then((res) => res.json())
@@ -116,6 +124,27 @@ async function getData() {
     .catch((error) => {
       console.error("Error:", error);
     });
+
+  fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.bookmarks = data;
+    })
+    .then(checkBookmarks)
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+  fetch(`http://localhost:8080/pofo/${portfolioId}/reports`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      state.report = data;
+    })
+    .then(checkReports)
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 async function getMorePortfolios() {}
@@ -134,6 +163,7 @@ function toggleLike() {
     return (state.onLiked = false);
   }
 }
+
 async function checkLikes() {
   state.likes.forEach((like) => {
     if (like.memberId === useUserDetailsStore().id) {
@@ -232,14 +262,24 @@ function toggleBookmark() {
   }
 
   if (!state.onBookmarked) {
-    alert("북마크에 추가되었습니다.")
+    alert("북마크에 추가되었습니다.");
     postBookmark();
     return (state.onBookmarked = true);
   } else {
-    alert("북마크에서 삭제되었습니다.")
+    alert("북마크에서 삭제되었습니다.");
     deleteBookmark();
     return (state.onBookmarked = false);
   }
+}
+
+async function checkBookmarks() {
+  state.bookmarks.forEach((bookmark) => {
+    if (bookmark.memberId === useUserDetailsStore().id) {
+      return (state.onBookmarked = true);
+    } else {
+      return (state.onBookmarked = false);
+    }
+  });
 }
 
 function postBookmark() {
@@ -250,7 +290,7 @@ function postBookmark() {
     memberId: useUserDetailsStore().id,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmark`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`, {
     mode: "cors",
     method: "POST",
     headers: {
@@ -272,7 +312,7 @@ function deleteBookmark() {
     memberId: useUserDetailsStore().id,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmark`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`, {
     mode: "cors",
     method: "DELETE",
     headers: {
@@ -293,22 +333,33 @@ function toggleReport() {
   }
 
   if (!state.onReported) {
-    alert("신고가 접수되었습니다.")
+    alert("신고가 접수되었습니다.");
     postReport();
     return (state.onReported = true);
   } else {
-    alert("신고가 취소되었습니다.")
+    alert("신고가 취소되었습니다.");
     deleteReport();
     return (state.onReported = false);
   }
 }
 
+async function checkReports() {
+  state.reports.forEach((report) => {
+    if (report.memberId === useUserDetailsStore().id) {
+      return (state.onReported = true);
+    } else {
+      return (state.onReported = false);
+    }
+  });
+}
+
 function postReport() {
-  const url = "http://localhost:8080/report";
+  const portfolioId = window.location.hash.split("/")[2];
+  const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
-    url: window.location.href,
+    portfolioId: portfolioId,
   };
 
   return fetch(url, {
@@ -326,11 +377,12 @@ function postReport() {
 }
 
 function deleteReport() {
-  const url = "http://localhost:8080/report";
+  const portfolioId = window.location.hash.split("/")[2];
+  const url = `http://localhost:8080/pofo/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
-    url: window.location.href,
+    portfolioId: portfolioId,
   };
 
   return fetch(url, {
@@ -590,7 +642,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          class="collection-icon mb-2 cursor-pointer rounded-full border-2  duration-300 hover:bg-blue-50"
+          :class="state.onBookmarked ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'"
           @click="toggleBookmark"
         />
         북마크
@@ -617,7 +670,8 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 duration-300 hover:bg-blue-50"
+          :class="state.onReported ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'"
           @click="toggleReport"
         >
           <div class="h-7 w-7 bg-fire" />

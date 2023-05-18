@@ -4,14 +4,21 @@ import kr.co.pofo.pofoapiboot3.entity.Report;
 import kr.co.pofo.pofoapiboot3.service.ReportService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
-@RequestMapping("/report")
+@RequestMapping("/pofo/{portfolioId}/reports")
 public class ReportController {
     private final ReportService service;
 
     public ReportController(ReportService service) {
         this.service = service;
+    }
+
+    @GetMapping
+    public List<Report> get(@PathVariable Integer portfolioId) {
+        return service.getByPortfolioId(portfolioId);
     }
 
     @PostMapping
