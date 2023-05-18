@@ -7,6 +7,10 @@ import Modal from "./Modal.vue";
 let email = ref("");
 let title = ref("");
 let showModal = ref(false);
+let pwd = ref("");
+let subPwd = ref("");
+let subPwdModiTest = ref("");
+let pwdModiTest = ref("");
 
 let router = useRouter();
 let route = useRoute();
@@ -22,13 +26,37 @@ onMounted(() => {
     if (result == "ok") {
       router.push("/pwdreset");
     } else {
-      showModal.value = true;
-      title.value = "주소가 유효하지 않습니다. main화면으로 이동합니다";
-      router.push("/index");
+      router.push("/error404");
     }
   }
   checkuuid();
 });
+
+function pwdInput() {
+  if (pwd.value.length == 0) {
+    pwdModiTest.value = "";
+    return;
+  }
+
+  if (!isPassword()) pwdModiTest.value = "no";
+  else pwdModiTest.value = "yes";
+}
+//비밀번호 형식 검사
+function isPassword() {
+  let regExp =
+    /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+  return regExp.test(pwd.value);
+}
+
+function subPwdInput() {
+  if (subPwd.value.length == 0) {
+    subPwdModiTest.value = "";
+    return;
+  }
+
+  if (!(pwd.value === subPwd.value)) subPwdModiTest.value = "no";
+  else subPwdModiTest.value = "yes";
+}
 
 // if (result === "ok") {
 //   showModal.value = true;
@@ -68,9 +96,17 @@ onMounted(() => {
                 type="password"
                 id="pasword"
                 placeholder="비밀번호(숫자,영문,특수문자 포함 8~16자리)"
+                @input="pwdInput"
                 name="pwd"
                 autocomplete="off"
+                v-model="pwd"
               />
+              <br />
+              <span class="margin-top-1 red" v-if="pwdModiTest == 'no'"
+                >유효하지 않은 비밀번호입니다.</span
+              ><span class="margin-top-1 green" v-if="pwdModiTest == 'yes'"
+                >유효한 비밀번호입니다.</span
+              >
               <span id="pwd-validation" class="block-red margin-top-2"></span>
             </div>
 
@@ -80,11 +116,20 @@ onMounted(() => {
               id="password-check"
               placeholder="비밀번호 확인"
               autocomplete="off"
+              @input="subPwdInput"
+              v-model="subPwd"
             />
+            <br />
+            <span class="margin-top-1 red" v-if="subPwdModiTest == 'no'"
+              >비밀번호가 일치하지 않습니다.</span
+            >
+            <span class="margin-top-1 green" v-if="subPwdModiTest == 'yes'"
+              >비밀번호가 일치합니다.</span
+            >
             <span id="pwd-certification" class="block-red margin-top-2"></span>
 
             <input
-              class="margin-top-10 btn btn-1"
+              class="margin-top-10 nbtn pwd-btn"
               type="button"
               value="비밀번호 변경"
               id="send-btn"
@@ -112,4 +157,5 @@ onMounted(() => {
 @import url("/src/assets/css/common/style.css");
 @import url("/src/assets/css/common/util.css");
 @import url("/src/assets/css/common/buttons.css");
+@import url("/src/assets/css/compoment/signup.css");
 </style>
