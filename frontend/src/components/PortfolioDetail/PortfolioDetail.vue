@@ -50,8 +50,9 @@ async function checkMyPortfolio() {
     state.isMine = true;
   } else {
     state.isMine = false;
-  };
+  }
 }
+
 function copyLink() {
   const url = window.location.href;
   navigator.clipboard.writeText(url);
@@ -510,7 +511,11 @@ onMounted(getData);
             />
           </div>
           <div
-            class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white hover:bg-blue-50"
+            class="collection-icon mb-2 cursor-pointer rounded-full border-2 duration-300 hover:bg-blue-50"
+            :class="
+              state.onBookmarked ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'
+            "
+            @click="toggleBookmark"
           />
         </div>
         <span
@@ -642,8 +647,10 @@ onMounted(getData);
         class="my-6 flex flex-col items-center text-center text-sm font-bold"
       >
         <div
-          class="collection-icon mb-2 cursor-pointer rounded-full border-2  duration-300 hover:bg-blue-50"
-          :class="state.onBookmarked ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'"
+          class="collection-icon mb-2 cursor-pointer rounded-full border-2 duration-300 hover:bg-blue-50"
+          :class="
+            state.onBookmarked ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'
+          "
           @click="toggleBookmark"
         />
         북마크
@@ -671,7 +678,9 @@ onMounted(getData);
       >
         <div
           class="mb-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 duration-300 hover:bg-blue-50"
-          :class="state.onReported ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'"
+          :class="
+            state.onReported ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'
+          "
           @click="toggleReport"
         >
           <div class="h-7 w-7 bg-fire" />
@@ -718,8 +727,17 @@ onMounted(getData);
             v-text="state.likes.length"
           />
         </div>
-        <div class="collection-icon mb-2 ml-1 cursor-pointer border-2" />
-        <div class="share-icon col-start-7 mb-2 cursor-pointer border-2" />
+        <div
+          class="collection-icon mb-2 cursor-pointer rounded-full border-2 duration-300 hover:bg-blue-50"
+          :class="
+            state.onBookmarked ? 'bg-gray-300 hover:bg-gray-400' : 'bg-white'
+          "
+          @click="toggleBookmark"
+        />
+        <div
+          class="share-icon col-start-7 mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
+          @click="copyLink"
+        />
         <span
           class="col-span-2 my-5 font-bold"
           v-text="`댓글(${state.comments.length})`"
