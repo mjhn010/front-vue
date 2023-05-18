@@ -74,20 +74,6 @@ function scrollRight() {
   scrollContainer.scrollLeft += 326;
 }
 
-function toggleLike() {
-  if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
-  }
-
-  if (!state.onLiked) {
-    saveLike();
-    return (state.onLiked = true);
-  } else {
-    deleteLikes();
-    return (state.onLiked = false);
-  }
-}
-
 // Get data
 async function getData() {
   const url = window.location.href;
@@ -135,6 +121,19 @@ async function getData() {
 async function getMorePortfolios() {}
 
 // Like
+function toggleLike() {
+  if (!useUserDetailsStore().id) {
+    return alert("로그인 후 이용해주세요.");
+  }
+
+  if (!state.onLiked) {
+    saveLike();
+    return (state.onLiked = true);
+  } else {
+    deleteLikes();
+    return (state.onLiked = false);
+  }
+}
 async function checkLikes() {
   state.likes.forEach((like) => {
     if (like.memberId === useUserDetailsStore().id) {
@@ -233,9 +232,11 @@ function toggleBookmark() {
   }
 
   if (!state.onBookmarked) {
+    alert("북마크에 추가되었습니다.")
     postBookmark();
     return (state.onBookmarked = true);
   } else {
+    alert("북마크에서 삭제되었습니다.")
     deleteBookmark();
     return (state.onBookmarked = false);
   }
@@ -292,9 +293,11 @@ function toggleReport() {
   }
 
   if (!state.onReported) {
+    alert("신고가 접수되었습니다.")
     postReport();
     return (state.onReported = true);
   } else {
+    alert("신고가 취소되었습니다.")
     deleteReport();
     return (state.onReported = false);
   }
@@ -307,8 +310,6 @@ function postReport() {
     memberId: useUserDetailsStore().id,
     url: window.location.href,
   };
-
-  console.log(report);
 
   return fetch(url, {
     mode: "cors",

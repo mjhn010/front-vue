@@ -1,6 +1,4 @@
 package kr.co.pofo.pofoapiboot3.controller.member;
-
-import kr.co.pofo.pofoapiboot3.entity.BookmarkDto;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioBookmark;
 import kr.co.pofo.pofoapiboot3.service.PortfolioBookmarkService;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +21,12 @@ public class PortfolioBookmarkController {
     }
 
     @PostMapping
-    public void post(@RequestBody BookmarkDto bookmarkDto) {
-        service.post(bookmarkDto);
+    public void post(@RequestBody PortfolioBookmark bookmark) {
+        service.post(bookmark);
     }
 
     @DeleteMapping
-    public void delete(@RequestBody BookmarkDto bookmarkDto) {
-        service.delete(bookmarkDto);
+    public void delete(@RequestBody PortfolioBookmark bookmark) {
+        service.delete(bookmark);
     }
 }

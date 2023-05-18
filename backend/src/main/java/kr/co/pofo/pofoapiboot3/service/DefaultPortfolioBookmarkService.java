@@ -1,6 +1,5 @@
 package kr.co.pofo.pofoapiboot3.service;
 
-import kr.co.pofo.pofoapiboot3.entity.BookmarkDto;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioBookmark;
 import kr.co.pofo.pofoapiboot3.repository.PortfolioBookmarkRepository;
 import org.springframework.stereotype.Service;
@@ -21,12 +20,12 @@ public class DefaultPortfolioBookmarkService implements PortfolioBookmarkService
     }
 
     @Override
-    public void post(BookmarkDto bookmarkDto) {
-        repository.insert(bookmarkDto);
+    public void post(PortfolioBookmark bookmark) {
+        repository.insert(bookmark);
     }
 
     @Override
-    public void delete(BookmarkDto bookmarkDto) {
-        repository.delete(bookmarkDto);
+    public void delete(PortfolioBookmark bookmark) {
+        repository.delete(bookmark);
     }
 }

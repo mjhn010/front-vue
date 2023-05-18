@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class PortfolioBookmark {
     private Integer id;
-    private Integer memberId;
-    private Integer portfolioId;
+    private int portfolioId;
+    private int memberId;
 }
