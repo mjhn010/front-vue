@@ -3,6 +3,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 import Header from "../Header.vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
 import { onBeforeRouteUpdate } from "vue-router";
+import Modal from "@/components/Modal.vue";
 
 // Mock data
 const usedSkills = [
@@ -29,6 +30,14 @@ const portfolios = [
   { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
 ];
 
+// Modal
+let showModal = ref(false);
+
+//모달 끄기
+function dlgOkHandler(){
+  showModal.value=false;
+}
+
 // Data
 const onCommentBoxOpen = ref(false);
 const state = reactive({
@@ -44,21 +53,6 @@ const state = reactive({
   onReported: false,
   isMine: false,
 });
-
-// Functions
-function resetState() {
-  state.member = {};
-  state.portfolio = {};
-  state.contents = [];
-  state.comments = [];
-  state.likes = [];
-  state.bookmarks = [];
-  state.reports = [];
-  state.onLiked = false;
-  state.onBookmarked = false;
-  state.onReported = false;
-  state.isMine = false;
-}
 
 async function checkMine() {
   if (state.member.id === useUserDetailsStore().id) {
@@ -171,7 +165,7 @@ async function getMorePortfolios() {}
 // Like
 function toggleLike() {
   if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
+    return showModal.value = true;
   }
 
   if (!state.onLiked) {
@@ -245,7 +239,7 @@ async function deleteLikes() {
 // Comment
 function saveComment() {
   if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
+    return showModal.value = true;
   } else if (!document.querySelector("#comment-input").value) {
     return alert("댓글을 입력해주세요.");
   } else {
@@ -276,7 +270,7 @@ function saveComment() {
 // Bookmark
 function toggleBookmark() {
   if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
+    return showModal.value = true;
   }
 
   if (!state.onBookmarked) {
@@ -347,7 +341,7 @@ function deleteBookmark() {
 // Report
 function toggleReport() {
   if (!useUserDetailsStore().id) {
-    return alert("로그인 후 이용해주세요.");
+    return showModal.value = true;
   }
 
   if (!state.onReported) {
@@ -429,6 +423,13 @@ onBeforeRouteUpdate((to, from) => {
 
 <template>
   <Header />
+  <Modal
+    :show="showModal"
+    @ok="dlgOkHandler"
+    type="0"
+    title="로그인이 필요한 기능입니다."
+    style="z-index: 1"
+  />
   <div
     class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
@@ -637,7 +638,7 @@ onBeforeRouteUpdate((to, from) => {
     >
       <figure class="">
         <router-link
-            :to="
+          :to="
             state.isMine
               ? `/member/profile/${state.member.id}`
               : `/profile/${state.member.id}`
