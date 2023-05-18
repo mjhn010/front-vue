@@ -139,7 +139,9 @@ function followingBtnMouseLeaveHandler() {
 
 
 
-            <div class="margin-top-10 margin-bottom-5 font-size-14">활동 정보</div>
+            <div class="margin-top-10 margin-bottom-5 font-size-14">
+                활동 정보
+            </div>
 
             <div class="activity-boxes">
                 <div>
@@ -155,7 +157,7 @@ function followingBtnMouseLeaveHandler() {
                     <div class="font-size-14 font-gray">컬렉션 북마크</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">0</div>
+                    <div class="margin-bottom-5 font-size-15 bold">{{model.activities.following}}</div>
                     <div class="font-size-14 font-gray">팔로잉</div>
                 </div>
                 <div>
