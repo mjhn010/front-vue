@@ -34,8 +34,8 @@ const portfolios = [
 let showModal = ref(false);
 
 //모달 끄기
-function dlgOkHandler(){
-  showModal.value=false;
+function dlgOkHandler() {
+  showModal.value = false;
 }
 
 // Data
@@ -165,7 +165,7 @@ async function getMorePortfolios() {}
 // Like
 function toggleLike() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   }
 
   if (!state.onLiked) {
@@ -239,7 +239,7 @@ async function deleteLikes() {
 // Comment
 function saveComment() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   } else if (!document.querySelector("#comment-input").value) {
     return alert("댓글을 입력해주세요.");
   } else {
@@ -270,7 +270,7 @@ function saveComment() {
 // Bookmark
 function toggleBookmark() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   }
 
   if (!state.onBookmarked) {
@@ -339,7 +339,7 @@ function deleteBookmark() {
 // Report
 function toggleReport() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   }
 
   if (!state.onReported) {
@@ -456,7 +456,13 @@ onBeforeRouteUpdate((to, from) => {
             v-text="state.portfolio.title"
           />
           <div>
-            <router-link to="/nickname">
+            <router-link
+              :to="
+                state.isMine
+                  ? `/member/profile/${state.member.id}`
+                  : `/profile/${state.member.id}`
+              "
+            >
               <span
                 class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
                 v-text="state.member.nickname"
