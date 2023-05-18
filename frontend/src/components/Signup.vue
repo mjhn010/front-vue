@@ -144,7 +144,7 @@ async function checkNickname() {
 }
 
 function dlgOkHandler(){
-        showModal.value=false;
+    showModal.value=false;
 }
 
 function pwdInput(){

@@ -7,7 +7,7 @@ import App from "./App.vue";
 import vue3GoogleLogin from "vue3-google-login";
 
 //errorPage
-import ErrorPage from "/src/components/404.vue";
+import ErrorPage from "/src/components/error/404.vue";
 
 // 로그인,회원가입
 import Login from "/src/components/Login.vue";
@@ -36,7 +36,8 @@ import PortfolioRegister from "@/components/member/PortfolioRegister.vue";
 import Profile from "/src/components/Profile.vue";
 
 const routes = [
-  { path: "/index", component: Index },
+  {path: "/", component: Index},
+  {path: "/index", component: Index},
 
   { path: "/pofo/reg", component: PortfolioRegister },
   { path: "/pofo/:id", component: PortfolioDetail },
