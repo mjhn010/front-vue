@@ -24,7 +24,7 @@ onMounted(() => {
     let result = await response.text();
     console.log(result);
     if (result == "ok") {
-      router.push("/pwdreset");
+      router.push("/pwdreset?uuid=" + query);
     } else {
       router.push("/error404");
     }
@@ -56,6 +56,31 @@ function subPwdInput() {
 
   if (!(pwd.value === subPwd.value)) subPwdModiTest.value = "no";
   else subPwdModiTest.value = "yes";
+}
+
+async function modifiedHandler() {
+  if (!isPassword() || pwd.value !== subPwd.value) {
+    showModal.value = true;
+    title.value = "비밀번호를 다시 확인해주세요";
+    return;
+  }
+  let query = route.query.uuid;
+  let form = document.querySelector("#reset-form");
+  let formData = new FormData(form);
+  let response = await fetch(
+    `http://localhost:8080/email/modifypwd?uuid=${query}`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+  let result = await response.text();
+  if (result == "ok") {
+    router.push("/login");
+  } else {
+    showModal.value = true;
+    title.value = "비밀번호 변경에 실패했습니다. 다시 시도해주세요";
+  }
 }
 
 // if (result === "ok") {
@@ -94,7 +119,6 @@ function subPwdInput() {
               <input
                 class="input-text input-text-placeholder"
                 type="password"
-                id="pasword"
                 placeholder="비밀번호(숫자,영문,특수문자 포함 8~16자리)"
                 @input="pwdInput"
                 name="pwd"
@@ -112,6 +136,7 @@ function subPwdInput() {
 
             <input
               class="input-text input-text-placeholder margin-top-8"
+              name="subPwd"
               type="password"
               id="password-check"
               placeholder="비밀번호 확인"
@@ -133,6 +158,7 @@ function subPwdInput() {
               type="button"
               value="비밀번호 변경"
               id="send-btn"
+              @click.prevent="modifiedHandler"
             />
           </form>
 

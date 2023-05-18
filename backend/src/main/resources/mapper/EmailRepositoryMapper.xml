@@ -41,4 +41,9 @@
 		where
 			uuid = #{uuid}
 	</select>
+	<update id="modifyPwd">
+	update
+		 member set pwd  = #{pwd} 
+		 	where uuid = #{uuid}
+	</update>
 </mapper>

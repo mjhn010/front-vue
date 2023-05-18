@@ -5,15 +5,19 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
+import kr.co.pofo.pofoapiboot3.entity.Member;
 import kr.co.pofo.pofoapiboot3.repository.EmailRepository;
 
 @Service
 public class DefaultEmailService implements EmailService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JavaMailSender sender;
@@ -66,4 +70,9 @@ public class DefaultEmailService implements EmailService {
         return uuid;
     }
 
+    @Override
+    public int modifyPwd(String pwd, String uuid) {
+        String enPwd = (passwordEncoder.encode(pwd));
+        return repository.modifyPwd(enPwd, uuid);
+    };
 }
