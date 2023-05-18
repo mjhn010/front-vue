@@ -9,8 +9,8 @@
                     <h5> {{ title }}</h5>
                 </div>
                 <div class="flex-row-between1 margin-top-20" v-if="type === '0'">
-                    <button class="check-btn">확인</button>
-                    <button class="btn-back">취소</button>
+                    <router-link :to=url><button class="check-btn">확인</button></router-link> 
+                    <button class="check-btn" @click.prevent="$emit('ok')">취소</button>
                 </div>
 
                 <div class="center margin-top-20" v-if="type === '1'">
@@ -22,15 +22,16 @@
 </template>
 
 <script setup>
-
+import { useRoute } from 'vue-router';
 let props = defineProps({
     title: "",
     show: false,
     type: 0
 })
-
+let route = useRoute();
+let returnURL = route.path;
+let url = `/login?returnURL=${returnURL}`; 
 </script>
-
 <style scoped>
 
 .screen {

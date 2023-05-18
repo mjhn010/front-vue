@@ -54,7 +54,7 @@ const routes = [
   { path: "/pwdreset", component: ResetPwd },
 
   //errorPage
-  { path: "/error404", component: ErrorPage },
+  { path : "/:pathMatch(.*)*", component : ErrorPage},
 
   MemberRoute,
 ];
