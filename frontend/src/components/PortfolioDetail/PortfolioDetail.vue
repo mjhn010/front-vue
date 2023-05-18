@@ -274,11 +274,9 @@ function toggleBookmark() {
   }
 
   if (!state.onBookmarked) {
-    alert("북마크에 추가되었습니다.");
     postBookmark();
     return (state.onBookmarked = true);
   } else {
-    alert("북마크에서 삭제되었습니다.");
     deleteBookmark();
     return (state.onBookmarked = false);
   }
@@ -345,11 +343,9 @@ function toggleReport() {
   }
 
   if (!state.onReported) {
-    alert("신고가 접수되었습니다.");
     postReport();
     return (state.onReported = true);
   } else {
-    alert("신고가 취소되었습니다.");
     deleteReport();
     return (state.onReported = false);
   }
