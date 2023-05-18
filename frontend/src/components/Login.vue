@@ -1,12 +1,16 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useUserDetailsStore } from "../stores/useUserDetailsStore";
-import { decodeCredential } from "vue3-google-login";
+import Modal from './Modal.vue';
+
+
 //--------------데이터
 let router = useRouter();
 let route = useRoute();
 let userDetails = useUserDetailsStore();
+let showModal = ref(false);
+
 let user = reactive({
   email: "",
   password: "",
@@ -53,15 +57,21 @@ async function loginHandler() {
   userDetails.nickname = json.result.nickname;
   userDetails.profileSrc = json.result.image;
   let returnURL = route.query.returnURL;
+  
+
 
   if (!userDetails.email) {
-    router.push("/login");
+    showModal.value = true;
     user.email = "";
     user.password = "";
   } 
   else if (returnURL) 
     router.push(returnURL);
   else router.push("/index");
+}
+
+function dlgOkHandler(){
+    showModal.value=false;
 }
 </script>
 <template>
@@ -107,6 +117,7 @@ async function loginHandler() {
       </div>
     </div>
   </section>
+  <Modal :show="showModal" @ok="dlgOkHandler" type=1 title="입력값을 확인하세요"/>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/login.css");
