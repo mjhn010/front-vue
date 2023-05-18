@@ -143,6 +143,7 @@ async function getData() {
       state.reports = data;
     })
     .then(checkReports)
+    .then(checkMyPortfolio)
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -415,7 +416,7 @@ onMounted(getData);
     >
       <!-- Profile -->
       <figure class="flex p-6">
-        <router-link :to="`/profile/${state.member.id}`">
+        <router-link :to="state.isMine? `/member/profile/${state.member.id}`: `/profile/${state.member.id}`">
           <img
             class="mr-4 mt-2 h-12 w-12 cursor-pointer rounded-full duration-300 hover:opacity-50"
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
@@ -770,7 +771,7 @@ onMounted(getData);
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
             <router-link
               class="h-0"
-              :to="`/profile/${comment.memberId}`"
+              :to="state.isMine? `/member/profile/${comment.memberId}` : `/profile/${comment.memberId}`"
             >
               <img
                 class="h-12 w-12 rounded-full"
