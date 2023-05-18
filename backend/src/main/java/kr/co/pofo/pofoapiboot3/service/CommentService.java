@@ -11,7 +11,7 @@ public interface CommentService {
 
     List<CommentView> getCommentViews(Integer portfolioId);
 
-    void save(CommentDto commentDto);
+    void save(Comment comment);
 
     void delete(Comment comment);
 }
