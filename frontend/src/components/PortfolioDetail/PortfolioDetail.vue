@@ -60,7 +60,7 @@ function resetState() {
   state.isMine = false;
 }
 
-async function checkMyPortfolio() {
+async function checkMine() {
   if (state.member.id === useUserDetailsStore().id) {
     state.isMine = true;
   } else {
@@ -158,7 +158,7 @@ async function getData() {
       state.reports = data;
     })
     .then(checkReports)
-    .then(checkMyPortfolio)
+    .then(checkMine)
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -637,7 +637,11 @@ onBeforeRouteUpdate((to, from) => {
     >
       <figure class="">
         <router-link
-          to="/nickname"
+            :to="
+            state.isMine
+              ? `/member/profile/${state.member.id}`
+              : `/profile/${state.member.id}`
+          "
           class="flex justify-center"
           @click="scrollToTop"
         >
