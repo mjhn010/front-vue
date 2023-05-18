@@ -9,7 +9,7 @@ public interface FollowRepository {
     int insert(Follow follow);
     int delete(Follow follow);
     int countFollower(int id);
-    // int countFollowing(int id);
+    int countFollowing(int id);
     
     int count(Follow follow);
 }

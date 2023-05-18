@@ -28,7 +28,8 @@ public class DefaultActivitiesService implements ActivitiesService{
         int colleted = collectionsRepository.count(id);
         int hited = portfolioRepository.countOfhits(id);
         int follower = followRepository.countFollower(id);
-        Activities activities = new Activities(hited, liked, colleted, follower,0);
+        int following = followRepository.countFollowing(id);
+        Activities activities = new Activities(hited, liked, colleted, follower, following);
         return activities;
     }
 }

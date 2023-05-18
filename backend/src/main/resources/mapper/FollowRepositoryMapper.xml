@@ -39,4 +39,16 @@
         where
             requested_id = ${id}
     </select>
+
+    <select id="countFollowing" resultType="int">
+        select
+            count(requested_id)
+        from
+            follow
+        where
+            requester_id = ${id}
+    </select>
+
+
+
 </mapper>
