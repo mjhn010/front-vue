@@ -39,6 +39,7 @@ function dlgOkHandler() {
 }
 
 // Data
+const portfolioId = window.location.hash.split("/")[2];
 const onCommentBoxOpen = ref(false);
 const state = reactive({
   member: {},
@@ -76,7 +77,7 @@ function toggleCommentBox() {
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
 
   const scrollContainer = document.querySelector(".scroll-container");
-if (onCommentBoxOpen.value) {
+  if (onCommentBoxOpen.value) {
     scrollContainer.scrollLeft += 12;
   } else {
     scrollContainer.scrollLeft -= 12;
@@ -105,9 +106,9 @@ function scrollRight() {
   } else scrollContainer.scrollLeft += 323.3;
 }
 
-// Get data
+// Data
 async function getData() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   fetch(`http://localhost:8080/pofo/${portfolioId}`)
     .then((res) => res.json())
@@ -199,7 +200,7 @@ async function checkLikes() {
 }
 
 async function saveLike() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   const like = {
     memberId: useUserDetailsStore().id,
@@ -304,7 +305,7 @@ async function checkBookmarks() {
 }
 
 function postBookmark() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   const bookmark = {
     portfolioId: portfolioId,
@@ -326,7 +327,7 @@ function postBookmark() {
 }
 
 function deleteBookmark() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   const bookmark = {
     portfolioId: portfolioId,
@@ -373,7 +374,7 @@ async function checkReports() {
 }
 
 function postReport() {
-  const portfolioId = window.location.hash.split("/")[2];
+
   const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
 
   const report = {
@@ -396,7 +397,7 @@ function postReport() {
 }
 
 function deleteReport() {
-  const portfolioId = window.location.hash.split("/")[2];
+
   const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
 
   const report = {
@@ -420,12 +421,6 @@ function deleteReport() {
 
 // Lifecycle
 onMounted(getData);
-
-onBeforeRouteUpdate((to, from) => {
-  if (to.params.portfolioId !== from.params.portfolioId) {
-    getData();
-  }
-});
 </script>
 
 <template>
@@ -616,7 +611,10 @@ onBeforeRouteUpdate((to, from) => {
             :key="memberPortfolio.id"
             v-for="memberPortfolio in portfolios"
           >
-            <router-link :to="`/pofo/${memberPortfolio.id}`">
+            <router-link
+              :to="`/pofo/${memberPortfolio.id}`"
+              @click="getData"
+            >
               <img
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
                 alt="#"
