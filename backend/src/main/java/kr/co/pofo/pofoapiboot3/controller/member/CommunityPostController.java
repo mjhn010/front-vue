@@ -24,8 +24,6 @@ public class CommunityPostController {
     @PostMapping("/register")
     public boolean register(MultipartFile image, CommunityPost post, HttpServletRequest request) throws IllegalStateException, IOException{
         post.setThumbnail(image.getOriginalFilename());
-        System.out.println("post: " + post);
-
         String urlPath ="/communityImage" +File.separator + image.getOriginalFilename();
         String realPath = request.getServletContext().getRealPath(urlPath);
         image.transferTo(new File(realPath));

@@ -91,6 +91,16 @@ strong{
     font-size: 13px;
     font-weight: 300;
 }
+
+.img-box img {
+    width: 400px; /* 이미지의 너비를 조정합니다. */
+    height: 250px; /* 이미지의 높이를 조정합니다. */
+    object-fit: cover; /* 이미지가 요소에 꽉 차도록 설정합니다. */
+    border-radius: 10px; /* 이미지에 둥근 테두리를 추가합니다. */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 효과를 추가합니다. */
+    /* 추가적인 스타일링을 원하면 여기에 추가하세요 */
+}
+
 span{
     margin-top: 5%;
 }
@@ -148,34 +158,26 @@ h2{
     width: 80px;
     height: 35px;
     box-shadow: 2px 2px 2px #eee;
-    color:#9162E4;
+    color: rgb(18, 17, 17);
 }
 .reset{
-    color:#9162E4;
+    color: rgb(18, 17, 17);
     font-size: 14px;
+    box-shadow: 2px 2px 2px #eee;
+
 }
 
 .button-box button:first-child{
     margin-right: 10px;
 }
 
+button {
+    background-color: white;
+    color: rgb(18, 17, 17);
+    border: solid 1px #eee;
+}
+
 .button-box button:active, button.focus {
-    background-color: rgb(31, 106, 125);
+    background-color: #8CCCF4;
     color: white;
   }
-
-/* @media screen and (max-width: 1920px) {
-    .border-blue {
-      width: 100%;
-    }
-    .team-c-title {
-      width: 100%;
-    }
-    .team-c-main {
-      width: 100%;
-    }
-    .text {
-      margin-right: 0;
-    }
-  }
-   */
