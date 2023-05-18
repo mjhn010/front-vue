@@ -7,7 +7,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/pofo/{portfolioId}/bookmark")
+@RequestMapping("/pofo/{portfolioId}/bookmarks")
 public class PortfolioBookmarkController {
     private final PortfolioBookmarkService service;
 

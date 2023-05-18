@@ -9,7 +9,7 @@
         FROM
             portfolio_bookmark
         WHERE
-            portfolio_id = #{portfolioId}
+        portfolio_id = #{portfolioId}
     </select>
 
     <insert id="insert">
