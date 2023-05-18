@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onUpdated, onMounted  } from 'vue';
+import { ref, watch, onUpdated, onMounted, onBeforeMount  } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import Modal from './Modal.vue';
@@ -60,7 +60,7 @@ watch(email, () => {
     }
 })
 
-onMounted(() => {
+onBeforeMount(() => {
     if(route.query.type==='oauth'){
         email.value = userDetails.email;
         isDisabled.value = true;

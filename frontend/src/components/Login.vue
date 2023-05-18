@@ -18,7 +18,7 @@ let user = reactive({
 
 //-------------소셜로그인
 async function googleLoginHandler(response) {
-  fetch(
+  await fetch(
     `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`
   )
     .then((res) => res.json())
