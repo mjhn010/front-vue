@@ -74,6 +74,13 @@ function scrollToTop() {
 
 function toggleCommentBox() {
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
+
+  const scrollContainer = document.querySelector(".scroll-container");
+if (onCommentBoxOpen.value) {
+    scrollContainer.scrollLeft += 12;
+  } else {
+    scrollContainer.scrollLeft -= 12;
+  }
 }
 
 function contentToHTML(item) {
@@ -86,12 +93,16 @@ function contentToHTML(item) {
 
 function scrollLeft() {
   const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft -= 326;
+  if (onCommentBoxOpen.value) {
+    scrollContainer.scrollLeft -= 336;
+  } else scrollContainer.scrollLeft -= 323.3;
 }
 
 function scrollRight() {
   const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft += 326;
+  if (onCommentBoxOpen.value) {
+    scrollContainer.scrollLeft += 336;
+  } else scrollContainer.scrollLeft += 323.3;
 }
 
 // Get data
@@ -597,8 +608,8 @@ onBeforeRouteUpdate((to, from) => {
       <!-- Member's portfolio list -->
       <div class="w-full">
         <div
-          class="scroll-container scrollbar-hide mx-8 flex h-60 overflow-x-scroll scroll-smooth"
-          style="column-gap: 2.38rem"
+          class="scroll-container scrollbar-hide flex h-60 overflow-x-scroll scroll-smooth"
+          :class="onCommentBoxOpen ? 'ml-8 mr-10 gap-x-12' : ' mx-8 gap-x-9'"
         >
           <figure
             class="h-48 w-96 cursor-pointer"
@@ -627,6 +638,7 @@ onBeforeRouteUpdate((to, from) => {
           />
           <div
             class="chevron-right-icon col-start-12 cursor-pointer justify-self-center border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            :class="onCommentBoxOpen ? 'mr-3' : 'mr-0'"
             @click="scrollRight"
           />
         </div>
