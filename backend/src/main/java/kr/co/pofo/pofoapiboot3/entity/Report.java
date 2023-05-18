@@ -6,6 +6,7 @@ import lombok.Data;
 public class Report {
     private Integer id;
     private Integer memberId;
-    private String url;
+    private Integer portfolioId;
+    private Integer recruitId;
     private String regDate;
 }

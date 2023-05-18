@@ -41,9 +41,17 @@ const state = reactive({
   onLiked: false,
   onBookmarked: false,
   onReported: false,
+  isMine: false,
 });
 
 // Functions
+async function checkMyPortfolio() {
+  if (state.member.id === useUserDetailsStore().id) {
+    state.isMine = true;
+  } else {
+    state.isMine = false;
+  };
+}
 function copyLink() {
   const url = window.location.href;
   navigator.clipboard.writeText(url);
@@ -76,16 +84,9 @@ function scrollRight() {
   scrollContainer.scrollLeft += 326;
 }
 
-function check(){
-  checkLikes();
-  checkBookmarks();
-  checkReports();
-}
-
 // Get data
 async function getData() {
   const portfolioId = window.location.hash.split("/")[2];
-  const memberId = useUserDetailsStore().id;
 
   fetch(`http://localhost:8080/pofo/${portfolioId}`)
     .then((res) => res.json())
@@ -138,8 +139,7 @@ async function getData() {
   fetch(`http://localhost:8080/pofo/${portfolioId}/reports`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-      state.report = data;
+      state.reports = data;
     })
     .then(checkReports)
     .catch((error) => {
