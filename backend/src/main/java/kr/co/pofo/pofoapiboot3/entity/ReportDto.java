@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ReportDto {
+    private Integer memberId;
     private String url;
-    private String content;
 }

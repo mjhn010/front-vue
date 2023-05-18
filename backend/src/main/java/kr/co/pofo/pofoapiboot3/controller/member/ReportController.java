@@ -1,6 +1,6 @@
 package kr.co.pofo.pofoapiboot3.controller.member;
 
-import kr.co.pofo.pofoapiboot3.entity.ReportDto;
+import kr.co.pofo.pofoapiboot3.entity.Report;
 import kr.co.pofo.pofoapiboot3.service.ReportService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +15,12 @@ public class ReportController {
     }
 
     @PostMapping
-    public void post(ReportDto reportDto) {
-        service.post(reportDto);
+    public void post(@RequestBody Report report) {
+        service.post(report);
     }
 
     @DeleteMapping
-    public void delete(ReportDto reportDto) {
-        service.delete(reportDto);
+    public void delete(@RequestBody Report report) {
+        service.delete(report);
     }
 }

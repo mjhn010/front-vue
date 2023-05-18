@@ -23,12 +23,12 @@ public class PortfolioBookmarkController {
     }
 
     @PostMapping
-    public void post(BookmarkDto bookmarkDto) {
+    public void post(@RequestBody BookmarkDto bookmarkDto) {
         service.post(bookmarkDto);
     }
 
     @DeleteMapping
-    public void delete(BookmarkDto bookmarkDto) {
+    public void delete(@RequestBody BookmarkDto bookmarkDto) {
         service.delete(bookmarkDto);
     }
 }

@@ -1,6 +1,6 @@
 package kr.co.pofo.pofoapiboot3.service;
 
-import kr.co.pofo.pofoapiboot3.entity.ReportDto;
+import kr.co.pofo.pofoapiboot3.entity.Report;
 import kr.co.pofo.pofoapiboot3.repository.ReportRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,12 @@ public class DefaultReportService implements ReportService{
     }
 
     @Override
-    public void post(ReportDto reportDto) {
-        repository.insert(reportDto);
+    public void post(Report report) {
+        repository.insert(report);
     }
 
     @Override
-    public void delete(ReportDto reportDto) {
-        repository.delete(reportDto);
+    public void delete(Report report) {
+        repository.delete(report);
     }
 }
