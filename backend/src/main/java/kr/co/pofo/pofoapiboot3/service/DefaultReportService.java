@@ -25,7 +25,7 @@ public class DefaultReportService implements ReportService{
     }
 
     @Override
-    public void delete(Report report) {
-        repository.delete(report);
+    public void deletePortfolioReport(Report report) {
+        repository.deletePortfolioReport(report);
     }
 }

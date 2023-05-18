@@ -40,7 +40,7 @@ const routes = [
   {path: "/index", component: Index},
 
   { path: "/pofo/reg", component: PortfolioRegister },
-  { path: "/pofo/:id", component: PortfolioDetail },
+  { path: "/pofo/:portfolioId", component: PortfolioDetail },
 
   // community경로
   { path: "/community", component: Community },

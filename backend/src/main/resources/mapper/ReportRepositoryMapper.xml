@@ -19,11 +19,11 @@
             (DEFAULT, #{memberId}, #{portfolioId}, #{recruitId}, DEFAULT)
     </insert>
 
-    <delete id="delete">
+    <delete id="deletePortfolioReport">
         DELETE FROM
             report
         WHERE
-            (portfolio_id = #{portfolioId} OR recruit_id = #{recruitId})
+            portfolio_id = #{portfolioId}
         AND
             member_id = #{memberId}
     </delete>

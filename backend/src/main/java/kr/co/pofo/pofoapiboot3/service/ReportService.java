@@ -7,5 +7,5 @@ import java.util.List;
 public interface ReportService {
     List<Report> getByPortfolioId(Integer memberId);
     void post(Report reportDto);
-    void delete(Report reportDto);
+    void deletePortfolioReport(Report reportDto);
 }

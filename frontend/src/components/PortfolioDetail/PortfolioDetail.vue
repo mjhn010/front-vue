@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import Header from "../Header.vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
+import { onBeforeRouteUpdate } from "vue-router";
 
 // Mock data
 const usedSkills = [
@@ -45,6 +46,20 @@ const state = reactive({
 });
 
 // Functions
+function resetState() {
+  state.member = {};
+  state.portfolio = {};
+  state.contents = [];
+  state.comments = [];
+  state.likes = [];
+  state.bookmarks = [];
+  state.reports = [];
+  state.onLiked = false;
+  state.onBookmarked = false;
+  state.onReported = false;
+  state.isMine = false;
+}
+
 async function checkMyPortfolio() {
   if (state.member.id === useUserDetailsStore().id) {
     state.isMine = true;
@@ -147,6 +162,8 @@ async function getData() {
     .catch((error) => {
       console.error("Error:", error);
     });
+
+  return state;
 }
 
 async function getMorePortfolios() {}
@@ -177,8 +194,7 @@ async function checkLikes() {
 }
 
 async function saveLike() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
+  const portfolioId = window.location.hash.split("/")[2];
 
   const like = {
     memberId: useUserDetailsStore().id,
@@ -380,7 +396,7 @@ function postReport() {
 
 function deleteReport() {
   const portfolioId = window.location.hash.split("/")[2];
-  const url = `http://localhost:8080/pofo/reports`;
+  const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
@@ -403,6 +419,12 @@ function deleteReport() {
 
 // Lifecycle
 onMounted(getData);
+
+onBeforeRouteUpdate((to, from) => {
+  if (to.params.portfolioId !== from.params.portfolioId) {
+    getData();
+  }
+});
 </script>
 
 <template>
@@ -416,7 +438,13 @@ onMounted(getData);
     >
       <!-- Profile -->
       <figure class="flex p-6">
-        <router-link :to="state.isMine? `/member/profile/${state.member.id}`: `/profile/${state.member.id}`">
+        <router-link
+          :to="
+            state.isMine
+              ? `/member/profile/${state.member.id}`
+              : `/profile/${state.member.id}`
+          "
+        >
           <img
             class="mr-4 mt-2 h-12 w-12 cursor-pointer rounded-full duration-300 hover:opacity-50"
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
@@ -546,7 +574,11 @@ onMounted(getData);
       <div class="flex justify-between px-7 py-6">
         <span class="block font-semibold text-gray-900">모든 작업 목록</span>
         <router-link
-          to="/nickname"
+          :to="
+            state.isMine
+              ? `/member/profile/${state.member.id}`
+              : `/profile/${state.member.id}`
+          "
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
@@ -771,7 +803,11 @@ onMounted(getData);
           <figure class="col-span-7 grid grid-cols-6 grid-rows-2">
             <router-link
               class="h-0"
-              :to="state.isMine? `/member/profile/${comment.memberId}` : `/profile/${comment.memberId}`"
+              :to="
+                state.isMine
+                  ? `/member/profile/${comment.memberId}`
+                  : `/profile/${comment.memberId}`
+              "
             >
               <img
                 class="h-12 w-12 rounded-full"
@@ -857,15 +893,6 @@ main:deep(p) {
   background-repeat: no-repeat;
   border-radius: 100%;
   right: 23.7rem;
-}
-
-.heart-icon {
-  width: 48px;
-  height: 48px;
-  background-image: url("/src/assets/images/heart.svg");
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
 }
 
 .collection-icon {

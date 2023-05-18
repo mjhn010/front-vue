@@ -10,5 +10,5 @@ public interface ReportRepository {
     List<Report> selectByPortfolioId(Integer memberId);
     void insert(Report report);
 
-    void delete(Report report);
+    void deletePortfolioReport(Report report);
 }

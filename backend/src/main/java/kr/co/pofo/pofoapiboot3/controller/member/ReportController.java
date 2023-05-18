@@ -27,7 +27,7 @@ public class ReportController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody Report report) {
-        service.delete(report);
+    public void deletePortfolioReport(@RequestBody Report report) {
+        service.deletePortfolioReport(report);
     }
 }
