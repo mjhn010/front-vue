@@ -8,28 +8,11 @@ import Modal from "@/components/Modal.vue";
 import Header from "../Header.vue";
 
 // Mock data
-const usedSkills = [
-  { engName: "HTML" },
-  { engName: "CSS" },
-  { engName: "JavaScript" },
-];
 const portfolioCopyright = [
   { name: "cc" },
   { name: "by" },
   { name: "nc" },
   { name: "nd" },
-];
-const portfolios = [
-  { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
-  { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
-  { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
-  { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
-  { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
-  { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
-  { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
-  { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
-  { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
-  { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
 ];
 
 // Modal
@@ -47,6 +30,8 @@ const state = reactive({
   member: {},
   portfolio: {},
   contents: [],
+  skills: [],
+  more: [],
   comments: [],
   likes: [],
   bookmarks: [],
@@ -110,8 +95,6 @@ function scrollRight() {
 
 // Data
 async function getData() {
-
-
   fetch(`http://localhost:8080/pofo/${portfolioId.value}`)
     .then((res) => res.json())
     .then((data) => {
@@ -171,10 +154,26 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  return state;
-}
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/more`)
+      .then((res) => res.json())
+      .then((data) => {
+        state.more = data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/skills`)
+      .then((res) => res.json())
+      .then((data) => {
+        state.skills = data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
-async function getMorePortfolios() {}
+  const scrollContainer = document.querySelector(".scroll-container");
+  scrollContainer.scrollLeft = 0;
+}
 async function getUsedSkills() {}
 
 // Like
@@ -422,6 +421,7 @@ onMounted(getData);
 onBeforeRouteUpdate((to, from, next) => {
   if (to.params.portfolioId !== from.params.portfolioId) {
     portfolioId.value = to.params.portfolioId;
+    scrollToTop();
     getData();
   }
   next();
@@ -498,14 +498,14 @@ onBeforeRouteUpdate((to, from, next) => {
         </template>
       </main>
 
-      <!-- Tags and Copyright bar -->
+      <!-- SkillTags and Copyright bar -->
       <div
         class="flex flex-col-reverse justify-between px-5 sm:flex-row sm:px-10 sm:pb-12 xl:py-10"
       >
-        <!-- Tags -->
+        <!-- SkillTags -->
         <nav class="flex gap-x-2 py-3 text-xs sm:px-0">
           <router-link
-            v-for="skill in usedSkills"
+            v-for="skill in state.skills"
             :key="skill.id"
             :to="`/search?text=${skill.engName.toLowerCase()}`"
           >
@@ -613,20 +613,20 @@ onBeforeRouteUpdate((to, from, next) => {
         >
           <figure
             class="h-48 w-96 cursor-pointer"
-            :key="memberPortfolio.id"
-            v-for="memberPortfolio in portfolios"
+            :key="morePortfolio.id"
+            v-for="morePortfolio in state.more"
           >
             <router-link
-              :to="`/pofo/${memberPortfolio.id}`"
+              :to="`/pofo/${morePortfolio.id}`"
             >
               <img
-                :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
+                :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
               >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
-                v-text="memberPortfolio.title"
+                v-text="morePortfolio.title"
               />
             </router-link>
           </figure>
