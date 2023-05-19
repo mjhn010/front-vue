@@ -18,11 +18,32 @@ import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 public class PortfolioMemberController {
     @Autowired
     private PortfolioService portfolioService;
-    @PostMapping("/reg")
-    public String reg(String title, int [] skill){
+    @PostMapping("/regpofo")
+    public String regPofo(String title, int [] skill, int type){
         System.out.println(title);
         System.out.println(skill.length);
-        return"ok";
+        System.out.println(type);
+
+        System.out.println("--------------------------------");
+        return "ok";
+    }
+
+    @PostMapping("/regcontent")
+    public String regContent(@RequestParam(required = false) MultipartFile contents, 
+                   MultipartHttpServletRequest request, int orders) {
+       int types = 0;
+       String content = "";
+       System.out.println("order : " + orders);
+       if(contents==null) {
+           content = request.getParameter("contents");
+           System.out.println(content);
+       }
+       else {
+          types =1;
+          content = contents.getOriginalFilename();
+          System.out.println(content);
+       }
+       return "ok";
     }
    
 }
