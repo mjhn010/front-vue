@@ -13,12 +13,13 @@
 		<result property="deleteDate" column="delete_date" />
 	</resultMap>
 
-	<!-- 디폴트 포트폴리오 리스트 -->
+	<!-- 커뮤니티 리스트 -->
 	<select id="findAll" resultMap="communityResultMap">
 		select *
 		from community
 	</select>
 
+	<!-- 커뮤니티 레지스터 -->
 	<insert id="insert" parameterType="Community">
 		insert into community(member_id, title, online_type, location_info,
 		period, team_size, thumbnail)

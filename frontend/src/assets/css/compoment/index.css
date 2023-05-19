@@ -150,7 +150,7 @@
 }
 
 /* 카테고리 이미지 */
-.category-item {
+/* .category-item {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -178,7 +178,7 @@
 
 .category-item.visual-basic {
     background-image: url('/image/Language_Icon/VB.NET_Logo.svg');
-}
+} */
 
 /* 정렬방식 스타일 */
 
