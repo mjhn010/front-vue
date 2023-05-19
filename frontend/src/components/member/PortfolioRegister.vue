@@ -130,11 +130,25 @@ function teamChecked(e) {
 function saveData(event) {
     contents.push(event.target.innerHTML);
 }
+
+
+// 
+async function send(e){
+  let form = document.querySelector("form")
+  let formData = new FormData(form);
+  let response = await fetch("http://localhost:8080/members/reg",{
+    method:"POST",
+    body:formData,
+    headers: {
+            "Accept": "application/json",
+        },
+  });
+}
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
   <Header />
-  <form action="" enctype="multipart/form-data">
+  <form action=""  enctype="multipart/form-data">
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
@@ -285,16 +299,16 @@ function saveData(event) {
             <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="check-box margin-top-2">
-            <label class="skill-label"><input class="cb" type="checkbox" value="1" checked="checked">java</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="2">javaScript</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="3">python</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="4">C</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="5">C#</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="6">VisualBasic</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="7">HTML</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="8">CSS</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="9">Spring</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="10">SpringBoot</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="1" checked="checked">java</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="2">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="3">python</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="4">C</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="5">C#</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="6">VisualBasic</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="7">HTML</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="8">CSS</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="9">Spring</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="10">SpringBoot</label>
           </div>
           <div class="modal-main-text margin-top-5">
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
@@ -312,7 +326,7 @@ function saveData(event) {
           </div>
           <input class=" d-none modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
           <div class="submit-box margin-top-7">
-            <input class="modal-submit-btn" type="submit" value="업로드">
+            <input @click.prevent="send($event)" class="modal-submit-btn" type="submit" value="업로드">
           </div>
         </div>
       </div>
