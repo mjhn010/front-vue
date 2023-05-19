@@ -93,6 +93,11 @@ function scrollRight() {
   } else scrollContainer.scrollLeft += 323.3;
 }
 
+async function scrollReset() {
+  const scrollContainer = document.querySelector(".scroll-container");
+  scrollContainer.scrollLeft = 0;
+}
+
 // Data
 async function getData() {
   fetch(`http://localhost:8080/pofo/${portfolioId.value}`)
@@ -170,11 +175,7 @@ async function getData() {
       .catch((error) => {
         console.error("Error:", error);
       });
-
-  const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft = 0;
 }
-async function getUsedSkills() {}
 
 // Like
 function toggleLike() {
@@ -416,12 +417,15 @@ function deleteReport() {
 }
 
 // Lifecycle
-onMounted(getData);
+onMounted(()=>{
+  getData();
+});
 
 onBeforeRouteUpdate((to, from, next) => {
   if (to.params.portfolioId !== from.params.portfolioId) {
     portfolioId.value = to.params.portfolioId;
     scrollToTop();
+    scrollReset();
     getData();
   }
   next();
@@ -581,7 +585,10 @@ onBeforeRouteUpdate((to, from, next) => {
         <span
           class="text-xs font-semibold text-white sm:text-sm"
           v-else
-        >그래픽 디자인 · UI/UX</span>
+        >
+          그래픽 디자인 · UI/UX
+        </span>
+        <span></span>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -600,7 +607,7 @@ onBeforeRouteUpdate((to, from, next) => {
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
-            class="h-4 w-4 opacity-50"
+            class="h-4 w-4 opacity-50 mt-0.5"
           >
         </router-link>
       </div>
