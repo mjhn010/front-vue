@@ -99,8 +99,6 @@ function profileUpdate() {
                 </div>
             </div>
 
-
-
             <div class="margin-top-10 margin-bottom-5 font-size-14">
                 활동 정보
             </div>

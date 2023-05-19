@@ -38,7 +38,7 @@
 				reg_date desc
 			</otherwise>
 		</choose>
-		limit ${size} offset ${offset}
+		<!-- limit ${size} offset ${offset} -->
 	</select>
 
 	<!-- 스택 검색 -->
@@ -110,4 +110,11 @@
 	<select id="countOfhits" parameterType="int" resultType="Integer">
         select sum(hit) from portfolio where member_id = ${id};
     </select>
+
+	<!-- 조회수 증가 -->
+	<update id="updatehitCount" parameterType="Portfolio">
+		update portfolio
+		set hit = hit+1
+		where id = #{id};
+	</update>
 </mapper>

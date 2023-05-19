@@ -50,4 +50,7 @@ public interface PortfolioRepository {
 // myprofile
     List<Portfolio> findByUserId(int id);
     Integer countOfhits(int id);
+
+    // 조회수 증가
+    void updatehitCount(Integer id);
 }

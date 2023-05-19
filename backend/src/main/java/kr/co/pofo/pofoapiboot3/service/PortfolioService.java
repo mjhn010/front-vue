@@ -28,4 +28,7 @@ public interface PortfolioService {
 	Portfolio getPortfolioById(Integer id);
 
 	List<Portfolio> getByUserId(int id);
+
+    // 조회수 증가
+    void updatehitCount(Integer id);
 }

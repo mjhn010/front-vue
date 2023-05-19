@@ -29,7 +29,7 @@ public class DefaultPortfolioService implements PortfolioService {
     public List<PortfolioView> getViewListByQuery(Integer page, String sort, Integer collaboration, String query) {
         int size = 15; // 포트폴리오를 한 번에 15개씩 가져옴
 
-        // query와 관련 스택이 있는지 확인함
+        // query와 관련된 스택이 있는지 확인함
         int[] skillIds = portfolioRepository.findSkillIdsByQuery(query);
 
         return portfolioRepository.findViewAllByQuery(page, size, sort, collaboration, query, skillIds);
@@ -78,5 +78,11 @@ public class DefaultPortfolioService implements PortfolioService {
     @Override
     public List<Portfolio> getByUserId(int id) {
         return portfolioRepository.findByUserId(id);
+    }
+
+    // 조회수 증가
+    @Override
+    public void updatehitCount(Integer id) {
+        portfolioRepository.updatehitCount(id);
     }
 }

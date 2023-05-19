@@ -32,4 +32,11 @@ public class PortfolioController {
 
         return objectMap;
     }
+
+    // 조회수 증가
+    private void updatehitCount(Integer id){
+        portfolioService.updatehitCount(id);
+    }
+
+
 }
