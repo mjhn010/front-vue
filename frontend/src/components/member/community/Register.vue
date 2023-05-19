@@ -1,14 +1,16 @@
 <script setup>
 import Header from '../../Header.vue'
 import { reactive, ref } from 'vue';
+import { useUserDetailsStore } from '../../../stores/useUserDetailsStore';
 import { useRouter, useRoute } from 'vue-router';
 
+let userDetails = useUserDetailsStore();
 let router = useRouter();
 let route = useRoute();
 
 // --- Variables ---------------------------------------
 let community = reactive({
-    memberId: 2, // 이후에 로그인한 회원의 정보 가져와야함
+    // memberId: userDetails.id, // 이후에 로그인한 회원의 정보 가져와야함
     title: "",
     onlineType: true,
     locationInfo: "",
@@ -20,24 +22,19 @@ let community = reactive({
 let fileInputRef = ref(null);
 let imgRef = ref(null);
 
-// --- Life Cycles -------------------------------------
-
 // --- Event Handlers ----------------------------------
 async function registerHandler() {
-    const url = new URL("http://localhost:8080/members/community-post/register");
+    const url = new URL("http://localhost:8080/members/community/register");
     let form = document.querySelector("#form");
     const formData = new FormData(form);
-    formData.append("onlineType",community.onlineType); 
-
-    // community 객체를 복사하여 새로운 객체 생성
-    // const requestData = JSON.parse(JSON.stringify(community));
+    formData.append("memberId", userDetails.id); 
+    formData.append("onlineType", community.onlineType); 
 
     let response = await fetch(url, {
         method: "POST",
         headers: {
             "Accept": "application/json",
         },
-        // body: JSON.stringify(requestData) 
         body: formData
     })
 
@@ -52,6 +49,20 @@ async function registerHandler() {
 }
 
 function imageBoxClickHandler(){
+    console.log("clicked");
+    let fileInput = fileInputRef.value;
+    
+    // fileInput.click(); // 이 방법 보다는..?
+    const event = new MouseEvent("click", {
+    view: window,
+        bubbles: true,
+        cancelable: true,
+    });
+
+    fileInput.dispatchEvent(event);
+}
+
+function btnHandler(){
     console.log("clicked");
     let fileInput = fileInputRef.value;
     
@@ -91,11 +102,12 @@ function fileInputHandler(e) {
         <div class="border-blue"></div>
         <section class="team-c-title margin-top-2">
             <h1 class="team-title margin-top-7">팀 개설하기 안내</h1>
-            <img class="team-img" src="/src/assets/images/diversity.png" alt="">
+            
             <p class="text margin-top-5">새로운 주제로 팀 프로젝트를 진행하고 싶으신가요 ? <br>
                 <br>
 
-                <strong>프로젝트 목표!</strong>
+                <strong>프로젝트 목표!</strong> 
+                <img class="team-img" src="/src/assets/images/diversity.png" alt="">
                 <br>
                 이 목표는 당신의 팀이 어떤 프로젝트를 하고 싶은지,<br>
                 그리고 그 목표를 달성하기 위해 필요한 사람들을 모으는 것입니다.<br>
@@ -107,12 +119,19 @@ function fileInputHandler(e) {
         </section>
         <form class="team-c-form" action="" method="post" id="form">
             <main class="team-c-main margin-top-1">
-                <div class="first-img-box">
+                <!-- <div class="first-img-box">
                     <div class="img-box" @click="imageBoxClickHandler" >
                         <span v-if="!imgRef">썸네일 대표 이미지를 추가해주세요.</span>
                         <img ref="imgRef"  src="#" alt="선택한 이미지" />
                     </div>
                     <input type="file" class="d-none" ref="fileInputRef" @input="fileInputHandler" name="image">
+                </div> -->
+                <div class="first-img-box">
+                    <div class="img-box">
+                        <img ref="imgRef" />
+                    </div>
+                    <input type="file" class="d-none" ref="fileInputRef" @input="fileInputHandler" name="image">
+                    <button class="modal-submit-btn thum-btn" @click.prevent="btnHandler" type="button">이미지업로드</button>
                 </div>
                 <div class="text-box margin-top-3">
                     <h2>제목</h2>
@@ -121,14 +140,11 @@ function fileInputHandler(e) {
                 <div class="text-box margin-top-3">
                     <h2>닉네임</h2>
                     <!-- 고정값 -->
-                    <input class="team-c-input" type="text" placeholder="해당 회원의 닉네임" readonly>
+                    <input class="team-c-input" type="text" :placeholder="userDetails.nickname" readonly>
                 </div>
                 <div class="button-box margin-top-3">
                     <h2>온·오프라인</h2>
                     <div class="btn-box margin-top-5">
-                        <!-- <button class="btn btn-1 margin-right-10" :class={focus: community.locationType} @click.prevent="community.locationType = 0">ON-LINE</button>
-                        <button class="btn btn-1" :class={focus:!community.locationType} @click.prevent="community.locationType = 1">OFF-LINE</button> -->
-                        <!-- Ekf -->
                         <button class="btn btn-1 margin-right-10" :class="{'focus': community.onlineType}" @click.prevent="community.onlineType = true">ON-LINE</button>
                         <button class="btn btn-1" :class="{'focus': !community.onlineType}" @click.prevent="community.onlineType = false">OFF-LINE</button>
                     </div>
@@ -146,8 +162,8 @@ function fileInputHandler(e) {
                     <input class="team-c-input" type="text" placeholder="내 답변" v-model="community.teamSize" name="teamSize">
                 </div>
                 <div class="submit-box margin-top-2">
-                    <button class="submit" type="submit" @click.prevent="registerHandler">등록</button>
                     <button class="reset">양식지우기</button>
+                    <button class="submit" type="submit" @click.prevent="registerHandler">등록</button>
                 </div>
             </main>
         </form>

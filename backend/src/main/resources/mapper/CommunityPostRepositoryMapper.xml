@@ -4,10 +4,26 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="kr.co.pofo.pofoapiboot3.repository.CommunityPostRepository">
+	<resultMap id="communityPostResultMap" type="CommunityPost">
+		<result property="memberId" column="member_id" />
+		<result property="onlineType" column="online_type" />
+		<result property="locationInfo" column="location_info" />
+		<result property="teamSize" column="team_size" />
+		<result property="regDate" column="reg_date" />
+		<result property="deleteDate" column="delete_date" />
+	</resultMap>
 
-    <insert id="insert" parameterType="CommunityPost">
-        insert into community_post(member_id, title, location_type, location_info, period, team_size, thumbnail)
-        values(#{memberId}, #{title}, #{locationType}, #{locationInfo}, #{period}, #{teamSize}, #{thumbnail})
-    </insert>
+	<!-- 디폴트 포트폴리오 리스트 -->
+	<select id="findAll" resultMap="communityPostResultMap">
+		select *
+		from community_post
+	</select>
+
+	<insert id="insert" parameterType="CommunityPost">
+		insert into community_post(member_id, title, online_type, location_info,
+		period, team_size, thumbnail)
+		values(#{memberId}, #{title}, #{onlineType}, #{locationInfo}, #{period}, #{teamSize},
+		#{thumbnail})
+	</insert>
 </mapper>
     

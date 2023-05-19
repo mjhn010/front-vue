@@ -17,7 +17,7 @@ public class CommunityPost {
     private Long id;
     private Long memberId; 
     private String title;
-    private Integer locationType;
+    private Boolean onlineType;
     private String locationInfo; 
     private String period; 
     private Integer teamSize;

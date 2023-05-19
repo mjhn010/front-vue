@@ -43,9 +43,10 @@ html,body{
 }
 .team-img{
     width: 45px;
-    position: absolute;
+    padding-left: 10px;
+    /* position: absolute;
     top: 25.5%;
-    left: 35%;
+    left: 35%; */
 }
 .noti{
     width: 30px;
@@ -77,10 +78,16 @@ strong{
     border-radius: 8px;
     height: 300px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #fff;
 }
+
+.first-img-box button {
+    margin: 0 auto 5px;
+}
+
 .img-box{
     display: flex;
     flex-direction: column;
@@ -96,8 +103,9 @@ strong{
     width: 400px; /* 이미지의 너비를 조정합니다. */
     height: 250px; /* 이미지의 높이를 조정합니다. */
     object-fit: cover; /* 이미지가 요소에 꽉 차도록 설정합니다. */
-    border-radius: 10px; /* 이미지에 둥근 테두리를 추가합니다. */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 효과를 추가합니다. */
+    border-radius: 3px; /* 이미지에 둥근 테두리를 추가합니다. */
+    border: solid 1px #8CCCF4;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  */
     /* 추가적인 스타일링을 원하면 여기에 추가하세요 */
 }
 
@@ -151,6 +159,7 @@ h2{
     display: flex;
     justify-content: space-between;
 }
+
 .submit{
     border-radius: 4px;
     border: none;
@@ -163,8 +172,12 @@ h2{
 .reset{
     color: rgb(18, 17, 17);
     font-size: 14px;
-    box-shadow: 2px 2px 2px #eee;
-
+    /* box-shadow: 2px 2px 2px #eee; */
+    width: 80px;
+    height: 35px;
+    background-color: transparent;
+    color: rgb(18, 17, 17);
+    border: 0;
 }
 
 .button-box button:first-child{
@@ -180,4 +193,16 @@ button {
 .button-box button:active, button.focus {
     background-color: #8CCCF4;
     color: white;
+  }
+
+  .modal-submit-btn,
+  .submit-box .submit {
+    background-color: #8cccf4;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    width: 100px;
+    padding: 1% 1%;
+    margin-right: 1%;
+    margin-bottom: 2%;
   }
