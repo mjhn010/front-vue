@@ -1,9 +1,11 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
-import Header from "../Header.vue";
+import { onMounted, reactive, ref } from "vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
-import { onBeforeRouteUpdate } from "vue-router";
+import {onBeforeRouteUpdate} from "vue-router";
+
+// Components
 import Modal from "@/components/Modal.vue";
+import Header from "../Header.vue";
 
 // Mock data
 const usedSkills = [
@@ -39,7 +41,7 @@ function dlgOkHandler() {
 }
 
 // Data
-const portfolioId = window.location.hash.split("/")[2];
+const portfolioId = ref(window.location.hash.split("/")[2]);
 const onCommentBoxOpen = ref(false);
 const state = reactive({
   member: {},
@@ -110,7 +112,7 @@ function scrollRight() {
 async function getData() {
 
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}`)
     .then((res) => res.json())
     .then((data) => {
       state.portfolio = data.portfolio;
@@ -120,7 +122,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/contents`)
     .then((res) => res.json())
     .then((data) => {
       state.contents = data;
@@ -129,7 +131,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/comments`)
     .then((res) => res.json())
     .then((data) => {
       state.comments = data;
@@ -138,7 +140,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/likes`)
     .then((res) => res.json())
     .then((data) => {
       state.likes = data;
@@ -148,7 +150,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/bookmarks`)
     .then((res) => res.json())
     .then((data) => {
       state.bookmarks = data;
@@ -158,7 +160,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/reports`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/reports`)
     .then((res) => res.json())
     .then((data) => {
       state.reports = data;
@@ -173,6 +175,7 @@ async function getData() {
 }
 
 async function getMorePortfolios() {}
+async function getUsedSkills() {}
 
 // Like
 function toggleLike() {
@@ -204,10 +207,10 @@ async function saveLike() {
 
   const like = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/likes`, {
     mode: "cors",
     method: "POST",
     headers: {
@@ -224,15 +227,12 @@ async function saveLike() {
 }
 
 async function deleteLikes() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
-
   const like = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/likes`, {
     mode: "cors",
     method: "DELETE",
     headers: {
@@ -255,16 +255,13 @@ function saveComment() {
   } else if (!document.querySelector("#comment-input").value) {
     return alert("댓글을 입력해주세요.");
   } else {
-    const url = window.location.href;
-    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
-
     const comment = {
       memberId: useUserDetailsStore().id,
-      portfolioId: portfolioId,
+      portfolioId: portfolioId.value,
       content: document.querySelector("#comment-input").value,
     };
 
-    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+    return fetch(`http://localhost:8080/pofo/${portfolioId.value}/comments`, {
       mode: "cors",
       method: "POST",
       headers: {
@@ -308,11 +305,11 @@ function postBookmark() {
 
 
   const bookmark = {
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
     memberId: useUserDetailsStore().id,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/bookmarks`, {
     mode: "cors",
     method: "POST",
     headers: {
@@ -330,11 +327,11 @@ function deleteBookmark() {
 
 
   const bookmark = {
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
     memberId: useUserDetailsStore().id,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/bookmarks`, {
     mode: "cors",
     method: "DELETE",
     headers: {
@@ -375,11 +372,11 @@ async function checkReports() {
 
 function postReport() {
 
-  const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
+  const url = `http://localhost:8080/pofo/${portfolioId.value}/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
   return fetch(url, {
@@ -398,11 +395,11 @@ function postReport() {
 
 function deleteReport() {
 
-  const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
+  const url = `http://localhost:8080/pofo/${portfolioId.value}/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
   return fetch(url, {
@@ -421,6 +418,14 @@ function deleteReport() {
 
 // Lifecycle
 onMounted(getData);
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.portfolioId !== from.params.portfolioId) {
+    portfolioId.value = to.params.portfolioId;
+    getData();
+  }
+  next();
+});
 </script>
 
 <template>
@@ -613,7 +618,6 @@ onMounted(getData);
           >
             <router-link
               :to="`/pofo/${memberPortfolio.id}`"
-              @click="getData"
             >
               <img
                 :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
@@ -864,21 +868,16 @@ onMounted(getData);
 <style scoped>
 @import url("/src/assets/css/tailwind.css");
 
-main:deep(section) {
-  @apply mx-6 mb-12 xl:mx-12;
-  line-height: 2rem;
-}
-
 main:deep(img) {
   @apply mb-12 h-1/5 w-full;
 }
 
 main:deep(h2) {
-  @apply text-lg font-bold sm:text-2xl;
+  @apply mx-6 xl:mx-12 text-lg font-bold sm:text-2xl;
 }
 
 main:deep(p) {
-  @apply my-4 text-xs sm:text-base;
+  @apply mx-6 xl:mx-12 my-8 text-xs sm:text-base;
 }
 
 .sidebar {
