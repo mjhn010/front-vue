@@ -31,7 +31,7 @@
       </li>
       <li class="pro"><a href="">프로젝트</a></li>
       <li class="community">
-        <router-link to="/community">커뮤니티</router-link>
+        <router-link to="/community/list">커뮤니티</router-link>
       </li>
     </ul>
     <div class="search-box">
@@ -43,7 +43,7 @@
       <li v-if="route.path.includes('/community')">
         <router-link to="/member/community/register">
           <button class="btn btn-3 prj-register">
-            팀원모집글 등록
+            커뮤니티 등록
           </button>
         </router-link>
       </li>
