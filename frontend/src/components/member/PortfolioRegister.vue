@@ -19,11 +19,13 @@ function arrayRemove(event, index) {
   list.splice(index, 1);
 }
 function imgPlusHandler() {
-  list.push({ type: "img", text: "", img: [], order: listIndex });
+  //img 키 값은 화면 출력용 src를 가지고 있는 녀석
+  //fileInfo 선택된 이미지 파일의 정보를 가지고 있는 녀석
+  list.push({ type: "img", text: "", img: [], fileInfo: [] });
   listIndex++;
 }
 function textPlusHandler() {
-  list.push({ type: "text", text: "", img: [], order: listIndex });
+  list.push({ type: "text", text: "", img: [], fileInfo: [] });
   listIndex++;
 }
 function showModalHandler() {
@@ -42,9 +44,11 @@ function thumbmailClick(e) {
   let thumClick = upSibling.firstElementChild
   thumClick.click()
 }
+
 function imgInputHandler(e, index) {
   let urls = [];
   let files = e.target.files;
+  list[index].fileInfo = files;
   for (let file of files) {
     urls.push(URL.createObjectURL(file));
   }
@@ -69,7 +73,6 @@ function thumbnailImg(e) {
 function thumbmailDrop(e) {
   e.preventDefault();
   let file = e.dataTransfer.files[0];
-  console.log(file)
   thumbnail.value = URL.createObjectURL(file);
   imgUpLoad.value = true;
 }
@@ -92,6 +95,7 @@ function dropHandler(event, index) {
   event.preventDefault();
   let objecUrls = [];
   let files = [...event.dataTransfer.files];
+  list[index].fileInfo = files;
   for (let flie of files)
     objecUrls.push(URL.createObjectURL(flie))
 
@@ -127,9 +131,53 @@ function teamChecked(e) {
   }
 }
 
-function saveData(event) {
-    contents.push(event.target.innerHTML);
+function saveData(event, index) {
+  list[index].text = event.target.innerHTML;
 }
+
+async function send(e) {
+  let form = document.querySelector("form")
+  let formData = new FormData(form);
+  let res = await fetch("http://localhost:8080/members/regpofo", {
+    method: "POST",
+    body: formData,
+    headers: {
+      "Accept": "application/json",
+    }
+  });
+
+  let order = 0;
+  for (let content of list) {
+    if (content.img.length != 0) {
+      for (let img of content.fileInfo) {
+        let formdata = new FormData();
+        formdata.append("contents", img);
+        formdata.append("orders", order++);
+        await fetch("http://localhost:8080/members/regcontent", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json"
+          },
+          body: formdata
+        });
+      }
+    } else {
+      let formdata = new FormData();
+      formdata.append("contents", content.text);
+      formdata.append("orders", order++);
+      await fetch("http://localhost:8080/members/regcontent", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json"
+        },
+        body: formdata
+      });
+    }
+  }
+}
+
+
+
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
@@ -184,8 +232,8 @@ function saveData(event) {
                 <div class="start-app">
                   <div class="sub-box">
                     <div class="app-box">
-                      <input @input="imgInputHandler($event, index)" class="d-none" ref="inputFile" type="file" name="content"
-                        multiple accept="jpg,gif,png">
+                      <input @input="imgInputHandler($event, index)" class="d-none" ref="inputFile" type="file" multiple
+                        accept="jpg,gif,png">
                       <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover"
                         src="/src/assets/images/img.png" alt="">
                     </div>
@@ -205,7 +253,9 @@ function saveData(event) {
                 <div class="start-app">
                   <!-- <textarea class="click-text" name="content" value="2" id="" cols="30" rows="16"
                     placeholder="여기에 텍스트를 입력하세요." /> -->
-                    <p contenteditable="true"  @focusout.prevent="saveData($event)" class="p-tags" placeholder="텍스트를 입력해주세요"></p>
+                  <p contenteditable="true" @focusout.prevent="saveData($event, index)" class="p-tags"
+                    placeholder="텍스트를 입력해주세요">
+                  </p>
                 </div>
               </section>
             </section>
@@ -285,25 +335,26 @@ function saveData(event) {
             <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="check-box margin-top-2">
-            <label class="skill-label"><input class="cb" type="checkbox" value="1" checked="checked">java</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="2">javaScript</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="3">python</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="4">C</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="5">C#</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="6">VisualBasic</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="7">HTML</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="8">CSS</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="9">Spring</label>
-            <label class="skill-label"><input class="cb" type="checkbox" value="10">SpringBoot</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="1"
+                checked="checked">java</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="2">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="3">python</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="4">C</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="5">C#</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="6">VisualBasic</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="7">HTML</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="8">CSS</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="9">Spring</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="10">SpringBoot</label>
           </div>
           <div class="modal-main-text margin-top-5">
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="select-team team-info margin-top-3">
             <label class="skill-label singgle"><input ref="singgle" @click="singgleChecked($event)" class="cb"
-                type="checkbox" checked name="singgle" value="0">개인</label>
+                type="checkbox" checked name="type" value="0">개인</label>
             <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox"
-                name="team" value="1">팀</label>
+                name="type" value="1">팀</label>
             <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
             <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
           </div>
@@ -312,7 +363,7 @@ function saveData(event) {
           </div>
           <input class=" d-none modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
           <div class="submit-box margin-top-7">
-            <input class="modal-submit-btn" type="submit" value="업로드">
+            <input @click.prevent="send($event)" class="modal-submit-btn" type="submit" value="업로드">
           </div>
         </div>
       </div>
@@ -360,16 +411,16 @@ function saveData(event) {
 }
 
 .p-tags[contenteditable="true"]:empty:before {
-    content: attr(placeholder);
-    margin-top: 10px;
-    color: #9A9A97;
-    font-size: 20px;
-    
-    
+  content: attr(placeholder);
+  margin-top: 10px;
+  color: #9A9A97;
+  font-size: 20px;
+
+
 }
-.p-tags:focus{
+
+.p-tags:focus {
   outline: none;
   max-width: 90%;
 }
-
 </style>

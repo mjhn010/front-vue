@@ -4,6 +4,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import Modal from '../Modal.vue';
+import { vOnClickOutside } from '@vueuse/components'
 
 let userDetails = useUserDetailsStore();
 let route = useRoute();
@@ -11,7 +12,7 @@ let route = useRoute();
 //현재 클릭되어있는 TAB
 let current = ref();
 let isThis = ref(false);
-
+let showFollowModal = ref(false);
 let showModal = ref(false);
 
 let src = ref();
@@ -29,11 +30,11 @@ onMounted(() => {
     load();
 });
 
-function dlgOkHandler(){
-    showModal.value=false;
+function dlgOkHandler() {
+    showModal.value = false;
 }
 
-function showModalHandler(){
+function showModalHandler() {
     showModal.value = true;
 }
 
@@ -74,8 +75,13 @@ function clickCollections() {
     current.value = 2;
     model.currentList = model.list[2];
 }
+//수정 모달
 function profileUpdate() {
     isThis.value = true;
+}
+
+function followModal() {
+    showFollowModal.value = true;
 }
 
 </script>
@@ -118,11 +124,11 @@ function profileUpdate() {
                 </div>
                 <div>
                     <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.following }}</div>
-                    <div class="font-size-14 font-gray">팔로잉</div>
+                    <div class="font-size-14 font-gray" @click.prevent="followModal">팔로잉</div>
                 </div>
                 <div>
                     <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.follower }}</div>
-                    <div class="font-size-14 font-gray">팔로워</div>
+                    <div class="font-size-14 font-gray" @click.prevent="followModal">팔로워</div>
                 </div>
             </div>
         </section>
@@ -142,10 +148,6 @@ function profileUpdate() {
                         <span :class="{ 'non-seleted': current != 2, 'selected': current == 2 }">컬렉션</span>
                         <span class="num" :class="{ 'num-non-selected': current != 2 }">{{ model.list[2].length }}</span>
                     </div>
-                    <!-- <div>
-                <span class="non-selected">임시보관함</span>
-                <span class="num-non-selected num">15</span>
-            </div> -->
                 </div>
             </div>
 
@@ -169,11 +171,10 @@ function profileUpdate() {
                 <div class="center">
                     <div class="margin-top-5 profile-select">
                         <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
-                            v-if="userDetails.profileSrc == null && !selected" @click.prevent="selectImage"/>
+                            v-if="userDetails.profileSrc == null && !selected" @click.prevent="selectImage" />
                         <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img"
-                            v-else-if="userDetails.profileSrc != null && !selected" @click="selectImage"/>
-                        <img :src=src class="profile-img"
-                            v-else @click="selectImage"/>
+                            v-else-if="userDetails.profileSrc != null && !selected" @click="selectImage" />
+                        <img :src=src class="profile-img" v-else @click="selectImage" />
                         <input type="file" class="d-none" @input="changeImage" />
                     </div>
                 </div>
@@ -205,7 +206,8 @@ function profileUpdate() {
             </form>
         </div>
     </div>
-    <Modal :show="showModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?"/>
+    <Modal :show="showModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?" />
+
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");

@@ -1,13 +1,14 @@
 .black-bg{
-    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    left: 0;
+    top: 0;
+    width: 100vw;
     height: 100vh;
-    background-color: rgb(110, 115, 115);
-    opacity: 10;
+    position: fixed;
 }
-
 .white-bg {
     position: absolute;
-    top: 5%;
+    top: 20%;
     left: 35%;
     height: 60%;
     width: 30%;
