@@ -883,8 +883,8 @@ main:deep(h2) {
   @apply mx-6 xl:mx-12 text-lg font-bold sm:text-2xl;
 }
 
-main:deep(p) {
-  @apply mx-6 xl:mx-12 my-8 text-xs sm:text-base;
+div:deep(p) {
+  @apply mx-6 xl:mx-12 text-base font-bold sm:text-2xl;
 }
 
 .sidebar {
@@ -896,6 +896,8 @@ main:deep(p) {
   height: 85.9%;
   margin-left: 63.8%;
 }
+
+
 
 .chevron-left-icon {
   width: 48px;
