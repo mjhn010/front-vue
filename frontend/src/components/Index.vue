@@ -75,8 +75,8 @@ function profileIdClickHandler(e, memberId){
       <div class="slider">
         <Carousel :itemsToShow="3.125" :wrapAround="true" :transition="500">
           <Slide v-for="(portfolio, index) in state.weeklyPopularList" :key="index">
-            <router-link :to="'/pofo/:' + portfolio.id" class="carousel__item">
-              <img :src="'/src/assets/images/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
+            <router-link :to="'/pofo/' + portfolio.id" class="carousel__item">
+              <img :src="'http://localhost:8080/portfolio/thumbnails/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
               <div class="overlay">
                 <h2>{{ portfolio.title }}</h2>
                 <p>{{ portfolio.nickname }}</p>
@@ -165,14 +165,16 @@ function profileIdClickHandler(e, memberId){
         <h1 class="d-none">포트폴리오 리스트 섹션</h1>
         <ul>
           <li v-for="(portfolio, index) in state.list" :key="index">
-            <router-link :to="'/pofo/:' + portfolio.id" class="thumbnail" :data-title="portfolio.title">
-              <img :src="'/src/assets/images/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
+            <router-link :to="'/pofo/' + portfolio.id" class="thumbnail" :data-title="portfolio.title">
+              <img :src="'http://localhost:8080/portfolio/thumbnails/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
             </router-link>
             <div class="information">
               <div class="portfolio-info-profile">
-                <!-- <img :src="'image/' + portfolio.memberImage" alt="프로필 이미지"> -->
                 <span @click.prevent="profileIdClickHandler($event,portfolio.memberId)" class="pointer">
-                  <img src="/src/assets/images/BctLFrYLdnFPix7w.jpg" alt="프로필 이미지">
+                  <img src="/src/assets/images/proflie.svg" alt="마이프로필"
+                    v-if="portfolio.memberImage == null" />
+                  <img :src="'http://localhost:8080/profileImage/' + portfolio.memberImage" alt="프로필 이미지" 
+                    v-else>
                 </span>
                 <span @click.prevent="profileIdClickHandler($event,portfolio.memberId)" class="pointer">{{ portfolio.nickname }}</span>
               </div>

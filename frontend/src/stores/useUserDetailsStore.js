@@ -5,7 +5,7 @@ export const useUserDetailsStore = defineStore("userDetails", {
     id: null,
     email: null,
     nickname: null,
-    profileSrc : null
+    profileSrc : null,
   }),
   getters: {
     isAuthenticated: (state) => state.email == null ? false : true
@@ -15,7 +15,7 @@ export const useUserDetailsStore = defineStore("userDetails", {
       this.id = null;
       this.email = null;
       this.nickname = null;
-      this.profileSrc = null
+      this.profileSrc = null;
     },
     hasRole() {
       let result = this.email == null ? false : true;

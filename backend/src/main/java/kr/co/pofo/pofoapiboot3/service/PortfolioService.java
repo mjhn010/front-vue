@@ -27,5 +27,10 @@ public interface PortfolioService {
 	//  Detail
 	Portfolio getPortfolioById(Integer id);
 
+	List<Portfolio> getMorePortfolio(Integer memberId);
+
 	List<Portfolio> getByUserId(int id);
+
+    // 조회수 증가
+    void updatehitCount(Integer id);
 }

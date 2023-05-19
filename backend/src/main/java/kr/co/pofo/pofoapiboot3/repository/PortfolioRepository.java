@@ -47,7 +47,12 @@ public interface PortfolioRepository {
 //	Detail
 	Portfolio findPortfolioById(Integer id);
 
+    List<Portfolio> findMorePortfolio(Integer currentPortfolioId, Integer memberId);
+
 // myprofile
     List<Portfolio> findByUserId(int id);
     Integer countOfhits(int id);
+
+    // 조회수 증가
+    void updatehitCount(Integer id);
 }

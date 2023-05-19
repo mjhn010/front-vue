@@ -11,22 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.pofo.pofoapiboot3.entity.CommunityPost;
-import kr.co.pofo.pofoapiboot3.service.CommunityPostService;
+import kr.co.pofo.pofoapiboot3.entity.Community;
+import kr.co.pofo.pofoapiboot3.service.CommunityService;
 
-@RestController("memberCommunityPostController")
+@RestController("memberCommunityController")
 @RequestMapping("/members/community")
-public class CommunityPostController {
+public class CommunityController {
     
     @Autowired
-    private CommunityPostService service;
+    private CommunityService service;
 
     @PostMapping("register")
-    public boolean register(MultipartFile image, CommunityPost post, Boolean onlineType, HttpServletRequest request) throws IllegalStateException, IOException{
+    public boolean register(MultipartFile image, Community post, Boolean onlineType, HttpServletRequest request) throws IllegalStateException, IOException{
         String originalFilename = image.getOriginalFilename();
         String encodedFilename = URLEncoder.encode(originalFilename, "UTF-8");
 
-        //post.setThumbnail(image.getOriginalFilename());
         post.setThumbnail(encodedFilename);
 
         String urlPath = "/communityImage" +File.separator + encodedFilename;

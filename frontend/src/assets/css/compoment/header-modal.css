@@ -297,6 +297,8 @@
 .profile-img-mypage {
   width: 45px;
   height: 45px;
+  object-fit: cover;
+  border-radius: 50px;
 }
 .profile-img-noti {
   width: 40px;

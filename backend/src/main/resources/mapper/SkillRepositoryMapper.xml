@@ -36,11 +36,15 @@
     </delete>
 
     <!-- UsedSkill -->
-    <select id="findUsedSkillByPortfolioId" parameterType="Integer" resultType="UsedSkill">
+    <select id="findSkillsByPortfolioId" parameterType="Integer" resultType="Skill">
         SELECT
-            *
+            skill.*
         FROM
             used_skill
+        LEFT JOIN
+            skill
+        ON
+            used_skill.skill_id = skill.id
         WHERE
             portfolio_id = ${id}
     </select>

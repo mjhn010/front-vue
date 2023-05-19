@@ -1,49 +1,37 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
-import Header from "../Header.vue";
+import { onMounted, reactive, ref } from "vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
-import { onBeforeRouteUpdate } from "vue-router";
+import {onBeforeRouteUpdate} from "vue-router";
+
+// Components
 import Modal from "@/components/Modal.vue";
+import Header from "../Header.vue";
 
 // Mock data
-const usedSkills = [
-  { engName: "HTML" },
-  { engName: "CSS" },
-  { engName: "JavaScript" },
-];
 const portfolioCopyright = [
   { name: "cc" },
   { name: "by" },
   { name: "nc" },
   { name: "nd" },
 ];
-const portfolios = [
-  { id: 2, title: "포트폴리오2", thumbnail: "aurora-over-iceland.png" },
-  { id: 3, title: "포트폴리오3", thumbnail: "calm.jpg" },
-  { id: 4, title: "포트폴리오4", thumbnail: "cherryblossom.jpg" },
-  { id: 5, title: "포트폴리오5", thumbnail: "corn.jpg" },
-  { id: 6, title: "포트폴리오6", thumbnail: "aurora-over-iceland.png" },
-  { id: 7, title: "포트폴리오7", thumbnail: "himalayan-desert-mountains.jpg" },
-  { id: 8, title: "포트폴리오8", thumbnail: "calm.jpg" },
-  { id: 9, title: "포트폴리오9", thumbnail: "cherryblossom.jpg" },
-  { id: 10, title: "포트폴리오10", thumbnail: "corn.jpg" },
-  { id: 11, title: "포트폴리오11", thumbnail: "aurora-over-iceland.png" },
-];
 
 // Modal
 let showModal = ref(false);
 
 //모달 끄기
-function dlgOkHandler(){
-  showModal.value=false;
+function dlgOkHandler() {
+  showModal.value = false;
 }
 
 // Data
+const portfolioId = ref(window.location.hash.split("/")[2]);
 const onCommentBoxOpen = ref(false);
 const state = reactive({
   member: {},
   portfolio: {},
   contents: [],
+  skills: [],
+  more: [],
   comments: [],
   likes: [],
   bookmarks: [],
@@ -74,6 +62,13 @@ function scrollToTop() {
 
 function toggleCommentBox() {
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
+
+  const scrollContainer = document.querySelector(".scroll-container");
+  if (onCommentBoxOpen.value) {
+    scrollContainer.scrollLeft += 12;
+  } else {
+    scrollContainer.scrollLeft -= 12;
+  }
 }
 
 function contentToHTML(item) {
@@ -86,19 +81,26 @@ function contentToHTML(item) {
 
 function scrollLeft() {
   const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft -= 326;
+  if (onCommentBoxOpen.value) {
+    scrollContainer.scrollLeft -= 336;
+  } else scrollContainer.scrollLeft -= 323.3;
 }
 
 function scrollRight() {
   const scrollContainer = document.querySelector(".scroll-container");
-  scrollContainer.scrollLeft += 326;
+  if (onCommentBoxOpen.value) {
+    scrollContainer.scrollLeft += 336;
+  } else scrollContainer.scrollLeft += 323.3;
 }
 
-// Get data
-async function getData() {
-  const portfolioId = window.location.hash.split("/")[2];
+async function scrollReset() {
+  const scrollContainer = document.querySelector(".scroll-container");
+  scrollContainer.scrollLeft = 0;
+}
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}`)
+// Data
+async function getData() {
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}`)
     .then((res) => res.json())
     .then((data) => {
       state.portfolio = data.portfolio;
@@ -108,7 +110,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/contents`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/contents`)
     .then((res) => res.json())
     .then((data) => {
       state.contents = data;
@@ -117,7 +119,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/comments`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/comments`)
     .then((res) => res.json())
     .then((data) => {
       state.comments = data;
@@ -126,7 +128,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/likes`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/likes`)
     .then((res) => res.json())
     .then((data) => {
       state.likes = data;
@@ -136,7 +138,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/bookmarks`)
     .then((res) => res.json())
     .then((data) => {
       state.bookmarks = data;
@@ -146,7 +148,7 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  fetch(`http://localhost:8080/pofo/${portfolioId}/reports`)
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/reports`)
     .then((res) => res.json())
     .then((data) => {
       state.reports = data;
@@ -157,15 +159,28 @@ async function getData() {
       console.error("Error:", error);
     });
 
-  return state;
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/more`)
+      .then((res) => res.json())
+      .then((data) => {
+        state.more = data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  fetch(`http://localhost:8080/pofo/${portfolioId.value}/skills`)
+      .then((res) => res.json())
+      .then((data) => {
+        state.skills = data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 }
-
-async function getMorePortfolios() {}
 
 // Like
 function toggleLike() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   }
 
   if (!state.onLiked) {
@@ -188,14 +203,14 @@ async function checkLikes() {
 }
 
 async function saveLike() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   const like = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/likes`, {
     mode: "cors",
     method: "POST",
     headers: {
@@ -212,15 +227,12 @@ async function saveLike() {
 }
 
 async function deleteLikes() {
-  const url = window.location.href;
-  const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
-
   const like = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/likes`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/likes`, {
     mode: "cors",
     method: "DELETE",
     headers: {
@@ -239,20 +251,17 @@ async function deleteLikes() {
 // Comment
 function saveComment() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   } else if (!document.querySelector("#comment-input").value) {
     return alert("댓글을 입력해주세요.");
   } else {
-    const url = window.location.href;
-    const portfolioId = url.replace("http://127.0.0.1:5173/#/pofo/", "");
-
     const comment = {
       memberId: useUserDetailsStore().id,
-      portfolioId: portfolioId,
+      portfolioId: portfolioId.value,
       content: document.querySelector("#comment-input").value,
     };
 
-    return fetch(`http://localhost:8080/pofo/${portfolioId}/comments`, {
+    return fetch(`http://localhost:8080/pofo/${portfolioId.value}/comments`, {
       mode: "cors",
       method: "POST",
       headers: {
@@ -270,7 +279,7 @@ function saveComment() {
 // Bookmark
 function toggleBookmark() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   }
 
   if (!state.onBookmarked) {
@@ -293,14 +302,14 @@ async function checkBookmarks() {
 }
 
 function postBookmark() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   const bookmark = {
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
     memberId: useUserDetailsStore().id,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/bookmarks`, {
     mode: "cors",
     method: "POST",
     headers: {
@@ -315,14 +324,14 @@ function postBookmark() {
 }
 
 function deleteBookmark() {
-  const portfolioId = window.location.hash.split("/")[2];
+
 
   const bookmark = {
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
     memberId: useUserDetailsStore().id,
   };
 
-  return fetch(`http://localhost:8080/pofo/${portfolioId}/bookmarks`, {
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/bookmarks`, {
     mode: "cors",
     method: "DELETE",
     headers: {
@@ -339,7 +348,7 @@ function deleteBookmark() {
 // Report
 function toggleReport() {
   if (!useUserDetailsStore().id) {
-    return showModal.value = true;
+    return (showModal.value = true);
   }
 
   if (!state.onReported) {
@@ -362,12 +371,12 @@ async function checkReports() {
 }
 
 function postReport() {
-  const portfolioId = window.location.hash.split("/")[2];
-  const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
+
+  const url = `http://localhost:8080/pofo/${portfolioId.value}/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
   return fetch(url, {
@@ -385,12 +394,12 @@ function postReport() {
 }
 
 function deleteReport() {
-  const portfolioId = window.location.hash.split("/")[2];
-  const url = `http://localhost:8080/pofo/${portfolioId}/reports`;
+
+  const url = `http://localhost:8080/pofo/${portfolioId.value}/reports`;
 
   const report = {
     memberId: useUserDetailsStore().id,
-    portfolioId: portfolioId,
+    portfolioId: portfolioId.value,
   };
 
   return fetch(url, {
@@ -408,12 +417,18 @@ function deleteReport() {
 }
 
 // Lifecycle
-onMounted(getData);
+onMounted(()=>{
+  getData();
+});
 
-onBeforeRouteUpdate((to, from) => {
+onBeforeRouteUpdate((to, from, next) => {
   if (to.params.portfolioId !== from.params.portfolioId) {
+    portfolioId.value = to.params.portfolioId;
+    scrollToTop();
+    scrollReset();
     getData();
   }
+  next();
 });
 </script>
 
@@ -456,7 +471,13 @@ onBeforeRouteUpdate((to, from) => {
             v-text="state.portfolio.title"
           />
           <div>
-            <router-link to="/nickname">
+            <router-link
+              :to="
+                state.isMine
+                  ? `/member/profile/${state.member.id}`
+                  : `/profile/${state.member.id}`
+              "
+            >
               <span
                 class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
                 v-text="state.member.nickname"
@@ -481,14 +502,14 @@ onBeforeRouteUpdate((to, from) => {
         </template>
       </main>
 
-      <!-- Tags and Copyright bar -->
+      <!-- SkillTags and Copyright bar -->
       <div
         class="flex flex-col-reverse justify-between px-5 sm:flex-row sm:px-10 sm:pb-12 xl:py-10"
       >
-        <!-- Tags -->
+        <!-- SkillTags -->
         <nav class="flex gap-x-2 py-3 text-xs sm:px-0">
           <router-link
-            v-for="skill in usedSkills"
+            v-for="skill in state.skills"
             :key="skill.id"
             :to="`/search?text=${skill.engName.toLowerCase()}`"
           >
@@ -564,7 +585,10 @@ onBeforeRouteUpdate((to, from) => {
         <span
           class="text-xs font-semibold text-white sm:text-sm"
           v-else
-        >그래픽 디자인 · UI/UX</span>
+        >
+          그래픽 디자인 · UI/UX
+        </span>
+        <span></span>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -583,7 +607,7 @@ onBeforeRouteUpdate((to, from) => {
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
-            class="h-4 w-4 opacity-50"
+            class="h-4 w-4 opacity-50 mt-0.5"
           >
         </router-link>
       </div>
@@ -591,23 +615,25 @@ onBeforeRouteUpdate((to, from) => {
       <!-- Member's portfolio list -->
       <div class="w-full">
         <div
-          class="scroll-container scrollbar-hide mx-8 flex h-60 overflow-x-scroll scroll-smooth"
-          style="column-gap: 2.38rem"
+          class="scroll-container scrollbar-hide flex h-60 overflow-x-scroll scroll-smooth"
+          :class="onCommentBoxOpen ? 'ml-8 mr-10 gap-x-12' : ' mx-8 gap-x-9'"
         >
           <figure
             class="h-48 w-96 cursor-pointer"
-            :key="memberPortfolio.id"
-            v-for="memberPortfolio in portfolios"
+            :key="morePortfolio.id"
+            v-for="morePortfolio in state.more"
           >
-            <router-link :to="`/pofo/${memberPortfolio.id}`">
+            <router-link
+              :to="`/pofo/${morePortfolio.id}`"
+            >
               <img
-                :src="`/src/assets/images/temp/${memberPortfolio.thumbnail}`"
+                :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
               >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
-                v-text="memberPortfolio.title"
+                v-text="morePortfolio.title"
               />
             </router-link>
           </figure>
@@ -621,6 +647,7 @@ onBeforeRouteUpdate((to, from) => {
           />
           <div
             class="chevron-right-icon col-start-12 cursor-pointer justify-self-center border bg-white shadow-lg hover:bg-blue-50 hover:duration-300"
+            :class="onCommentBoxOpen ? 'mr-3' : 'mr-0'"
             @click="scrollRight"
           />
         </div>
@@ -848,21 +875,16 @@ onBeforeRouteUpdate((to, from) => {
 <style scoped>
 @import url("/src/assets/css/tailwind.css");
 
-main:deep(section) {
-  @apply mx-6 mb-12 xl:mx-12;
-  line-height: 2rem;
-}
-
 main:deep(img) {
   @apply mb-12 h-1/5 w-full;
 }
 
 main:deep(h2) {
-  @apply text-lg font-bold sm:text-2xl;
+  @apply mx-6 xl:mx-12 text-lg font-bold sm:text-2xl;
 }
 
 main:deep(p) {
-  @apply my-4 text-xs sm:text-base;
+  @apply mx-6 xl:mx-12 my-8 text-xs sm:text-base;
 }
 
 .sidebar {

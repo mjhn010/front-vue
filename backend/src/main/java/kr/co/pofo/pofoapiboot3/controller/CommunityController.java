@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.pofo.pofoapiboot3.entity.CommunityPost;
-import kr.co.pofo.pofoapiboot3.service.CommunityPostService;
+import kr.co.pofo.pofoapiboot3.entity.Community;
+import kr.co.pofo.pofoapiboot3.service.CommunityService;
 
 @RestController
 @RequestMapping("/community")
-public class CommunityPostController {
+public class CommunityController {
     
     @Autowired
-    private CommunityPostService service;
+    private CommunityService service;
 
     @GetMapping("list")
     public ResponseEntity<Map<String, Object>> list(){
         
         // 커뮤니티 리스트
-        List<CommunityPost> list = service.getList();
+        List<Community> list = service.getList();
         
         Map<String, Object> dto = new HashMap<>();
         dto.put("list", list);

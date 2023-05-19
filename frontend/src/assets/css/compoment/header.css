@@ -97,7 +97,10 @@
   margin-bottom: 1px;
 }
 .header-profile {
+  width: 28px;
   height: 28px;
+  object-fit: cover;
+  border-radius: 50px;
 }
 
 .dm {
