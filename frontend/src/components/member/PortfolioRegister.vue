@@ -221,7 +221,7 @@ async function send(e) {
 
             <section @dragover.stop.prevent="onDragover" @drop.stop.prevent="dropHandler($event, index)"
               v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
-              class="default-box click-img-box">
+              class="click-img-box" :class="{'default-box' : pofo.type!='text', 'default-box-text' : pofo.type=='text'}">
               <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">
               </div>
@@ -250,7 +250,7 @@ async function send(e) {
               </div>
               <!-- 텍스트 눌렀을때 나오는 텍스트박스 -->
               <section style="height: 100%;" v-else-if="pofo.type == 'text'" class="click-text-box margin-top-3">
-                <div class="start-app">
+                <div>
                   <!-- <textarea class="click-text" name="content" value="2" id="" cols="30" rows="16"
                     placeholder="여기에 텍스트를 입력하세요." /> -->
                   <p contenteditable="true" @focusout.prevent="saveData($event, index)" class="p-tags"
@@ -412,7 +412,7 @@ async function send(e) {
 
 .p-tags[contenteditable="true"]:empty:before {
   content: attr(placeholder);
-  margin-top: 10px;
+  margin-top: 3px;
   color: #9A9A97;
   font-size: 20px;
 
@@ -423,4 +423,5 @@ async function send(e) {
   outline: none;
   max-width: 90%;
 }
+
 </style>

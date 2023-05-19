@@ -97,7 +97,26 @@ form {
   position: relative;
 }
 
+.default-box-text {
+  box-sizing: border-box;
+  width: 80%;
+  margin-top: 5%;
+  min-height: 5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 99;
+  position: relative;
+}
+
+
+
 .default-box:hover {
+  border: 3px solid #000;
+  z-index: 99;
+}
+
+.default-box-text:hover{
   border: 3px solid #000;
   z-index: 99;
 }
@@ -423,7 +442,7 @@ input:focus {
   min-height: 400px;
 }
 
-@media (max-width: 1224px) {
+/* @media (max-width: 1224px) {
   .nav {
     display: none;
   }
@@ -455,6 +474,6 @@ input:focus {
     top: 50px;
     left: -12%;
   }
-}
+} */
 
 /* js */
