@@ -76,6 +76,17 @@ public class DefaultPortfolioService implements PortfolioService {
     }
 
     @Override
+    public List<Portfolio> getMorePortfolio(Integer portfolioId) {
+        Portfolio currentPortfolio = portfolioRepository.findPortfolioById(portfolioId);
+        Integer currentPortfolioId = currentPortfolio.getId();
+        Integer memberId = currentPortfolio.getMemberId();
+
+        List<Portfolio> list = portfolioRepository.findMorePortfolio(currentPortfolioId, memberId);
+
+        return list;
+    }
+
+    @Override
     public List<Portfolio> getByUserId(int id) {
         return portfolioRepository.findByUserId(id);
     }
