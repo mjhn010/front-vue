@@ -7,6 +7,7 @@ import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -31,6 +32,11 @@ public class PortfolioController {
         objectMap.put("member", member);
 
         return objectMap;
+    }
+
+    @GetMapping("/more")
+    public List<Portfolio> getMorePortfolio(@PathVariable("portfolioId") Integer portfolioId) {
+        return portfolioService.getMorePortfolio(portfolioId);
     }
 
     // 조회수 증가

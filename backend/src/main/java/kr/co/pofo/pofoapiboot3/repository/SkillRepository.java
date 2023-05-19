@@ -18,7 +18,7 @@ public interface SkillRepository {
 	void deleteSkill(Skill skill);
 
 //	UsedSkill
-	List<UsedSkill> findUsedSkillByPortfolioId(Integer id);
+	List<Skill> findSkillsByPortfolioId(Integer portfolioId);
 
 	void insertUsedSkill(UsedSkill usedSkill);
 
