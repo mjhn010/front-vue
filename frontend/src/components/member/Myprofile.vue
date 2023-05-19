@@ -1,15 +1,21 @@
 <script setup>
-import Header from '../Header.vue'
-import { onMounted, reactive, ref, shallowRef, triggerRef, watch } from 'vue';
-import {useRoute} from 'vue-router';
+import Header from '../Header.vue';
+import { onMounted, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
+import Modal from '../Modal.vue';
 
 let userDetails = useUserDetailsStore();
 let route = useRoute();
 
 //현재 클릭되어있는 TAB
 let current = ref();
+let isThis = ref(false);
 
+let showModal = ref(false);
+
+let src = ref();
+let selected = ref(false);
 
 let model = reactive({
     myInfo: {},
@@ -23,6 +29,13 @@ onMounted(() => {
     load();
 });
 
+function dlgOkHandler(){
+    showModal.value=false;
+}
+
+function showModalHandler(){
+    showModal.value = true;
+}
 
 async function load() {
     let param = route.params.id;
@@ -34,7 +47,17 @@ async function load() {
     model.list[2] = json.collections;
     model.currentList = json.works;
     model.activities = json.activities;
-    console.log(userDetails.profileSrc);
+}
+
+function selectImage(e) {
+    let fileSelector = e.target.nextElementSibling;
+    fileSelector.click();
+}
+
+function changeImage(e) {
+    selected.value = true;
+    let file = e.target.files[0];
+    src.value = URL.createObjectURL(file);
 }
 
 function clickWork() {
@@ -51,6 +74,9 @@ function clickCollections() {
     current.value = 2;
     model.currentList = model.list[2];
 }
+function profileUpdate() {
+    isThis.value = true;
+}
 
 </script>
 <template>
@@ -60,21 +86,24 @@ function clickCollections() {
         <section class="margin-right-5 profile">
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
-                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="userDetails.profileSrc==null"/>
-                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else/>
+                <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
+                    v-if="userDetails.profileSrc == null" />
+                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else />
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>
                 <a :href="model.myInfo.url" class="url" :hash="false">{{ model.myInfo.url }}</a>
                 <div>
-                    <button class="btn btn-0 font-size-15 btn-height">프로필 편집</button>
+                    <button class="btn btn-0 font-size-15 btn-height" @click.prevent="profileUpdate">프로필 편집</button>
                     <button class="d-none">팔로우</button>
                 </div>
             </div>
 
 
 
-            <div class="margin-top-10 margin-bottom-5 font-size-14">활동 정보</div>
+            <div class="margin-top-10 margin-bottom-5 font-size-14">
+                활동 정보
+            </div>
 
             <div class="activity-boxes">
                 <div>
@@ -90,12 +119,12 @@ function clickCollections() {
                     <div class="font-size-14 font-gray">컬렉션 북마크</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">0</div>
+                    <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.following }}</div>
                     <div class="font-size-14 font-gray">팔로잉</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">0</div>
-                    <div class="font-size-14 font-gray">팔로우</div>
+                    <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.follower }}</div>
+                    <div class="font-size-14 font-gray">팔로워</div>
                 </div>
             </div>
         </section>
@@ -134,9 +163,55 @@ function clickCollections() {
 
         </section>
     </main>
+
+    <div class="black-bg" v-if="isThis">
+        <div class="white-bg">
+            <h4> 기본정보</h4>
+            <form>
+                <div class="center">
+                    <div class="margin-top-5 profile-select">
+                        <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
+                            v-if="userDetails.profileSrc == null && !selected" @click.prevent="selectImage"/>
+                        <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img"
+                            v-else-if="userDetails.profileSrc != null && !selected" @click="selectImage"/>
+                        <img :src=src class="profile-img"
+                            v-else @click="selectImage"/>
+                        <input type="file" class="d-none" @input="changeImage" />
+                    </div>
+                </div>
+                <div class="flex-colum">
+                    <div class="margin-top-4">
+                        <span> 닉네임 변경</span>
+                        <input class="input-text2" type="text" autocomplete="off">
+                    </div>
+
+                    <div class="margin-top-4">
+                        <span> 비밀번호 변경</span>
+                        <input class="input-text2" type="password" autocomplete="off">
+                    </div>
+
+                    <div class="margin-top-4">
+                        <span> 비밀번호 확인</span>
+                        <input class="input-text2" type="password" autocomplete="off">
+                    </div>
+
+                    <div class="margin-top-4">
+                        <span> URL주소 변경</span>
+                        <input class="input-text2" type="text" autocomplete="off">
+                    </div>
+                </div>
+                <div class="margin-top-8 flex-row-between1">
+                    <button class="btn-bye-bye" @click.prevent="showModalHandler">회원탈퇴</button>
+                    <button class="btn-updateprofile">수정하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <Modal :show="showModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?"/>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
+@import url("/src/assets/css/compoment/profileupdate.css");
 
 .thumbnail:hover::before {
     content: attr(data-title);

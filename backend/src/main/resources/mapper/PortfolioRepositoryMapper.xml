@@ -107,7 +107,7 @@
         select * from portfolio where member_id = #{id}
     </select>
 
-	<select id="countOfhits" parameterType="int" resultType="int">
+	<select id="countOfhits" parameterType="int" resultType="Integer">
         select sum(hit) from portfolio where member_id = ${id};
     </select>
 </mapper>

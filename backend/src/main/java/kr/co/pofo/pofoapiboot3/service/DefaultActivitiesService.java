@@ -26,7 +26,13 @@ public class DefaultActivitiesService implements ActivitiesService{
     public Activities settingActivities(int id) {
         int liked = likeRepository.count(id);
         int colleted = collectionsRepository.count(id);
-        int hited = portfolioRepository.countOfhits(id);
+
+        Integer sumOfHits = portfolioRepository.countOfhits(id);
+        int hited =0;
+        if(sumOfHits != null){
+            hited = (int) sumOfHits;
+        }
+        
         int follower = followRepository.countFollower(id);
         int following = followRepository.countFollowing(id);
         Activities activities = new Activities(hited, liked, colleted, follower, following);

@@ -40,7 +40,14 @@
         @keydown.enter="(event) => { $emit('query-updated', event.target.value) }" />
     </div>
     <ul class="m-menu member-bar">
-      <li>
+      <li v-if="route.path.includes('/community')">
+        <router-link to="/member/community/register">
+          <button class="btn btn-3 prj-register">
+            팀원모집글 등록
+          </button>
+        </router-link>
+      </li>
+      <li v-else>
         <router-link to="/member/reg">
           <button class="btn btn-3 prj-register">
             프로젝트 등록
@@ -201,7 +208,7 @@ let isModalOpenProfile = ref(false)
 let modalChange = ref("");
 let userDetails = useUserDetailsStore();
 let router = useRouter();
-
+let route = useRoute();
 
 function showModalMessage() {
   isModalOpenNotify.value = false;

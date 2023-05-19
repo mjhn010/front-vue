@@ -38,3 +38,17 @@ input[type="button"] {
   justify-content: center;
   justify-content: center;
 }
+.nbtn {
+  background-color: #000000;
+  /* 외곽선 없애기 */
+  border: none;
+  color: #fff;
+  font-family: "Noto Sans KR", sans-serif;
+}
+.pwd-btn {
+  /* 로그인, 가입 버튼 버튼*/
+  width: 220px;
+  font-size: 0.8rem;
+  padding: 12px 42px;
+  line-height: 24px;
+}

@@ -26,8 +26,7 @@ async function checkEmail() {
       }
     );
     let sendResult = await sendLink.text();
-    console.log(sendResult);
-    if (sendResult === "OK") {
+    if (sendResult == "OK") {
       showModal.value = true;
       title.value = "이메일을 발송했습니다. 메일함을 확인해주세요";
     } else {
@@ -85,7 +84,7 @@ async function checkEmail() {
               <span id="pwd-validation" class="block-red margin-top-2"></span>
               <input
                 v-on:click="checkEmail()"
-                class="margin-top-10 btn btn-1"
+                class="margin-top-10 nbtn pwd-btn"
                 type="button"
                 value="이메일 전송"
                 id="send-btn"

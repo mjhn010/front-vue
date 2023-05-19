@@ -1,8 +1,8 @@
 package kr.co.pofo.pofoapiboot3.repository;
 
-import java.lang.reflect.Member;
-
 import org.apache.ibatis.annotations.Mapper;
+
+import kr.co.pofo.pofoapiboot3.entity.Member;
 
 @Mapper
 public interface EmailRepository {
@@ -15,4 +15,5 @@ public interface EmailRepository {
 
     String uuidCheck(String uuid);
 
+    int modifyPwd(String pwd, String uuid);
 }

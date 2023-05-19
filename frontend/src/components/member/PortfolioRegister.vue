@@ -13,6 +13,8 @@ let listIndex = 0;
 let singgle = ref(true);
 let team = ref(false);
 
+
+
 function arrayRemove(event, index) {
   list.splice(index, 1);
 }
@@ -33,7 +35,9 @@ function imgClickHandler(e) {
   previousElement.click();
 }
 
-function thumbmailClick(e){
+
+
+function thumbmailClick(e) {
   let upSibling = e.target.previousSibling
   let thumClick = upSibling.firstElementChild
   thumClick.click()
@@ -56,18 +60,18 @@ function imgInputHandler(e, index) {
   element2.nextElementSibling.classList.add("d-none");
 }
 
-function thumbnailImg(e){
+function thumbnailImg(e) {
   let file = e.target.files[0];
-   thumbnail.value = URL.createObjectURL(file);
-   imgUpLoad.value = true;
-  
+  thumbnail.value = URL.createObjectURL(file);
+  imgUpLoad.value = true;
+
 }
-function thumbmailDrop(e){
+function thumbmailDrop(e) {
   e.preventDefault();
   let file = e.dataTransfer.files[0];
   console.log(file)
-   thumbnail.value = URL.createObjectURL(file);
-   imgUpLoad.value = true;
+  thumbnail.value = URL.createObjectURL(file);
+  imgUpLoad.value = true;
 }
 
 function addDnone(e) {
@@ -88,9 +92,9 @@ function dropHandler(event, index) {
   event.preventDefault();
   let objecUrls = [];
   let files = [...event.dataTransfer.files];
-  for (let flie of files) 
+  for (let flie of files)
     objecUrls.push(URL.createObjectURL(flie))
-  
+
   list[index].img = objecUrls;
 
   startApp.classList.add("d-none");
@@ -98,20 +102,33 @@ function dropHandler(event, index) {
 }
 
 // 체크박스 하나만 선택해서 하기 선택자 사용하지않고 짜증나네
-function singgleChecked(e){  
-  if(e.target == singgle.value){
+function singgleChecked(e) {
+  if (e.target == singgle.value) {
     console.log(e.target)
     singgle.value.checked = true;
     team.value.checked = false;
+    let look = e.target.closest(".select-team")
+    let teamBox = look.nextElementSibling
+    let teamInput = teamBox.nextElementSibling
+    teamBox.classList.add("d-none")
+    teamInput.classList.add("d-none")
   }
 }
-function teamChecked(e){
-  if(e.target == team.value){
-  console.log(e.target)
-  team.value.checked = true;
-  singgle.value.checked = false;
+function teamChecked(e) {
+  if (e.target == team.value) {
+    console.log(e.target)
+    team.value.checked = true;
+    singgle.value.checked = false;
+    let look = e.target.closest(".select-team")
+    let teamBox = look.nextElementSibling
+    let teamInput = teamBox.nextElementSibling
+    teamBox.classList.remove("d-none")
+    teamInput.classList.remove("d-none")
+  }
 }
 
+function saveData(event) {
+    contents.push(event.target.innerHTML);
 }
 </script>
 <template>
@@ -121,7 +138,7 @@ function teamChecked(e){
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
-          <input v-model="title" class="reg-title" type="text" placeholder="제목을 입력해주세요.">
+          <input v-model="title" class="reg-title" type="text" name="title" placeholder="제목을 입력해주세요.">
         </div>
         <!--  -->
         <section class="reg-content">
@@ -167,9 +184,10 @@ function teamChecked(e){
                 <div class="start-app">
                   <div class="sub-box">
                     <div class="app-box">
-                      <input @input="imgInputHandler($event, index)" class="d-none" type="file" name="files[]" multiple
-                        accept="jpg,gif,png">
-                      <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover" src="/src/assets/images/img.png" alt="">
+                      <input @input="imgInputHandler($event, index)" class="d-none" ref="inputFile" type="file" name="content"
+                        multiple accept="jpg,gif,png">
+                      <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover"
+                        src="/src/assets/images/img.png" alt="">
                     </div>
                   </div>
                 </div>
@@ -185,7 +203,9 @@ function teamChecked(e){
               <!-- 텍스트 눌렀을때 나오는 텍스트박스 -->
               <section style="height: 100%;" v-else-if="pofo.type == 'text'" class="click-text-box margin-top-3">
                 <div class="start-app">
-                  <textarea class="click-text" name="" id="" cols="30" rows="16" placeholder="여기에 텍스트를 입력하세요." />
+                  <!-- <textarea class="click-text" name="content" value="2" id="" cols="30" rows="16"
+                    placeholder="여기에 텍스트를 입력하세요." /> -->
+                    <p contenteditable="true"  @focusout.prevent="saveData($event)" class="p-tags" placeholder="텍스트를 입력해주세요"></p>
                 </div>
               </section>
             </section>
@@ -243,13 +263,15 @@ function teamChecked(e){
             <div class="modal-thumbnail-text">
               <span class="thumbnail-span">커버</span><span class="thumbnail-color">(필수)</span>
             </div>
-            <div  @dragover.stop.prevent="onDragover" @drop.stop.prevent="thumbmailDrop($event)" class="thumbnail-img-box margin-top-5">
-              <input @input="thumbnailImg($event,index)" class="d-none thumbnailInput" type="file" name="thumbmail" 
-              accept="jpg,gif,png">
+            <div @dragover.stop.prevent="onDragover" @drop.stop.prevent="thumbmailDrop($event)"
+              class="thumbnail-img-box margin-top-5">
+              <input @input="thumbnailImg($event, index)" class="d-none thumbnailInput" type="file" name="thumbmail"
+                accept="jpg,gif,png">
               <!-- <img  @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt=""> -->
               <img v-if="imgUpLoad" :src="thumbnail" alt="" class="thumnailImg-upload">
             </div>
-            <button class="modal-submit-btn thum-btn" @click.prevent="thumbmailClick($event)" type="button">이미지업로드</button>
+            <button class="modal-submit-btn thum-btn" @click.prevent="thumbmailClick($event)"
+              type="button">이미지업로드</button>
           </div>
           <div class="border-right"></div>
         </div>
@@ -278,15 +300,17 @@ function teamChecked(e){
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="select-team team-info margin-top-3">
-            <label class="skill-label singgle"><input ref="singgle"  @click="singgleChecked($event)" class="cb" type="checkbox" checked name="singgle" value="0">개인</label>
-            <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox" name="team" value="1">팀</label>
+            <label class="skill-label singgle"><input ref="singgle" @click="singgleChecked($event)" class="cb"
+                type="checkbox" checked name="singgle" value="0">개인</label>
+            <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox"
+                name="team" value="1">팀</label>
             <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
             <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
           </div>
-          <div class="modal-main-text margin-top-5">
+          <div class="d-none modal-main-text margin-top-5">
             <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
           </div>
-          <input class="modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
+          <input class=" d-none modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
           <div class="submit-box margin-top-7">
             <input class="modal-submit-btn" type="submit" value="업로드">
           </div>
@@ -301,31 +325,51 @@ function teamChecked(e){
 .d-none {
   display: none;
 }
-.thumnailImg-upload{
+
+.thumnailImg-upload {
   width: 100%;
   height: 100%;
   object-fit: fill;
 }
-.thum-btn{
+
+.thum-btn {
   padding: 3%;
   margin-top: 5%;
   margin-left: 30%;
 }
-.m-r-5{
+
+.m-r-5 {
   margin-right: 5%;
 }
-.singgle{
-font-size: 14px;
-font-weight: 400;
+
+.singgle {
+  font-size: 14px;
+  font-weight: 400;
 
 }
-.team{
+
+.team {
   font-size: 14px;
   font-weight: 400;
 }
-.select-team{
+
+.select-team {
   display: flex;
   justify-content: space-around;
   width: 30%;
 }
+
+.p-tags[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    margin-top: 10px;
+    color: #9A9A97;
+    font-size: 20px;
+    
+    
+}
+.p-tags:focus{
+  outline: none;
+  max-width: 90%;
+}
+
 </style>

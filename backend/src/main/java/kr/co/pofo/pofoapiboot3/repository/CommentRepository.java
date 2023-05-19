@@ -1,7 +1,6 @@
 package kr.co.pofo.pofoapiboot3.repository;
 
 import kr.co.pofo.pofoapiboot3.entity.Comment;
-import kr.co.pofo.pofoapiboot3.entity.CommentDto;
 import kr.co.pofo.pofoapiboot3.entity.CommentView;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +12,7 @@ public interface CommentRepository {
 
     List<CommentView> findCommentViews(Integer portfolioId);
 
-    void insert(CommentDto commentDto);
+    void insert(Comment comment);
 
     void delete(Comment comment);
 }

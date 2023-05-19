@@ -79,4 +79,14 @@ public class EmailController {
         }
         return "no";
     }
+
+    @PostMapping("/modifypwd")
+    public String modifyPwd(String pwd, @RequestParam String uuid) {
+        int result = emailService.modifyPwd(pwd, uuid);
+        if (result == 1) {
+            return "ok";
+        } else {
+            return "no";
+        }
+    }
 }

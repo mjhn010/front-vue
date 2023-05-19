@@ -1,8 +1,9 @@
 <script setup>
 import Header from './Header.vue'
-import { onMounted, reactive, ref, shallowRef, triggerRef, watch } from 'vue';
+import { onMounted, reactive, ref} from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
+import Modal from './Modal.vue';
 
 let userDetails = useUserDetailsStore();
 
@@ -13,7 +14,7 @@ let isFollow = ref(true);
 let isFollowing = ref(false);
 let followingText = ref("팔로잉");
 
-
+let showModal = ref(false);
 
 let model = reactive({
     myInfo: {},
@@ -71,10 +72,16 @@ function clickCollections() {
     model.currentList = model.list[2];
 }
 
-
+//모달 끄기
+function dlgOkHandler(){
+    showModal.value=false;
+}
 
 //팔로우버튼 클릭 이벤트핸들러
 async function followBtnClickHandler() {
+    if(!userDetails.isAuthenticated){
+        showModal.value = true;
+    }
     //팔로우 안되있을시
     if (isFollow.value) {
         await fetch("http://localhost:8080/profile/follow", {
@@ -139,7 +146,9 @@ function followingBtnMouseLeaveHandler() {
 
 
 
-            <div class="margin-top-10 margin-bottom-5 font-size-14">활동 정보</div>
+            <div class="margin-top-10 margin-bottom-5 font-size-14">
+                활동 정보
+            </div>
 
             <div class="activity-boxes">
                 <div>
@@ -155,7 +164,7 @@ function followingBtnMouseLeaveHandler() {
                     <div class="font-size-14 font-gray">컬렉션 북마크</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">0</div>
+                    <div class="margin-bottom-5 font-size-15 bold">{{model.activities.following}}</div>
                     <div class="font-size-14 font-gray">팔로잉</div>
                 </div>
                 <div>
@@ -196,9 +205,10 @@ function followingBtnMouseLeaveHandler() {
                     </div>
                 </router-link>
             </div>
-
+        
         </section>
     </main>
+    <Modal :show="showModal" @ok="dlgOkHandler" type=0 title="로그인이 필요한 기능입니다."/>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");

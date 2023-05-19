@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, ref, watch, defineComponent } from 'vue';
+import { reactive, onMounted, ref, watch, defineComponent, onBeforeMount } from 'vue';
 import Header from './Header.vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -22,8 +22,13 @@ let state = reactive({
 
 let userDetails = useUserDetailsStore();
 let router = useRouter();
+let route = useRoute();
 
 // --- Life Cycles -------------------------------------
+onBeforeMount(()=>{
+  if(route.path == "/")
+    router.push("/index")
+})
 onMounted(fetchPortfolios);
 watch(() => [state.sort, state.collaboration, state.language, state.query], fetchPortfolios); // 변수가 변경될 때마다 함수 실행
 

@@ -3,7 +3,6 @@ package kr.co.pofo.pofoapiboot3.service;
 import java.util.List;
 
 import kr.co.pofo.pofoapiboot3.entity.Comment;
-import kr.co.pofo.pofoapiboot3.entity.CommentDto;
 import kr.co.pofo.pofoapiboot3.entity.CommentView;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +29,8 @@ public class DefaultCommentService implements CommentService {
     }
 
     @Override
-    public void save(CommentDto commentDto) {
-        repository.insert(commentDto);
+    public void save(Comment comment) {
+        repository.insert(comment);
     }
 
     @Override

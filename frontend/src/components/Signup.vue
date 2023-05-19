@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onUpdated, onMounted  } from 'vue';
+import { ref, watch, onUpdated, onMounted, onBeforeMount  } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import Modal from './Modal.vue';
@@ -56,15 +56,16 @@ watch(email, () => {
     emailRegTest.value = false;
     if(route.query.type === 'oauth'){
         buttonText.value = '인증 완료';
+        resultOfCertification.value = true;
     }
 })
 
-onMounted(() => {
+onBeforeMount(() => {
     if(route.query.type==='oauth'){
         email.value = userDetails.email;
         isDisabled.value = true;
     }
-}),
+})
 
 async function signupHandler() {
     if(!resultOfCertification.value || !isPassword() || nickNameCount.value===1 || nickname.value=='' || pwd.value !== subPWd.value){
@@ -84,6 +85,11 @@ async function signupHandler() {
         router.push("/login");
     }
 }
+
+function goBack(){
+    history.back();
+}
+
 
 async function sendEmail() {
     
@@ -124,6 +130,10 @@ async function checkNum() {
 }
 
 async function checkNickname() {
+    if(nickname.value=='' || nickname.value== null || nickname.value == undefined)
+        return;
+
+
     let response = await fetch(`http://localhost:8080/user/nicknamecheck?nickname=${nickname.value}`);
     let result = await response.text();
     if (result == 'ok') {
@@ -134,7 +144,7 @@ async function checkNickname() {
 }
 
 function dlgOkHandler(){
-        showModal.value=false;
+    showModal.value=false;
 }
 
 function pwdInput(){
@@ -231,8 +241,8 @@ function isPassword() {
                 </div>
             </form>
             <div class="flex-row-between1 margin-top-10">
-                <button class="btn-back">이전화면</button>
-                <button class="btn-next" @click="signupHandler">회원가입</button>
+                <button class="btn-back" @click.prevent="goBack">이전화면</button>
+                <button class="btn-next" @click.prevent="signupHandler">회원가입</button>
             </div>
         </div>
     </div>

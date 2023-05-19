@@ -4,7 +4,10 @@ import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
 import App from "./App.vue";
 
-import vue3GoogleLogin from 'vue3-google-login'
+import vue3GoogleLogin from "vue3-google-login";
+
+//errorPage
+import ErrorPage from "/src/components/error/404.vue";
 
 // 로그인,회원가입
 import Login from "/src/components/Login.vue";
@@ -33,10 +36,11 @@ import PortfolioRegister from "@/components/member/PortfolioRegister.vue";
 import Profile from "/src/components/Profile.vue";
 
 const routes = [
-  { path: "/index", component: Index },
+  {path: "/", component: Index},
+  {path: "/index", component: Index},
 
   { path: "/pofo/reg", component: PortfolioRegister },
-  { path: "/pofo/:id", component: PortfolioDetail },
+  { path: "/pofo/:portfolioId", component: PortfolioDetail },
 
   // community경로
   { path: "/community", children: [
@@ -52,6 +56,9 @@ const routes = [
   { path: "/sendlink", component: PwdSendMail },
   { path: "/pwdreset", component: ResetPwd },
 
+  //errorPage
+  { path : "/:pathMatch(.*)*", component : ErrorPage},
+
   MemberRoute,
 ];
 
@@ -64,9 +71,10 @@ const pinia = createPinia();
 pinia.use(piniaPersist);
 
 createApp(App)
-.use(router)
-.use(pinia)
-.use(vue3GoogleLogin, {
-  clientId: '35371203623-k8enqllrhlbg9tv17ghiolqbb2t167qt.apps.googleusercontent.com'
-})
-.mount("#app");
+  .use(router)
+  .use(pinia)
+  .use(vue3GoogleLogin, {
+    clientId:
+      "35371203623-k8enqllrhlbg9tv17ghiolqbb2t167qt.apps.googleusercontent.com",
+  })
+  .mount("#app");

@@ -49,5 +49,5 @@ public interface PortfolioRepository {
 
 // myprofile
     List<Portfolio> findByUserId(int id);
-    int countOfhits(int id);
+    Integer countOfhits(int id);
 }
