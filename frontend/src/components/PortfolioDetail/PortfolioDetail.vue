@@ -5,7 +5,7 @@ import { onBeforeRouteUpdate } from "vue-router";
 
 // Components
 import Modal from "@/components/Modal.vue";
-import Header from "../Header.vue";
+import Header from "@/components/Header.vue";
 
 // Mock data
 const portfolioCopyright = [
@@ -491,9 +491,9 @@ onBeforeRouteUpdate((to, from, next) => {
           v-for="item in state.contents"
         >
           <img
-              v-if="item.type === '1'"
-              :src="`http://localhost:8080/portfolio/contents/${item.content}`"
-              alt="Content image"
+            v-if="item.type === '1'"
+            :src="`http://localhost:8080/portfolio/contents/${item.content}`"
+            alt="Content image"
           >
           <p
             v-else
@@ -573,22 +573,23 @@ onBeforeRouteUpdate((to, from, next) => {
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
         />
-        <span
-          class="text-xs font-semibold text-white sm:text-sm"
-          v-if="state.portfolio.awardDate != null"
-          v-text="
-            `${state.portfolio.awardDate
-              .substring(0, 10)
-              .replace(/-/g, '.')} | 그래픽 디자인 · UI/UX`
-          "
-        />
-        <span
-          class="text-xs font-semibold text-white sm:text-sm"
-          v-else
-        >
-          그래픽 디자인 · UI/UX
-        </span>
-        <span />
+        <div>
+          <span
+            class="text-xs font-semibold text-white sm:text-sm"
+            v-if="state.portfolio.awardDate != null"
+            v-text="
+              `${state.portfolio.awardDate.substring(0, 10).replace(/-/g, '.')}`+ ' | '
+            "
+          />
+          <span
+            class="text-xs font-semibold text-white sm:text-sm"
+            v-text="
+              state.portfolio.collaboration === '0'
+                ? '개인 프로젝트'
+                : '팀 프로젝트'
+            "
+          />
+        </div>
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -763,9 +764,14 @@ onBeforeRouteUpdate((to, from, next) => {
             class="text-md col-span-7 font-bold"
             v-text="state.portfolio.title"
           />
-          <span class="col-span-7 mb-5 text-xs font-bold text-gray-500">
-            UI/UX · 그래픽 디자인
-          </span>
+          <span
+            class="col-span-7 mb-5 text-xs font-bold text-gray-500"
+            v-text="
+              state.portfolio.collaboration === '0'
+                ? '개인 프로젝트'
+                : '팀 프로젝트'
+            "
+          />
         </div>
         <div
           class="mb-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border-2"
