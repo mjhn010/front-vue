@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
-import {onBeforeRouteUpdate} from "vue-router";
+import { onBeforeRouteUpdate } from "vue-router";
 
 // Components
 import Modal from "@/components/Modal.vue";
@@ -160,21 +160,21 @@ async function getData() {
     });
 
   fetch(`http://localhost:8080/pofo/${portfolioId.value}/more`)
-      .then((res) => res.json())
-      .then((data) => {
-        state.more = data;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    .then((res) => res.json())
+    .then((data) => {
+      state.more = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   fetch(`http://localhost:8080/pofo/${portfolioId.value}/skills`)
-      .then((res) => res.json())
-      .then((data) => {
-        state.skills = data;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    .then((res) => res.json())
+    .then((data) => {
+      state.skills = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 // Like
@@ -203,8 +203,6 @@ async function checkLikes() {
 }
 
 async function saveLike() {
-
-
   const like = {
     memberId: useUserDetailsStore().id,
     portfolioId: portfolioId.value,
@@ -302,8 +300,6 @@ async function checkBookmarks() {
 }
 
 function postBookmark() {
-
-
   const bookmark = {
     portfolioId: portfolioId.value,
     memberId: useUserDetailsStore().id,
@@ -324,8 +320,6 @@ function postBookmark() {
 }
 
 function deleteBookmark() {
-
-
   const bookmark = {
     portfolioId: portfolioId.value,
     memberId: useUserDetailsStore().id,
@@ -371,7 +365,6 @@ async function checkReports() {
 }
 
 function postReport() {
-
   const url = `http://localhost:8080/pofo/${portfolioId.value}/reports`;
 
   const report = {
@@ -394,7 +387,6 @@ function postReport() {
 }
 
 function deleteReport() {
-
   const url = `http://localhost:8080/pofo/${portfolioId.value}/reports`;
 
   const report = {
@@ -417,7 +409,7 @@ function deleteReport() {
 }
 
 // Lifecycle
-onMounted(()=>{
+onMounted(() => {
   getData();
 });
 
@@ -495,10 +487,18 @@ onBeforeRouteUpdate((to, from, next) => {
       <!-- Main -->
       <main>
         <template
-          :key="content.id"
-          v-for="content in state.contents"
+          :key="item.id"
+          v-for="item in state.contents"
         >
-          <div v-html="contentToHTML(content)" />
+          <img
+              v-if="item.type === '1'"
+              :src="`http://localhost:8080/portfolio/contents/${item.content}`"
+              alt="Content image"
+          >
+          <p
+            v-else
+            v-html="item.content"
+          />
         </template>
       </main>
 
@@ -588,7 +588,7 @@ onBeforeRouteUpdate((to, from, next) => {
         >
           그래픽 디자인 · UI/UX
         </span>
-        <span></span>
+        <span />
       </div>
 
       <!-- Member's portfolio list bar -->
@@ -607,7 +607,7 @@ onBeforeRouteUpdate((to, from, next) => {
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
-            class="h-4 w-4 opacity-50 mt-0.5"
+            class="mt-0.5 h-4 w-4 opacity-50"
           >
         </router-link>
       </div>
@@ -623,9 +623,7 @@ onBeforeRouteUpdate((to, from, next) => {
             :key="morePortfolio.id"
             v-for="morePortfolio in state.more"
           >
-            <router-link
-              :to="`/pofo/${morePortfolio.id}`"
-            >
+            <router-link :to="`/pofo/${morePortfolio.id}`">
               <img
                 :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
@@ -879,12 +877,12 @@ main:deep(img) {
   @apply mb-12 h-1/5 w-full;
 }
 
-main:deep(h2) {
-  @apply mx-6 xl:mx-12 text-lg font-bold sm:text-2xl;
+main:deep(p) {
+  @apply mx-6 mb-12 text-base font-bold sm:text-2xl xl:mx-12;
 }
 
-div:deep(p) {
-  @apply mx-6 xl:mx-12 text-base font-bold sm:text-2xl;
+main:deep(div) {
+  @apply text-sm font-normal sm:text-base;
 }
 
 .sidebar {
@@ -896,8 +894,6 @@ div:deep(p) {
   height: 85.9%;
   margin-left: 63.8%;
 }
-
-
 
 .chevron-left-icon {
   width: 48px;
