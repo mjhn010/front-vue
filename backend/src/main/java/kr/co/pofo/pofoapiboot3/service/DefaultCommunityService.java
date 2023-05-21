@@ -14,13 +14,7 @@ public class DefaultCommunityService implements CommunityService {
     @Autowired
     private CommunityRepository repository;
     
-    // 커뮤니티 리스트
-    @Override
-    public List<Community> getList() {
-        return repository.findAll();
-    }
-
-    // 커뮤니티 레지스터
+    // 커뮤니티 등록
     @Override
     public boolean register(Community post) {
         int result = repository.insert(post);
@@ -29,6 +23,18 @@ public class DefaultCommunityService implements CommunityService {
             return true;
         else            // insert 실패
             return false;
+    }
+
+    // 커뮤니티 목록조회
+    @Override
+    public List<Community> getList() {
+        return repository.findAll();
+    }
+
+    // 커뮤니티 상세조회
+    @Override
+    public Community getById(Long id) {
+        return repository.findById(id);
     }
 
 }

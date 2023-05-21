@@ -12,16 +12,16 @@ import kr.co.pofo.pofoapiboot3.entity.Community;
 
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @MybatisTest
-class CommunityPostRepositoryTest {
+class CommunityRepositoryTest {
 
 	@Autowired
 	private CommunityRepository repository;
 	
-	@Test
-	void test() {
-		List<Community> list = repository.findAll();
-		System.out.println(list);
-	}
+	// @Test
+	// void test() {
+	// 	List<Community> list = repository.findAll();
+	// 	System.out.println(list);
+	// }
 
 	//@Test
 	// void test() {
@@ -34,5 +34,11 @@ class CommunityPostRepositoryTest {
 
 	// 	repository.insert(post);
 	// }
+
+	@Test
+	void test() {
+		Community community = repository.findById(9L);
+		System.out.println(community);
+	}
 
 }

@@ -9,9 +9,12 @@ import kr.co.pofo.pofoapiboot3.entity.Community;
 @Mapper
 public interface CommunityRepository {
 
-    // 커뮤니티 리스트
+    // 커뮤니티 등록
+    int insert(Community post);
+
+    // 커뮤니티 목록조회
     List<Community> findAll();
 
-    // 커뮤니티 레지스터
-    int insert(Community post);
+    // 커뮤니티 상세조회
+    Community findById(Long id);
 }

@@ -10,12 +10,11 @@ let route = useRoute();
 
 // --- Variables ---------------------------------------
 let community = reactive({
-    // memberId: userDetails.id, // 이후에 로그인한 회원의 정보 가져와야함
     title: "",
     onlineType: true,
     locationInfo: "",
     period: "",
-    teamSize: 0,
+    teamSize: null,
     thumbnail: "",
 });
 
@@ -66,7 +65,7 @@ function btnHandler(){
     console.log("clicked");
     let fileInput = fileInputRef.value;
     
-    // fileInput.click(); // 이 방법 보다는..?
+    // fileInput.click(); // 이 방법 보다는 아래의 방법으로
     const event = new MouseEvent("click", {
     view: window,
         bubbles: true,
@@ -119,15 +118,8 @@ function fileInputHandler(e) {
         </section>
         <form class="team-c-form" action="" method="post" id="form">
             <main class="team-c-main margin-top-1">
-                <!-- <div class="first-img-box">
-                    <div class="img-box" @click="imageBoxClickHandler" >
-                        <span v-if="!imgRef">썸네일 대표 이미지를 추가해주세요.</span>
-                        <img ref="imgRef"  src="#" alt="선택한 이미지" />
-                    </div>
-                    <input type="file" class="d-none" ref="fileInputRef" @input="fileInputHandler" name="image">
-                </div> -->
                 <div class="first-img-box">
-                    <div class="img-box">
+                    <div class="img-box" @click="imageBoxClickHandler">
                         <img ref="imgRef" />
                     </div>
                     <input type="file" class="d-none" ref="fileInputRef" @input="fileInputHandler" name="image">
@@ -139,8 +131,7 @@ function fileInputHandler(e) {
                 </div>
                 <div class="text-box margin-top-3">
                     <h2>닉네임</h2>
-                    <!-- 고정값 -->
-                    <input class="team-c-input" type="text" :placeholder="userDetails.nickname" readonly>
+                    <input class="team-c-input nickname" type="text" :placeholder="userDetails.nickname" readonly>
                 </div>
                 <div class="button-box margin-top-3">
                     <h2>온·오프라인</h2>
@@ -171,4 +162,13 @@ function fileInputHandler(e) {
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/team-register.css");
+
+.team-c-input::placeholder {
+    color: rgb(195, 190, 190); /* 색상을 변경하고자 하는 값으로 대체하세요 */
+}
+
+.nickname::placeholder {
+    color: rgb(60, 59, 59); 
+}
+
 </style>

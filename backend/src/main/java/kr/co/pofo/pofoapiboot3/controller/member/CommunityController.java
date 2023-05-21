@@ -21,6 +21,7 @@ public class CommunityController {
     @Autowired
     private CommunityService service;
 
+    // 커뮤니티 등록
     @PostMapping("register")
     public boolean register(MultipartFile image, Community post, Boolean onlineType, HttpServletRequest request) throws IllegalStateException, IOException{
         String originalFilename = image.getOriginalFilename();
@@ -31,13 +32,11 @@ public class CommunityController {
         String urlPath = "/communityImage" +File.separator + encodedFilename;
         String realPath = request.getServletContext().getRealPath(urlPath);
         
-        System.out.println("post: " + post);
-        System.out.println("urlPath:" + urlPath);
-        System.out.println("realPath:" + realPath);
         image.transferTo(new File(realPath));
 
         boolean result = service.register(post);
 
         return result;
     }
+    
 }

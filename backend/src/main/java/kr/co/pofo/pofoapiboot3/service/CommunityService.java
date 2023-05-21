@@ -6,9 +6,13 @@ import kr.co.pofo.pofoapiboot3.entity.Community;
 
 public interface CommunityService {
 
-    // 커뮤니티 리스트
+    // 커뮤니티 등록
+    boolean register(Community post);
+
+    // 커뮤니티 목록조회
     List<Community> getList();
 
-    boolean register(Community post);
+    // 커뮤니티 상세조회
+    Community getById(Long id);
 
 }

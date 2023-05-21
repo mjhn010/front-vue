@@ -1,12 +1,23 @@
 <script setup>
 import Header from "@/components/Header.vue";
-import { reactive } from 'vue';
-
+import { reactive, onMounted } from 'vue';
 
 // --- Variables ---------------------------------------
 let community = reactive({
   list: [], // 커뮤니티 리스트를 담을 변수
 });
+
+// --- Life Cycles -------------------------------------
+onMounted(fetchCommunities);
+
+// --- Event Handlers ----------------------------------
+async function fetchCommunities(){
+  const url = new URL('http://localhost:8080/community/list');
+
+  let response = await fetch(url);
+  let json = await response.json();
+  community.list = json.list;
+}
 
 const recruits = [
   {
@@ -100,8 +111,6 @@ const recruits = [
   },
 ];
 
-// --- Event Handlers ----------------------------------
-
 </script>
 
 <template>
@@ -138,21 +147,26 @@ const recruits = [
 
     <!-- Recruit list -->
     <div class="grid gap-x-6 gap-y-6 md:grid-cols-3 lg:grid-cols-4 xl:my-4 xl:grid-cols-5 xl:grid-rows-2">
-      <figure class="w-80 rounded-xl border-2 shadow-md sm:w-64 xl:w-full cursor-pointer" v-for="recruit in recruits"
-        :key="recruit">
-        <img :src="`/src/assets/images/temp/${recruit.image}`" alt="Recruit thumbnail" class="rounded-t-lg">
+      <figure class="w-80 rounded-xl border-2 shadow-md sm:w-64 xl:w-full cursor-pointer" 
+              v-for="(community, index) in community.list" :key="index">
+        <img :src="`http://localhost:8080/communityImage/` + community.thumbnail" alt="Recruit thumbnail" class="rounded-t-lg">
         <figcaption class="px-4 py-4">
-          <h3 class="text-md block truncate font-semibold" v-text="recruit.title" />
+          <h3 class="text-md block truncate font-semibold" v-text="community.title" />
           <span
             class="sm:text:lg relative h-0 right-4 block w-24 rounded-tr-lg bg-white text-center font-bold xl:bottom-12 xl:text-xl"
-            v-if="(recruit.coopInfo = 0)">ONLINE</span>
+            v-if="(community.onlineType === true)">ONLINE</span>
           <span
             class="sm:text:lg relative right-4 block w-24 rounded-tr-lg bg-white text-center font-bold sm:bottom-12 xl:bottom-14 xl:text-xl"
-            v-if="(recruit.coopInfo = 1)">OFFLINE</span>
+            v-if="(community.onlineType === false)">OFFLINE</span>
           <div class="flex sm:h-16 xl:h-20 flex-col justify-between">
-            <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="recruit.nickname" />
-            <span class="block truncate text-sm" v-text="recruit.projectInfo" />
-            <span class="block w-fit rounded-md bg-red-100 px-1 text-sm" v-text="`~` + `${recruit.regDate}`" />
+            <!-- <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.memberId}`" /> -->
+            <!-- <span class="block truncate text-sm" v-text="`${community.teamSize}`명" /> -->
+            <span class="w-fit px-1 text-sm">장소:</span>
+            <span class="block w-fit rounded-md bg-red-100 px-1 text-sm" v-text="`${community.locationInfo}`" />
+            <span class="w-fit px-1 text-sm">기간:</span>
+            <span class="block w-fit rounded-md bg-red-100 px-1 text-sm" v-text="`${community.period}`" />
+            <span class="w-fit px-1 text-sm">인원:</span>
+            <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.teamSize}명` " />
           </div>
         </figcaption>
       </figure>

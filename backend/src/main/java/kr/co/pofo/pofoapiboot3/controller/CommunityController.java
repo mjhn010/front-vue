@@ -21,15 +21,27 @@ public class CommunityController {
     @Autowired
     private CommunityService service;
 
+    // 커뮤니티 목록조회
     @GetMapping("list")
     public ResponseEntity<Map<String, Object>> list(){
         
-        // 커뮤니티 리스트
         List<Community> list = service.getList();
         
         Map<String, Object> dto = new HashMap<>();
         dto.put("list", list);
 
         return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
+    }
+
+    // 커뮤니티 상세조회
+    @GetMapping("detail")
+    public ResponseEntity<Map<String, Object>> detail(Long id){
+
+        Community community = service.getById(id);
+        
+        Map<String, Object> dto = new HashMap<>();
+        dto.put("community", community);
+
+        return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
     }
 }
