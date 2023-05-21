@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
+import kr.co.pofo.pofoapiboot3.entity.Skill;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 @RestController
 @RequestMapping("/members")
@@ -19,18 +20,17 @@ public class PortfolioMemberController {
     @Autowired
     private PortfolioService portfolioService;
     @PostMapping("/regpofo")
-    public String regPofo(String title, int [] skill, int type){
-        System.out.println(title);
-        System.out.println(skill.length);
-        System.out.println(type);
+    public boolean regPofo(Portfolio pofo, Skill skills){
+        
 
         System.out.println("--------------------------------");
-        return "ok";
+        portfolioService.regPofo(pofo,skills);
+        return regPofo(pofo, skills);
     }
 
     @PostMapping("/regcontent")
-    public String regContent(@RequestParam(required = false) MultipartFile contents, 
-                   MultipartHttpServletRequest request, int orders) {
+    public boolean regContent(@RequestParam(required = false) MultipartFile contents, 
+                   MultipartHttpServletRequest request, int orders,PortfolioContents pofoContent) {
        int types = 0;
        String content = "";
        System.out.println("order : " + orders);
@@ -43,7 +43,9 @@ public class PortfolioMemberController {
           content = contents.getOriginalFilename();
           System.out.println(content);
        }
-       return "ok";
+       boolean result = portfolioService.regContent(pofoContent);
+
+       return result;
     }
    
 }

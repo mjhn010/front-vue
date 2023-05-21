@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
+import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
+import kr.co.pofo.pofoapiboot3.entity.Skill;
 import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 import kr.co.pofo.pofoapiboot3.repository.PortfolioRepository;
 
@@ -95,5 +97,23 @@ public class DefaultPortfolioService implements PortfolioService {
     @Override
     public void updatehitCount(Integer id) {
         portfolioRepository.updatehitCount(id);
+    }
+
+    // 등록 (제목,썸네일,스킬)
+    public boolean regPofo(Portfolio pofo, Skill skills){
+        int result = portfolioRepository.insert(pofo,skills);
+        if(result == 1)
+            return true;
+        else
+            return false;
+    }
+
+    //등록(이미지, 텍스트)
+    public boolean regContent(PortfolioContents pofoContent){
+        int result = portfolioRepository.contentInsert(pofoContent);
+        if(result == 1)
+            return true;
+        else
+            return false;
     }
 }
