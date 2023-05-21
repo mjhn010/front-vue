@@ -77,7 +77,8 @@ public class MemberController {
         service.modifyInfo(member);
 
         try {
-            Thread.sleep(5000);
+            if(profile !=null)
+                Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
