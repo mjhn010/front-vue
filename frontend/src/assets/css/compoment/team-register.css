@@ -166,6 +166,9 @@ h2{
     box-shadow: 2px 2px 2px #eee;
     color: rgb(18, 17, 17);
 }
+    .submit:hover {
+        background-color: #5C9ABF;
+    }
 .reset{
     color: rgb(18, 17, 17);
     font-size: 14px;
@@ -203,3 +206,5 @@ button {
     margin-right: 1%;
     margin-bottom: 2%;
   }
+
+  

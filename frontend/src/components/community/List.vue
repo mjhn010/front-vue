@@ -163,10 +163,10 @@ function communityClickHandler(id){
           <h3 class="text-md block truncate font-semibold" v-text="community.title" />
           <span
             class="sm:text:lg relative h-0 right-4 block w-24 rounded-tr-lg bg-white text-center font-bold xl:bottom-12 xl:text-xl"
-            v-if="(community.onlineType === true)">ONLINE</span>
+            v-if="(community.onlineType === true)">ON-LINE</span>
           <span
             class="sm:text:lg relative right-4 block w-24 rounded-tr-lg bg-white text-center font-bold sm:bottom-12 xl:bottom-14 xl:text-xl"
-            v-if="(community.onlineType === false)">OFFLINE</span>
+            v-if="(community.onlineType === false)">OFF-LINE</span>
           <div class="flex sm:h-16 xl:h-20 flex-col justify-between">
             <!-- <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.memberId}`" /> -->
             <!-- <span class="block truncate text-sm" v-text="`${community.teamSize}`명" /> -->

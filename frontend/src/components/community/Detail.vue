@@ -34,7 +34,7 @@ async function fetchCommunity(){
 <template>
     <Header />
     <main>
-        <div style="display:flex">
+        <div class="thumbnail-box">
             <img loading="lazy" class="css-l68de9 e5kxa4l0"
                 :src="'http://localhost:8080/communityImage/' + data.community.thumbnail">
         </div>
@@ -59,8 +59,8 @@ async function fetchCommunity(){
                     </div>
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">장소</div>
-                        <span class="contents-status-2">online</span>
-                        <!-- <span class="contents-status-2">offline</span> -->
+                        <span class="contents-status-2">ON-LINE</span>
+                        <!-- <span class="contents-status-2">OFF-LINE</span> -->
                         <div class="contents-details-text location-info">{{ data.community.locationInfo }}</div>
                     </div>
                     <div class="contents-details-box">
@@ -79,6 +79,7 @@ async function fetchCommunity(){
                     <p>
                         자세한 팀원 모집은 알림과 채팅 기능을 이용해보세요!
                     </p>
+                    <button>신청하기</button>
                 </div>
 
             </div>
@@ -88,12 +89,26 @@ async function fetchCommunity(){
 </template>
 
 <style scoped>
+main {
+    margin: 30px 0;
+}
+.thumbnail-box {
+    display: flex;
+    width: 748px;
+    margin: 0 auto;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: #e5e5e5;
+    border-radius: 8px 8px 0px 0px;
+    
+}
 .css-l68de9 {
     display: block;
     object-fit: cover;
     border-radius: 1px;
-    width: 705px;
-    height: auto;
+    width: 100%;
+    height: 500px;
     pointer-events: auto;
     border-radius: 0px;
 
@@ -101,21 +116,15 @@ async function fetchCommunity(){
 }
 
 .css-3y3f20 {
-    width: 705px;
+    width: 750px;
     margin: 0 auto;
-}
 
-.page-title {
-    display: none;
-}
-
-.width.padding {
-    margin: -20px;
+    
 }
 
 .contents-form-relative {
     width: 708px;
-    height: 365px;
+    height: 320px;
     padding: 20px;
     line-height: 16px;
     border-style: none solid solid;
@@ -158,15 +167,14 @@ async function fetchCommunity(){
 .contents-status-2 {
     display: flex;
     justify-content: center;
-    width: 50px;
+    width: 63.3px;
     height: 16px;
     margin: auto 6px auto 15px;
     border: 0.5px none #000;
     border-radius: 3px;
-    background-color: #dbeddb;
     font-size: 12px;
     font-weight: 400;
-    color: #fff;
+    color: white;
     background-color: #8CCCF4;
     
 }
@@ -204,41 +212,19 @@ async function fetchCommunity(){
     border-bottom: 1.5px solid #e5e5e5;
 }
 
-
 .contents-apply-form {
     margin-top: 18px;
 }
 
-.full-price-text {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    font-size: 14px;
-    font-weight: 300;
-    color: #737373;
+.contents-apply-form button {
+    background-color: black;
+    color: white;
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.monthly-price-box {
-    display: flex;
-    -webkit-box-pack: start;
-    justify-content: flex-start;
-    -webkit-box-align: center;
-    align-items: center;
-}
 
-.monthly-price-text {
-    display: flex;
-    color: #222;
-    font-size: 20px;
-    line-height: 30px;
-    font-weight: 700;
-}
-
-.monthly-text {
-    display: block;
-    margin-left: 6px;
-    color: #737373;
-    font-size: 14px;
-    line-height: 15px;
-    font-weight: 300;
-}
 </style>
