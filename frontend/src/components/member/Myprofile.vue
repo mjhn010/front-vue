@@ -1,10 +1,10 @@
 <script setup>
 import Header from '../Header.vue';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import Modal from '../Modal.vue';
-import { vOnClickOutside } from '@vueuse/components'
+
 
 let userDetails = useUserDetailsStore();
 let route = useRoute();
@@ -13,10 +13,30 @@ let route = useRoute();
 let current = ref();
 let isThis = ref(false);
 let showFollowModal = ref(false);
+
+
 let showModal = ref(false);
+let showValidModal = ref(false);
 
 let src = ref();
 let selected = ref(false);
+
+//사용자가 정보 수정에서 파일을 선택했을 시 이미지 정보를 담을 변수
+let fileInfo = null;
+let nickNameCount = ref();
+let nickname = ref(userDetails.nickname);
+let url = ref(userDetails.url);
+
+let pwd = ref(null);
+let subPwd = ref(null);
+
+let pwdRegTest = ref();
+let subPwdTest = ref();
+
+let isModifyNickname = ref(false);
+let isModifyPwd = ref(false);
+
+let showLoaing = ref(false);
 
 let model = reactive({
     myInfo: {},
@@ -30,10 +50,16 @@ onMounted(() => {
     load();
 });
 
+watch(nickname, () => {
+    nickNameCount = ref();
+})
+
 function dlgOkHandler() {
     showModal.value = false;
+    showValidModal.value = false;
 }
 
+//회원 탈퇴 여부 물어보는 모달
 function showModalHandler() {
     showModal.value = true;
 }
@@ -57,8 +83,8 @@ function selectImage(e) {
 
 function changeImage(e) {
     selected.value = true;
-    let file = e.target.files[0];
-    src.value = URL.createObjectURL(file);
+    fileInfo = e.target.files[0];
+    src.value = URL.createObjectURL(fileInfo);
 }
 
 function clickWork() {
@@ -75,13 +101,126 @@ function clickCollections() {
     current.value = 2;
     model.currentList = model.list[2];
 }
-//수정 모달
+
+//수정 모달관련 이벤트 핸들러
 function profileUpdate() {
     isThis.value = true;
 }
 
+function closeModifyModal() {
+    isThis.value = false;
+}
+
+
+async function modifyInfo() {
+    if ((isModifyNickname.value && nickNameCount.value === 1) || (isModifyNickname.value && nickname.value == '')) {
+        showValidModal.value = true;
+        return;
+    }
+
+    if ((isModifyPwd.value && !isPassword()) || (isModifyPwd.value && pwd.value !== subPwd.value)) {
+        showValidModal.value = true;
+        return;
+    }
+
+    showLoaing.value = true;
+    isThis.value =false;
+
+    let formData = new FormData();
+    if (fileInfo)
+        formData.append("profile", fileInfo);
+    if (nickname.value)
+        formData.append("nickname", nickname.value);
+    if (pwd.value)
+        formData.append("pwd", pwd.value);
+
+    formData.append("id", userDetails.id);
+    let response = await fetch("http://localhost:8080/members/modify", {
+        method: "PUT",
+        headers: {
+            "Accept": "application/json",
+        },
+        body: formData
+    });
+    let result = await response.text();
+
+    if (result) {
+        showLoaing.value = false;
+        newUserInfo();
+        location.reload();
+    }
+}
+
+async function checkNickname() {
+    if (nickname.value == '' || nickname.value == null || nickname.value == undefined)
+        return;
+
+    let response = await fetch(`http://localhost:8080/user/nicknamecheck?nickname=${nickname.value}`);
+    let result = await response.text();
+    if (result == 'ok') {
+        nickNameCount.value = 0;
+    } else {
+        nickNameCount.value = 1;
+    }
+}
+
+function modifyNickname() {
+    isModifyNickname.value = !isModifyNickname.value;
+}
+
+function modifyPwd() {
+    isModifyPwd.value = !isModifyPwd.value;
+}
+
+
+function pwdInput() {
+
+    if (pwd.value.length == 0) {
+        pwdRegTest.value = '';
+        return;
+    }
+
+    if (!isPassword())
+        pwdRegTest.value = 'no';
+    else
+        pwdRegTest.value = 'yes';
+}
+
+function subPwdInput() {
+
+    if (subPwd.value.length == 0) {
+        subPwd.value = '';
+        return;
+    }
+
+    if (!(pwd.value === subPwd.value))
+        subPwdTest.value = 'no';
+    else
+        subPwdTest.value = 'yes';
+}
+
+function isPassword() {
+    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+    return regExp.test(pwd.value);
+}
+
+async function newUserInfo() {
+    let response = await fetch(`http://localhost:8080/user/newuserinfo/${userDetails.id}`);
+    let json = await response.json();
+    userDetails.nickname = json.result.nickname;
+    userDetails.profileSrc = json.result.image;
+    userDetails.url = json.result.url;
+}
+
+//팔로우 모달관련 이벤트 핸들러
 function followModal() {
     showFollowModal.value = true;
+}
+
+function loading(ms) {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {
+    }
 }
 
 </script>
@@ -93,8 +232,8 @@ function followModal() {
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
                 <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
-                    v-if="userDetails.profileSrc == null" />
-                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else />
+                    v-if="userDetails.profileSrc == null" @click.prevent="profileUpdate"/>
+                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else @click.prevent="profileUpdate"/>
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>
@@ -164,50 +303,64 @@ function followModal() {
         </section>
     </main>
 
+    <!--  개인 정보 수정 모달창  -->
     <div class="black-bg" v-if="isThis">
         <div class="white-bg">
-            <h4> 기본정보</h4>
-            <form>
-                <div class="center">
-                    <div class="margin-top-5 profile-select">
-                        <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
-                            v-if="userDetails.profileSrc == null && !selected" @click.prevent="selectImage" />
-                        <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img"
-                            v-else-if="userDetails.profileSrc != null && !selected" @click="selectImage" />
-                        <img :src=src class="profile-img" v-else @click="selectImage" />
-                        <input type="file" class="d-none" @input="changeImage" />
-                    </div>
+            <h4 class="d-inline">기본정보</h4><span class="xMark" @click="closeModifyModal">X</span>
+            <div class="center">
+                <div class="margin-top-5 profile-select">
+                    <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
+                        v-if="userDetails.profileSrc == null && !selected" @click.prevent="selectImage" />
+                    <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img"
+                        v-else-if="userDetails.profileSrc != null && !selected" @click="selectImage" />
+                    <img :src=src class="profile-img" v-else @click="selectImage" />
+                    <input type="file" class="d-none" @input="changeImage" accept="jpg,gif,png" />
                 </div>
-                <div class="flex-colum">
-                    <div class="margin-top-4">
-                        <span> 닉네임 변경</span>
-                        <input class="input-text2" type="text" autocomplete="off">
-                    </div>
-
-                    <div class="margin-top-4">
-                        <span> 비밀번호 변경</span>
-                        <input class="input-text2" type="password" autocomplete="off">
-                    </div>
-
-                    <div class="margin-top-4">
-                        <span> 비밀번호 확인</span>
-                        <input class="input-text2" type="password" autocomplete="off">
-                    </div>
-
-                    <div class="margin-top-4">
-                        <span> URL주소 변경</span>
-                        <input class="input-text2" type="text" autocomplete="off">
-                    </div>
+            </div>
+            <div class="flex-colum">
+                <div class="margin-top-4">
+                    <span> 닉네임</span>
+                    <input class="input-text2" type="text" autocomplete="off" v-model="nickname"
+                        :readonly="!isModifyNickname">
+                    <button class="nick-btn" @click.prevent="modifyNickname" v-if="!isModifyNickname">닉네임 수정</button>
+                    <button class="nick-btn" @click.prevent="checkNickname" v-else>중복 확인</button>
+                    <span class="red left-padding-3" v-if="nickNameCount == 1">닉네임이 중복됩니다.</span>
+                    <span class="green left-padding-3" v-if="nickNameCount == 0">사용가능한 닉네임입니다.</span>
                 </div>
-                <div class="margin-top-8 flex-row-between1">
-                    <button class="btn-bye-bye" @click.prevent="showModalHandler">회원탈퇴</button>
-                    <button class="btn-updateprofile">수정하기</button>
+
+                <div class="margin-top-4">
+                    <span> 비밀번호</span>
+                    <input class="input-text2" type="password" autocomplete="off" v-model="pwd" @input="pwdInput"
+                        placeholder="비밀번호(숫자,영문,특수문자 포함 8~16자리)" :readonly="!isModifyPwd">
+                    <button class="nick-btn" @click.prevent="modifyPwd" v-if="!isModifyPwd">비밀번호 수정</button>
+                    <span class="red" v-if="pwdRegTest == 'no'">유효하지 않은 비밀번호입니다.</span>
+                    <span class="green" v-if="pwdRegTest == 'yes'">유효한 비밀번호입니다.</span>
                 </div>
-            </form>
+
+                <div class="margin-top-4" v-if="isModifyPwd">
+                    <span> 비밀번호 확인</span>
+                    <input class="input-text2" type="password" autocomplete="off" v-model="subPwd" @input="subPwdInput">
+                    <span class="red" v-if="subPwdTest == 'no'">비밀번호가 일치하지 않습니다.</span>
+                    <span class="green" v-if="subPwdTest == 'yes'">비밀번호가 일치합니다.</span>
+                </div>
+
+                <div class="margin-top-4">
+                    <span> URL주소 변경</span>
+                    <input class="input-text2" type="text" autocomplete="off" v-model="url">
+                </div>
+            </div>
+            <div class="margin-top-8 flex-row-between1">
+                <button class="btn-bye-bye" @click.prevent="showModalHandler">회원탈퇴</button>
+                <button class="btn-updateprofile" @click.prevent="modifyInfo">수정하기</button>
+            </div>
         </div>
     </div>
     <Modal :show="showModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?" />
+    <Modal :show="showValidModal" @ok="dlgOkHandler" type=1 title="입력값을 확인하세요" />
 
+    <div class="loading-screen" v-show="showLoaing">
+        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
+    </div>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
@@ -238,5 +391,76 @@ function followModal() {
 
 .thumbnail:hover img {
     filter: brightness(80%);
+}
+
+.xMark:hover {
+    cursor: pointer;
+}
+
+.xMark {
+    float: right;
+}
+
+.d-inline {
+    display: inline;
+}
+
+.nick-btn {
+    margin-top: 2%;
+    padding: 12px 3px;
+    width: 95px;
+    background-color: #000000;
+    border-radius: 4px;
+    /* 외곽선 없애기 */
+    border: none;
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+span.red {
+    display: inline-block;
+    font-size: 10px;
+    color: red;
+}
+
+span.green {
+    display: inline-block;
+    font-size: 10px;
+    color: green;
+}
+
+.left-padding-3 {
+    padding-left: 3%;
+}
+
+input:read-only {
+    color: gray;
+}
+
+
+.loading-screen {
+    background-color: rgba(0, 0, 0, 0.8);
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-white-bg {
+    position: absolute;
+    top: 30%;
+    left: 42%;
+    height: 1200;
+    width: 320px;
+    padding: 40px 48px;
+    border: 1px solid rgb(240, 245, 245);
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 </style>

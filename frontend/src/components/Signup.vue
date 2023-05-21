@@ -7,7 +7,7 @@ import Modal from './Modal.vue';
 let email = ref('');
 let nickname = ref('');
 let pwd = ref('');
-let subPWd = ref('');
+let subPwd = ref('');
 let showModal = ref(false);
 
 let router = useRouter();
@@ -68,7 +68,7 @@ onBeforeMount(() => {
 })
 
 async function signupHandler() {
-    if(!resultOfCertification.value || !isPassword() || nickNameCount.value===1 || nickname.value=='' || pwd.value !== subPWd.value){
+    if(!resultOfCertification.value || !isPassword() || nickNameCount.value===1 || nickname.value=='' || pwd.value !== subPwd.value){
         showModal.value = true;
         return;
     }
@@ -162,12 +162,12 @@ function pwdInput(){
 
 function subPwdInput(){
     
-    if(subPWd.value.length ==0){
+    if(subPwd.value.length ==0){
         subPwdTest.value = '';
         return;
     }
 
-    if(!(pwd.value === subPWd.value))
+    if(!(pwd.value === subPwd.value))
         subPwdTest.value = 'no';
     else
         subPwdTest.value = 'yes';
@@ -231,7 +231,7 @@ function isPassword() {
                     
                     <h6 class="margin-top-5">비밀번호확인</h6>
                     <input type="password" class="input-text1" 
-                        placeholder="비밀번호(숫자,영문,특수문자 포함 8~16자리)" autocomplete="off" @input="subPwdInput" v-model="subPWd">
+                        placeholder="비밀번호(숫자,영문,특수문자 포함 8~16자리)" autocomplete="off" @input="subPwdInput" v-model="subPwd">
                     <span class="margin-top-1 red" v-if="subPwdTest == 'no'">비밀번호가 일치하지 않습니다.</span>
                     <span class="margin-top-1 green" v-if="subPwdTest == 'yes'">비밀번호가 일치합니다.</span>
 

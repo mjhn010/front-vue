@@ -52,6 +52,14 @@ public class DefaultMemberService implements MemberService {
     }
 
     @Override
+    public int modifyInfo(Member member) {
+        if (member.getPwd() != null) {
+            member.setPwd(passwordEncoder.encode(member.getPwd()));
+        }
+        return repository.update(member);
+    }
+
+    @Override
     public Member getByEmail(String email) {
         return repository.findByEmail(email);
     }
