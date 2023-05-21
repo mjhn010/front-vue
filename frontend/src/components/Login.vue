@@ -51,11 +51,13 @@ async function loginHandler() {
     },
     body: `email=${user.email}&password=${user.password}`,
   });
+  
   let json = await response.json();
   userDetails.id = json.result.id;
   userDetails.email = json.result.email;
   userDetails.nickname = json.result.nickname;
   userDetails.profileSrc = json.result.image;
+  userDetails.url = json.result.url;
   let returnURL = route.query.returnURL;
   
 

@@ -57,6 +57,22 @@
 		where 
 			email = #{email};
 	</update>
+
+	<update id="update" parameterType="Member">
+		UPDATE 
+			member 
+		SET 
+			nickname = #{nickname}
+			<if test="image !=null"> 
+				,image = #{image}
+			</if>
+			<if test="pwd !=null"> 
+				,pwd = #{pwd} 
+			</if>
+		WHERE 
+			id=${id}
+	</update>
+
 </mapper>
 
 
