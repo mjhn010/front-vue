@@ -36,7 +36,7 @@ async function googleLoginHandler(response) {
     router.push("/signup?type=oauth");
     return;
   }
-  
+
   let res = await fetch(`http://localhost:8080/user/login?email=${userDetails.email}`, {
     method: "GET",
     headers: {
@@ -46,12 +46,9 @@ async function googleLoginHandler(response) {
   let json = await res.json();
   saveStores(json);
 
-  let returnURL = route.query.returnURL;
-  if 
-    (returnURL) router.push(returnURL);
-  else 
-    router.push("/index");
+  routerLogic();
 }
+
 //-------------이벤트 핸들러
 async function loginHandler() {
   let response = await fetch("http://localhost:8080/user/login", {
@@ -62,32 +59,36 @@ async function loginHandler() {
     },
     body: `email=${user.email}&password=${user.password}`,
   });
-  
+
   let json = await response.json();
   saveStores(json);
-  
-  if (!userDetails.email) {
-    showModal.value = true;
-    user.email = "";
-    user.password = "";
-  } 
-  else if (returnURL) 
-    router.push(returnURL);
-  else router.push("/index");
+
+  routerLogic();
 }
 
-function dlgOkHandler(){
-    showModal.value=false;
-}
+  function dlgOkHandler() {
+    showModal.value = false;
+  }
 
-function saveStores(json){
-  userDetails.id = json.result.id;
-  userDetails.email = json.result.email;
-  userDetails.nickname = json.result.nickname;
-  userDetails.profileSrc = json.result.image;
-  userDetails.url = json.result.url;
-  let returnURL = route.query.returnURL;
-}
+  function saveStores(json) {
+    userDetails.id = json.result.id;
+    userDetails.email = json.result.email;
+    userDetails.nickname = json.result.nickname;
+    userDetails.profileSrc = json.result.image;
+    userDetails.url = json.result.url;
+  }
+
+  function routerLogic() {
+    let returnURL = route.query.returnURL;
+    if (!userDetails.email) {
+      showModal.value = true;
+      user.password = "";
+    }
+    else if (returnURL)
+      router.push(returnURL);
+    else router.push("/index");
+  }
+
 </script>
 <template>
   <section class="main">
@@ -132,7 +133,7 @@ function saveStores(json){
       </div>
     </div>
   </section>
-  <Modal :show="showModal" @ok="dlgOkHandler" type=1 title="입력값을 확인하세요"/>
+  <Modal :show="showModal" @ok="dlgOkHandler" type=1 title="입력값을 확인하세요" />
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/login.css");

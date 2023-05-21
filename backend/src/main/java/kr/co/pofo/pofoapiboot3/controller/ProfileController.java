@@ -77,15 +77,13 @@ public class ProfileController {
     @PostMapping("follow")
     public String following(Follow follow) {
         System.out.println(follow);
-        int result = followService.add(follow);
-        System.out.println(result);
-        return "";
+        followService.add(follow);
+        return "ok";
     }
     //팔로우 취소
     @DeleteMapping("follow")
     public String followCancle(Follow follow) {
-        int result = followService.delete(follow);
-        System.out.println(result);
-        return "";
+        followService.delete(follow);
+        return "ok";
     }
 }

@@ -49,6 +49,23 @@
             requester_id = ${id}
     </select>
 
+    <select id="findFollower" resultType="Member">
+        select
+            *
+        from
+            member
+        where
+            id 
+        in (select requester_id from follow where requested_id = ${id})
+    </select>
 
-
+    <select id="findFollowing" resultType="Member">
+        select
+            *
+        from
+            member
+        where
+            id 
+        in (select requested_id from follow where requester_id = ${id})
+    </select>
 </mapper>

@@ -4,7 +4,7 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import Modal from '../Modal.vue';
-
+import FollowModal from '../FollowModal.vue';
 
 let userDetails = useUserDetailsStore();
 let route = useRoute();
@@ -12,10 +12,17 @@ let route = useRoute();
 //현재 클릭되어있는 TAB
 let current = ref();
 let isThis = ref(false);
+
+//팔로우 모달관련
 let showFollowModal = ref(false);
+let followModalTitle = ref('');
+let followList = reactive([]);
+let modalType = ref();
+let currentFollowingList = reactive([]);
 
 
-let showModal = ref(false);
+let showQuitModal = ref(false);
+
 let showValidModal = ref(false);
 
 let src = ref();
@@ -38,6 +45,8 @@ let isModifyPwd = ref(false);
 
 let showLoaing = ref(false);
 
+
+
 let model = reactive({
     myInfo: {},
     list: [[], [], []],
@@ -49,20 +58,6 @@ let model = reactive({
 onMounted(() => {
     load();
 });
-
-watch(nickname, () => {
-    nickNameCount = ref();
-})
-
-function dlgOkHandler() {
-    showModal.value = false;
-    showValidModal.value = false;
-}
-
-//회원 탈퇴 여부 물어보는 모달
-function showModalHandler() {
-    showModal.value = true;
-}
 
 async function load() {
     let param = route.params.id;
@@ -99,8 +94,26 @@ function clickLikes() {
 
 function clickCollections() {
     current.value = 2;
-    model.currentList = model.list[2];
+    m.currentList = model.list[2];
 }
+
+watch(nickname, () => {
+    nickNameCount = ref();
+})
+
+// ------------------모달 관련 이벤트------------------
+
+function dlgOkHandler() {
+    showQuitModal.value = false;
+    showValidModal.value = false;
+    showFollowModal.value = false;
+}
+
+//회원 탈퇴 여부 물어보는 모달
+function showModalHandler() {
+    showQuitModal.value = true;
+}
+
 
 //수정 모달관련 이벤트 핸들러
 function profileUpdate() {
@@ -111,6 +124,55 @@ function closeModifyModal() {
     isThis.value = false;
 }
 
+//팔로우 모달관련 이벤트 핸들러
+async function followModal(e, title, t) {
+    followModalTitle.value = title;
+    modalType.value = t;
+    let response = await fetch(`http://localhost:8080/follow/${userDetails.id}?type=${modalType.value}`);
+    followList = await response.json();
+    
+    //팔로우 상태 확인
+    for(let item of followList){
+        followCheck(item.id);
+    }
+    showFollowModal.value = true;
+}
+
+//팔로우 취소
+async function cancleFollow (id){
+    let profileId = id;
+    let response = await fetch("http://localhost:8080/profile/follow", {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded"
+            },
+            body: `requesterId=${userDetails.id}&requestedId=${profileId}`
+    });
+    let result = await response.text();
+
+    if(result ==='ok'){
+        showFollowModal.value = false;
+        load();
+        followModal(null,'팔로잉', 0);
+    }
+}
+
+async function follow(){
+    let response = await fetch("http://localhost:8080/profile/follow", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded"
+            },
+            body: `requesterId=${userDetails.id}&requestedId=${route.params.id}`
+        });
+    let result = await response.text();
+    if(result ==='ok'){
+        showFollowModal.value = false;
+        load();
+        followModal(null,'팔로우', 1);
+    }
+}
+// --------------------------------------------------
 
 async function modifyInfo() {
     if ((isModifyNickname.value && nickNameCount.value === 1) || (isModifyNickname.value && nickname.value == '')) {
@@ -212,16 +274,22 @@ async function newUserInfo() {
     userDetails.url = json.result.url;
 }
 
-//팔로우 모달관련 이벤트 핸들러
-function followModal() {
-    showFollowModal.value = true;
+async function followCheck(id) {
+    let profileId = id;
+    let response = await fetch(`http://localhost:8080/profile/isFollowed`, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: `requesterId=${userDetails.id}&requestedId=${profileId}`
+    });
+    let result = await response.text();
+    if (result === 'yes') 
+        currentFollowingList.push(true);
+    else
+        currentFollowingList.push(false);
 }
 
-function loading(ms) {
-    const wakeUpTime = Date.now() + ms;
-    while (Date.now() < wakeUpTime) {
-    }
-}
 
 </script>
 <template>
@@ -261,13 +329,13 @@ function loading(ms) {
                     <div class="margin-bottom-5 font-size-15s bold">{{ model.activities.collected }}</div>
                     <div class="font-size-14 font-gray">컬렉션 북마크</div>
                 </div>
-                <div>
+                <div class="hover" @click.prevent="followModal($event, '팔로잉', 0)">
                     <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.following }}</div>
-                    <div class="font-size-14 font-gray" @click.prevent="followModal">팔로잉</div>
+                    <div class="font-size-14 font-gray hover">팔로잉</div>
                 </div>
-                <div>
+                <div class="hover" @click.prevent="followModal($event, '팔로워', 1)">
                     <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.follower }}</div>
-                    <div class="font-size-14 font-gray" @click.prevent="followModal">팔로워</div>
+                    <div class="font-size-14 font-gray">팔로워</div>
                 </div>
             </div>
         </section>
@@ -306,7 +374,7 @@ function loading(ms) {
     <!--  개인 정보 수정 모달창  -->
     <div class="black-bg" v-if="isThis">
         <div class="white-bg">
-            <h4 class="d-inline">기본정보</h4><span class="xMark" @click="closeModifyModal">X</span>
+            <h4 class="d-inline">기본정보</h4><img class="xMark hover" @click="closeModifyModal" src="/src/assets/images/xMark.png"/>
             <div class="center">
                 <div class="margin-top-5 profile-select">
                     <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
@@ -355,12 +423,16 @@ function loading(ms) {
             </div>
         </div>
     </div>
-    <Modal :show="showModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?" />
+    <Modal :show="showQuitModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?" />
     <Modal :show="showValidModal" @ok="dlgOkHandler" type=1 title="입력값을 확인하세요" />
+    <FollowModal :show="showFollowModal" :title="followModalTitle" :list="followList" :type="modalType" 
+    :currentFollowingList="currentFollowingList" v-if="showFollowModal" @ok="dlgOkHandler" @cancleFollow="cancleFollow" @follow="follow"/>
 
+    <!-- 로딩 gif -->
     <div class="loading-screen" v-show="showLoaing">
         <img class="loading-white-bg" src="/src/assets/images/loading.gif">
     </div>
+
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
@@ -399,6 +471,8 @@ function loading(ms) {
 
 .xMark {
     float: right;
+    width: 20px;
+    height: 20px;
 }
 
 .d-inline {
@@ -462,5 +536,9 @@ input:read-only {
     background: rgb(255, 255, 255);
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.hover:hover{
+    cursor: pointer;
 }
 </style>
