@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.pofo.pofoapiboot3.entity.Follow;
 import kr.co.pofo.pofoapiboot3.entity.Member;
@@ -22,6 +23,7 @@ public class DefaultFollowService {
         int result = followRepository.delete(follow);
         return result;
     }
+
     public int checkFollowed(Follow follow) {
         int result = followRepository.count(follow);
         return result;
@@ -35,4 +37,5 @@ public class DefaultFollowService {
             list = followRepository.findFollower(id);
         return list;
     }
+
 }
