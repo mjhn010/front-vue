@@ -38,6 +38,17 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
     }
+    
+    @GetMapping("/login")
+    public ResponseEntity<Map<String, Object>> loginByEmail(String email, String password) {
+        Map<String, Object> dto = new HashMap<>();
+            Member member = service.getByEmail(email);
+        dto.put("result", member);
+        return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
+    }
+
+
+
 
     @GetMapping("/nicknamecheck")
     public String nicknameCheck(String nickname) {

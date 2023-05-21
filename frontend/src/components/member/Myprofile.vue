@@ -232,8 +232,8 @@ function loading(ms) {
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
                 <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
-                    v-if="userDetails.profileSrc == null" />
-                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else />
+                    v-if="userDetails.profileSrc == null" @click.prevent="profileUpdate"/>
+                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else @click.prevent="profileUpdate"/>
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>

@@ -27,19 +27,30 @@ async function googleLoginHandler(response) {
     });
 
   //구글 아이디로 회원가입을 한적이 있는지 확인해야함
-  let resp = await fetch(
+  let isDupulicated = await fetch(
     `http://localhost:8080/email/checkemail?email=${userDetails.email}`
   );
-  let result = await resp.text();
+  let result = await isDupulicated.text();
   //우리 DB에 없을 시 회원가입 화면으로 넘어가진다.
   if (result === "ok") {
     router.push("/signup?type=oauth");
     return;
   }
+  
+  let res = await fetch(`http://localhost:8080/user/login?email=${userDetails.email}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+  let json = await res.json();
+  saveStores(json);
 
   let returnURL = route.query.returnURL;
-  if (returnURL) router.push(returnURL);
-  else router.push("/index");
+  if 
+    (returnURL) router.push(returnURL);
+  else 
+    router.push("/index");
 }
 //-------------이벤트 핸들러
 async function loginHandler() {
@@ -53,15 +64,8 @@ async function loginHandler() {
   });
   
   let json = await response.json();
-  userDetails.id = json.result.id;
-  userDetails.email = json.result.email;
-  userDetails.nickname = json.result.nickname;
-  userDetails.profileSrc = json.result.image;
-  userDetails.url = json.result.url;
-  let returnURL = route.query.returnURL;
+  saveStores(json);
   
-
-
   if (!userDetails.email) {
     showModal.value = true;
     user.email = "";
@@ -74,6 +78,15 @@ async function loginHandler() {
 
 function dlgOkHandler(){
     showModal.value=false;
+}
+
+function saveStores(json){
+  userDetails.id = json.result.id;
+  userDetails.email = json.result.email;
+  userDetails.nickname = json.result.nickname;
+  userDetails.profileSrc = json.result.image;
+  userDetails.url = json.result.url;
+  let returnURL = route.query.returnURL;
 }
 </script>
 <template>
