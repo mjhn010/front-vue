@@ -45,7 +45,7 @@ const routes = [
   // community경로
   { path: "/community", children: [
     { path: "list", component: List },
-    { path: "detail", component: Detail },
+    { path: ":id", component: Detail },
   ]},
 
   // 로그인,회원가입,비밀번호찾기

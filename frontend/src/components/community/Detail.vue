@@ -1,15 +1,31 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import Header from '../Header.vue';
+import { useRoute } from 'vue-router';
+
 
 // --- Variables ---------------------------------------
-let community = reactive({
-    
+let data = reactive({
+    community: {}
 });
+
+let route = useRoute();
+
+// --- Life Cycles -------------------------------------
+onMounted(() => {
+    fetchCommunity();
+})
 
 // --- Event Handlers ----------------------------------
 async function fetchCommunity(){
-    const url = new URL('http://localhost:8080/community/detail');
+    let param = route.params.id;
+    const url = new URL(`http://localhost:8080/community/${param}`);
+
+    let response = await fetch(url);
+    let json = await response.json();
+    data.community = json.community;
+
+    console.log(data.community);
 }
 
 
@@ -20,18 +36,18 @@ async function fetchCommunity(){
     <main>
         <div style="display:flex">
             <img loading="lazy" class="css-l68de9 e5kxa4l0"
-                src="https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F26a05cc1-4e5c-4811-8e78-c527b8882595%2F%25E1%2584%2592%25E1%2585%25A9%25E1%2586%25BC%25E1%2584%2589%25E1%2585%25A5%25E1%2586%25BC%25E1%2584%258B%25E1%2585%25AE_%25E1%2584%258F%25E1%2585%25A5%25E1%2584%2586%25E1%2585%25B2_%25E1%2584%258A%25E1%2585%25A5%25E1%2586%25B7%25E1%2584%2582%25E1%2585%25A6%25E1%2584%258B%25E1%2585%25B5%25E1%2586%25AF_%25E1%2584%2589%25E1%2585%25AE%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25BC.png&amp;blockId=e2903c2e-80fc-4024-9438-cb80c3f76174">
+                :src="'http://localhost:8080/communityImage/' + data.community.thumbnail">
         </div>
 
         <div class="CodeBlock_block__3Yr6P css-3y3f20">
             <div class="contents-form-relative">
 
                 <div class="contens-title-box">
-                    <div class="contents-title-text">물리 시뮬레이터를 활용한 블렌더 3D</div>
+                    <div class="contents-title-text">{{ data.community.title }}</div>
                 </div>
                 <div class="contents-status-box">
                     <div class="contents-status-1">모집 중</div>
-                    <div class="contents-status-2"></div>
+                    <!-- <div class="contents-status-2"></div> -->
                 </div>
 
                 <div class="divider"></div>
@@ -39,19 +55,21 @@ async function fetchCommunity(){
                 <div class="contents-details">
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">진행</div>
-                        <div class="contents-details-text">뇌뇌</div>
+                        <div class="contents-details-text">{{ data.community.memberId }}</div>
                     </div>
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">장소</div>
-                        <div class="contents-details-text">3기 노트폴리오 아카데미(연남동) / 4기 외부 강의장(연희동)</div>
+                        <span class="contents-status-2">online</span>
+                        <!-- <span class="contents-status-2">offline</span> -->
+                        <div class="contents-details-text location-info">{{ data.community.locationInfo }}</div>
                     </div>
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">기간</div>
-                        <div class="contents-details-text">6/4 - 7/23, 일요일 오후 2시 - 5시(총 8회차, 24시간)</div>
+                        <div class="contents-details-text">{{ data.community.period }}</div>
                     </div>
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">인원</div>
-                        <div class="contents-details-text">최대 16명</div>
+                        <div class="contents-details-text">{{ data.community.teamSize }}명</div>
                     </div>
                 </div>
 
@@ -140,16 +158,17 @@ async function fetchCommunity(){
 .contents-status-2 {
     display: flex;
     justify-content: center;
-    width: 63.3px;
+    width: 50px;
     height: 16px;
-    margin: 0px 6px 4px;
+    margin: auto 6px auto 15px;
     border: 0.5px none #000;
     border-radius: 3px;
     background-color: #dbeddb;
     font-size: 12px;
     font-weight: 400;
     color: #fff;
-    background-color: #fff;
+    background-color: #8CCCF4;
+    
 }
 
 .contents-details-box {
@@ -173,6 +192,10 @@ async function fetchCommunity(){
     padding-bottom: 8px;
     padding-left: 0px;
     color: #222;
+}
+
+.location-info {
+    margin-left: 0;
 }
 
 .divider {

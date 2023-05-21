@@ -1,11 +1,15 @@
 <script setup>
 import Header from "@/components/Header.vue";
 import { reactive, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
 
 // --- Variables ---------------------------------------
 let community = reactive({
   list: [], // 커뮤니티 리스트를 담을 변수
 });
+
+let router = useRouter();
 
 // --- Life Cycles -------------------------------------
 onMounted(fetchCommunities);
@@ -111,6 +115,10 @@ const recruits = [
   },
 ];
 
+function communityClickHandler(id){
+  router.push("/community/" + id);
+}
+
 </script>
 
 <template>
@@ -148,7 +156,8 @@ const recruits = [
     <!-- Recruit list -->
     <div class="grid gap-x-6 gap-y-6 md:grid-cols-3 lg:grid-cols-4 xl:my-4 xl:grid-cols-5 xl:grid-rows-2">
       <figure class="w-80 rounded-xl border-2 shadow-md sm:w-64 xl:w-full cursor-pointer" 
-              v-for="(community, index) in community.list" :key="index">
+              v-for="(community, index) in community.list" :key="index"
+              @click.prevent="communityClickHandler(community.id)">
         <img :src="`http://localhost:8080/communityImage/` + community.thumbnail" alt="Recruit thumbnail" class="rounded-t-lg">
         <figcaption class="px-4 py-4">
           <h3 class="text-md block truncate font-semibold" v-text="community.title" />
