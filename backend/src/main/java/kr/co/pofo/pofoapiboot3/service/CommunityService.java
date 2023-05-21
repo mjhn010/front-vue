@@ -3,6 +3,7 @@ package kr.co.pofo.pofoapiboot3.service;
 import java.util.List;
 
 import kr.co.pofo.pofoapiboot3.entity.Community;
+import kr.co.pofo.pofoapiboot3.entity.CommunityView;
 
 public interface CommunityService {
 
@@ -10,9 +11,9 @@ public interface CommunityService {
     boolean register(Community post);
 
     // 커뮤니티 목록조회
-    List<Community> getList();
+    List<CommunityView> getViewList();
 
     // 커뮤니티 상세조회
-    Community getById(Long id);
+    CommunityView getById(Long id);
 
 }

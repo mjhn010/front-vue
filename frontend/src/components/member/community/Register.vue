@@ -1,6 +1,6 @@
 <script setup>
 import Header from '../../Header.vue'
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useUserDetailsStore } from '../../../stores/useUserDetailsStore';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -20,6 +20,7 @@ let community = reactive({
 
 let fileInputRef = ref(null);
 let imgRef = ref(null);
+
 
 // --- Event Handlers ----------------------------------
 async function registerHandler() {
@@ -76,8 +77,6 @@ function btnHandler(){
 }
 
 function fileInputHandler(e) {
-    console.log(e);
-
     const file = fileInputRef.value.files[0];
 
     if (file) {
@@ -91,7 +90,20 @@ function fileInputHandler(e) {
 
     } else {
         console.log('파일이 선택되지 않았습니다.');
+        imgRef.value = null;
     }
+    console.log(imgRef)
+
+}
+
+function resetHandler(){
+    community.title = "";
+    community.onlineType = true;
+    community.locationInfo = "";
+    community.period = "";
+    community.teamSize = null;
+    community.thumbnail = "";
+    imgRef.value.src = null;
 }
 
 </script>
@@ -120,7 +132,14 @@ function fileInputHandler(e) {
             <main class="team-c-main margin-top-1">
                 <div class="first-img-box">
                     <div class="img-box" @click="imageBoxClickHandler">
-                        <img ref="imgRef" />
+                        <div class="info"
+                            >
+                            <span >이미지를 업로드 하세요.</span>
+                            <span >JPEG,JPG,GIF 이미지파일</span>
+                        </div>
+                        <div>
+                            <img ref="imgRef" />
+                        </div>
                     </div>
                     <input type="file" class="d-none" ref="fileInputRef" @input="fileInputHandler" name="image">
                     <button class="modal-submit-btn thum-btn" @click.prevent="btnHandler" type="button">이미지업로드</button>
@@ -153,7 +172,7 @@ function fileInputHandler(e) {
                     <input class="team-c-input" type="text" placeholder="내 답변" v-model="community.teamSize" name="teamSize">
                 </div>
                 <div class="submit-box margin-top-2">
-                    <button class="reset">양식지우기</button>
+                    <button class="reset" @click.prevent="resetHandler" >양식지우기</button>
                     <button class="submit" type="submit" @click.prevent="registerHandler">등록</button>
                 </div>
             </main>

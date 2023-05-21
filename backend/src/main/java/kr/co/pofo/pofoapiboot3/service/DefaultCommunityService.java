@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.pofo.pofoapiboot3.entity.Community;
+import kr.co.pofo.pofoapiboot3.entity.CommunityView;
 import kr.co.pofo.pofoapiboot3.repository.CommunityRepository;
 
 @Service
@@ -27,13 +28,13 @@ public class DefaultCommunityService implements CommunityService {
 
     // 커뮤니티 목록조회
     @Override
-    public List<Community> getList() {
-        return repository.findAll();
+    public List<CommunityView> getViewList() {
+        return repository.findViewAll();
     }
 
     // 커뮤니티 상세조회
     @Override
-    public Community getById(Long id) {
+    public CommunityView getById(Long id) {
         return repository.findById(id);
     }
 

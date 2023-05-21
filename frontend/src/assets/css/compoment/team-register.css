@@ -1,7 +1,9 @@
-html,body{
+html,
+body {
     height: 100%;
 
 }
+
 /* .border-blue{
     border: 6px solid rgba(140, 204, 244, 0.7);
     width: 33.9%;
@@ -10,14 +12,15 @@ html,body{
     position: absolute;
     top: 0;
 } */
-.container{
+.container {
     background-color: rgba(140, 204, 244, 0.1);
     /* min-height: calc(100vh - 96px); */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.text{
+
+.text {
     font-size: 14px;
     font-weight: 400;
     line-height: 1.8;
@@ -25,7 +28,8 @@ html,body{
     margin-right: 30%;
     margin-bottom: 3%;
 }
-.team-c-title{
+
+.team-c-title {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -41,26 +45,31 @@ html,body{
 
     box-shadow: 0px -6px 0px rgba(140, 204, 244, 0.7);
 }
-.team-img{
+
+.team-img {
     width: 45px;
     padding-left: 10px;
     /* position: absolute;
     top: 25.5%;
     left: 35%; */
 }
-.noti{
+
+.noti {
     width: 30px;
 }
-strong{
+
+strong {
     font-size: 16px;
 }
-.team-c-form{
+
+.team-c-form {
     width: 100%;
     display: flex;
     justify-content: center;
     height: 100%;
 }
-.team-c-main{
+
+.team-c-main {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -71,8 +80,9 @@ strong{
     height: 100%;
     margin-bottom: 3%;
 }
+
 /* img */
-.first-img-box{
+.first-img-box {
     width: 100%;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -88,7 +98,7 @@ strong{
     margin: 0 auto 5px;
 }
 
-.img-box{
+.img-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -97,24 +107,51 @@ strong{
     height: 100%;
     font-size: 13px;
     font-weight: 300;
+
+    position: relative;
+}
+
+.img-box .info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+}
+
+.img-box .info span:first-child {
+    display: block;
+    font-size: 15px;
+    color: #000;
+    font-weight: 300;
+
+    margin-bottom: 5px;
+}
+
+.img-box .info span:last-child {
+    color: #999999;
+    font-size: 12px;
 }
 
 .img-box img {
-    width: 400px; 
-    height: 250px; 
+    width: 400px;
+    height: 250px;
     object-fit: cover;
     border: thin #8CCCF4;
 }
 
-span{
+span {
     margin-top: 5%;
 }
+
 /* 구성요소 */
-h2{
+h2 {
     font-size: 16px;
     font-weight: 400;
 }
-.text-box{
+
+.text-box {
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -127,7 +164,8 @@ h2{
     padding-top: 30px;
     padding-bottom: 30px;
 }
-.button-box{
+
+.button-box {
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -140,24 +178,27 @@ h2{
     padding-top: 30px;
     padding-bottom: 30px;
 }
-.btn-box{
+
+.btn-box {
     display: flex;
     justify-content: center;
 }
-.team-c-input{
+
+.team-c-input {
     border: none;
     border-bottom: 1px solid #eee;
     width: 50%;
     margin-top: 4.5%;
     /* margin-bottom: 4.5%; */
 }
-.submit-box{
+
+.submit-box {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-.submit{
+.submit {
     border-radius: 4px;
     border: none;
     background-color: #fff;
@@ -166,10 +207,12 @@ h2{
     box-shadow: 2px 2px 2px #eee;
     color: rgb(18, 17, 17);
 }
-    .submit:hover {
-        background-color: #5C9ABF;
-    }
-.reset{
+
+.submit:hover {
+    background-color: #5C9ABF;
+}
+
+.reset {
     color: rgb(18, 17, 17);
     font-size: 14px;
     /* box-shadow: 2px 2px 2px #eee; */
@@ -180,7 +223,7 @@ h2{
     border: 0;
 }
 
-.button-box button:first-child{
+.button-box button:first-child {
     margin-right: 10px;
 }
 
@@ -190,13 +233,14 @@ button {
     border: solid 1px #eee;
 }
 
-.button-box button:active, button.focus {
+.button-box button:active,
+button.focus {
     background-color: #8CCCF4;
     color: white;
-  }
+}
 
-  .modal-submit-btn,
-  .submit-box .submit {
+.modal-submit-btn,
+.submit-box .submit {
     background-color: #8cccf4;
     border: none;
     color: #fff;
@@ -205,6 +249,4 @@ button {
     padding: 1% 1%;
     margin-right: 1%;
     margin-bottom: 2%;
-  }
-
-  
+}

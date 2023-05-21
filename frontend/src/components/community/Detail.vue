@@ -1,7 +1,8 @@
 <script setup>
 import { reactive, onMounted } from 'vue';
 import Header from '../Header.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 
 
 // --- Variables ---------------------------------------
@@ -9,7 +10,9 @@ let data = reactive({
     community: {}
 });
 
+let userDetails = useUserDetailsStore();
 let route = useRoute();
+let router = useRouter();
 
 // --- Life Cycles -------------------------------------
 onMounted(() => {
@@ -17,7 +20,7 @@ onMounted(() => {
 })
 
 // --- Event Handlers ----------------------------------
-async function fetchCommunity(){
+async function fetchCommunity() {
     let param = route.params.id;
     const url = new URL(`http://localhost:8080/community/${param}`);
 
@@ -26,6 +29,13 @@ async function fetchCommunity(){
     data.community = json.community;
 
     console.log(data.community);
+}
+
+function nicknameClickHandler(e, memberId) {
+    if (memberId === userDetails.id)
+        router.push("/member/profile/" + memberId);
+    else
+        router.push("/profile/" + memberId);
 }
 
 
@@ -55,7 +65,9 @@ async function fetchCommunity(){
                 <div class="contents-details">
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">진행</div>
-                        <div class="contents-details-text">{{ data.community.memberId }}</div>
+                        <button class="contents-details-text nickname-btn"
+                                @click.prevent="nicknameClickHandler($event, data.community.memberId)">{{ data.community.nickname }}
+                        </button>
                     </div>
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">장소</div>
@@ -92,6 +104,7 @@ async function fetchCommunity(){
 main {
     margin: 30px 0;
 }
+
 .thumbnail-box {
     display: flex;
     width: 748px;
@@ -101,8 +114,9 @@ main {
     border-width: 1px;
     border-color: #e5e5e5;
     border-radius: 8px 8px 0px 0px;
-    
+
 }
+
 .css-l68de9 {
     display: block;
     object-fit: cover;
@@ -119,7 +133,7 @@ main {
     width: 750px;
     margin: 0 auto;
 
-    
+
 }
 
 .contents-form-relative {
@@ -176,7 +190,7 @@ main {
     font-weight: 400;
     color: white;
     background-color: #8CCCF4;
-    
+
 }
 
 .contents-details-box {
@@ -202,6 +216,12 @@ main {
     color: #222;
 }
 
+.nickname-btn {
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
 .location-info {
     margin-left: 0;
 }
@@ -225,6 +245,4 @@ main {
     border-radius: 4px;
     cursor: pointer;
 }
-
-
 </style>

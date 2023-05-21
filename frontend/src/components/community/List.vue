@@ -168,8 +168,7 @@ function communityClickHandler(id){
             class="sm:text:lg relative right-4 block w-24 rounded-tr-lg bg-white text-center font-bold sm:bottom-12 xl:bottom-14 xl:text-xl"
             v-if="(community.onlineType === false)">OFF-LINE</span>
           <div class="flex sm:h-16 xl:h-20 flex-col justify-between">
-            <!-- <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.memberId}`" /> -->
-            <!-- <span class="block truncate text-sm" v-text="`${community.teamSize}`명" /> -->
+            <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.nickname}`" />
             <span class="w-fit px-1 text-sm">장소:</span>
             <span class="block w-fit rounded-md bg-red-100 px-1 text-sm" v-text="`${community.locationInfo}`" />
             <span class="w-fit px-1 text-sm">기간:</span>

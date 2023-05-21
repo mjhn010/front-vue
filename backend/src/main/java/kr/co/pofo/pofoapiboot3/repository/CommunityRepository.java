@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.pofo.pofoapiboot3.entity.Community;
+import kr.co.pofo.pofoapiboot3.entity.CommunityView;
 
 @Mapper
 public interface CommunityRepository {
@@ -13,8 +14,8 @@ public interface CommunityRepository {
     int insert(Community post);
 
     // 커뮤니티 목록조회
-    List<Community> findAll();
+    List<CommunityView> findViewAll();
 
     // 커뮤니티 상세조회
-    Community findById(Long id);
+    CommunityView findById(Long id);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.pofo.pofoapiboot3.entity.Community;
+import kr.co.pofo.pofoapiboot3.entity.CommunityView;
 import kr.co.pofo.pofoapiboot3.service.CommunityService;
 
 @RestController
@@ -26,7 +27,7 @@ public class CommunityController {
     @GetMapping("list")
     public ResponseEntity<Map<String, Object>> list(){
         
-        List<Community> list = service.getList();
+        List<CommunityView> list = service.getViewList();
         
         Map<String, Object> dto = new HashMap<>();
         dto.put("list", list);
@@ -38,7 +39,7 @@ public class CommunityController {
     @GetMapping("{id}")
     public ResponseEntity<Map<String, Object>> detail(@PathVariable("id") Long id){
 
-        Community community = service.getById(id);
+        CommunityView community = service.getById(id);
         
         Map<String, Object> dto = new HashMap<>();
         dto.put("community", community);
