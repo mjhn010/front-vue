@@ -57,11 +57,9 @@ async function applyBtnClickHandler(){
     if(!userDetails.isAuthenticated){
         showModal.value = true;
     }
-
     
-
-    // 신청한적 없을 경우 신청됨
-    if (isApplied.value) {
+    
+    if(isApplied.value) { // 신청한적 없을 경우 신청됨
         await fetch("http://localhost:8080/community/apply", {
             method: "POST",
             headers: {
@@ -69,13 +67,18 @@ async function applyBtnClickHandler(){
             },
             body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
+        isApplied.value = !isApplied.value;
+    } else if(!isApplied.value){ // 신청한 상태의 경우 취소됨
+        await fetch("http://localhost:8080/community/apply", {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded"
+            },
+            body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
+        });
+        isApplied.value = !isApplied.value;
     }
-    // 신청한 상태의 경우 취소됨
-    // else(){
 
-    // }
-
-    // isApplied.value = !isApplied.value;
 }
 
 // 팀 신청 확인
