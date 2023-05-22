@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.pofo.pofoapiboot3.entity.Community;
 import kr.co.pofo.pofoapiboot3.entity.CommunityView;
 import kr.co.pofo.pofoapiboot3.service.CommunityService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/community")
@@ -46,4 +49,25 @@ public class CommunityController {
 
         return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
     }
+
+    // 팀 신청 확인
+
+    // 팀 신청
+    /*
+     * 팀원은 신청 
+     * -> notification 테이블에 (type_id, from_member_id, to_member_id, community_id) 삽입
+     * 
+     * 팀장은 수락
+     */
+    // @PostMapping("apply")
+    // public String applying(@RequestBody SomeEnityData entity) {
+        
+
+    //     return entity;
+    // }
+
+    // 팀 신청 취소
+
+    
+
 }

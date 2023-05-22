@@ -1,8 +1,9 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, ref } from 'vue';
 import Header from '../Header.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
+import Modal from '../Modal.vue';
 
 
 // --- Variables ---------------------------------------
@@ -13,6 +14,11 @@ let data = reactive({
 let userDetails = useUserDetailsStore();
 let route = useRoute();
 let router = useRouter();
+
+let showModal = ref(false);
+
+let isApplied = ref(false);
+// let isApplying = ref(false);
 
 // --- Life Cycles -------------------------------------
 onMounted(() => {
@@ -27,8 +33,6 @@ async function fetchCommunity() {
     let response = await fetch(url);
     let json = await response.json();
     data.community = json.community;
-
-    console.log(data.community);
 }
 
 function nicknameClickHandler(e, memberId) {
@@ -36,6 +40,36 @@ function nicknameClickHandler(e, memberId) {
         router.push("/member/profile/" + memberId);
     else
         router.push("/profile/" + memberId);
+}
+
+// 모달창 끄기
+function dlgOkHandler(){
+    showModal.value=false;
+    showFollowModal.value = false;
+}
+
+// 신청하기
+async function applyBtnClickHandler(){
+    if(!userDetails.isAuthenticated){
+        showModal.value = true;
+    }
+    
+    // 신청한적 없을 경우 신청됨
+    if (isApplied.value) {
+        await fetch("http://localhost:8080/community/apply", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded"
+            },
+            body: `fromMemberId=${userDetails.id}&toMemberId=${route.params.id}`
+        });
+    }
+    // 신청한 상태의 경우 취소됨
+    // else(){
+
+    // }
+
+    isApplied.value = !isApplied.value;
 }
 
 
@@ -82,6 +116,7 @@ function nicknameClickHandler(e, memberId) {
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">인원</div>
                         <div class="contents-details-text">{{ data.community.teamSize }}명</div>
+                        <!-- <div class="contents-details-text">(확정인원: N명)</div> -->
                     </div>
                 </div>
 
@@ -91,13 +126,17 @@ function nicknameClickHandler(e, memberId) {
                     <p>
                         자세한 팀원 모집은 알림과 채팅 기능을 이용해보세요!
                     </p>
-                    <button>신청하기</button>
+                    <button 
+                        @click.prevent="applyBtnClickHandler">
+                        {{ isApplied ? '신청됨' : '신청하기' }}
+                    </button>
                 </div>
 
             </div>
         </div>
 
     </main>
+    <Modal :show="showModal" @ok="dlgOkHandler" type=0 title="로그인이 필요한 기능입니다."/>
 </template>
 
 <style scoped>
@@ -138,7 +177,7 @@ main {
 
 .contents-form-relative {
     width: 708px;
-    height: 320px;
+    height: 420px;
     padding: 20px;
     line-height: 16px;
     border-style: none solid solid;
@@ -239,8 +278,8 @@ main {
 .contents-apply-form button {
     background-color: black;
     color: white;
-    margin-top: 20px;
-    padding: 10px 15px;
+    margin-top: 30px;
+    padding: 7px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
