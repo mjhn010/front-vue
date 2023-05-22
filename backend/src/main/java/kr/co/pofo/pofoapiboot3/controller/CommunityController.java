@@ -7,16 +7,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.pofo.pofoapiboot3.entity.Community;
 import kr.co.pofo.pofoapiboot3.entity.CommunityView;
+import kr.co.pofo.pofoapiboot3.entity.Notification;
 import kr.co.pofo.pofoapiboot3.service.CommunityService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import kr.co.pofo.pofoapiboot3.service.NotificationService;
 
 
 @RestController
@@ -25,6 +26,9 @@ public class CommunityController {
     
     @Autowired
     private CommunityService service;
+
+    @Autowired
+    private NotificationService notificationService;
 
     // 커뮤니티 목록조회
     @GetMapping("list")
@@ -51,23 +55,36 @@ public class CommunityController {
     }
 
     // 팀 신청 확인
+    @PostMapping("getApplicationStatus")
+    public boolean getApplicationStatus(Notification notification) {
+
+        System.out.println(notification);
+        boolean result = notificationService.isApplied(notification);
+        System.out.println(result);
+
+        return result;
+    }
 
     // 팀 신청
     /*
      * 팀원은 신청 
      * -> notification 테이블에 (type_id, from_member_id, to_member_id, community_id) 삽입
-     * 
      * 팀장은 수락
      */
-    // @PostMapping("apply")
-    // public String applying(@RequestBody SomeEnityData entity) {
-        
+    @PostMapping("apply")
+    public String apply(Notification notification) {
 
-    //     return entity;
-    // }
+        notificationService.create(notification);
+        return null;
+    }
 
     // 팀 신청 취소
+    @DeleteMapping("cancle")
+    public String cancle(Notification notification) {
 
+        notificationService.delete(notification);
+        return null;
+    }
     
 
 }
