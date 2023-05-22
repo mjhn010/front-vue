@@ -43,6 +43,7 @@ public class DefaultNotificationService implements NotificationService {
     @Override
     public void remove(int id) {
         repository.deleteById(id);
+    }
     // 팀 신청 확인
     @Override
     public boolean isApplied(Notification notification) {
