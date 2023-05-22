@@ -1,8 +1,7 @@
 <script setup>
 import Header from "@/components/Header.vue";
-import { reactive, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-
+import { reactive, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 // --- Variables ---------------------------------------
 let community = reactive({
@@ -15,118 +14,31 @@ let router = useRouter();
 onMounted(fetchCommunities);
 
 // --- Event Handlers ----------------------------------
-async function fetchCommunities(){
-  const url = new URL('http://localhost:8080/community/list');
+async function fetchCommunities() {
+  const url = new URL("http://localhost:8080/community/list");
 
   let response = await fetch(url);
   let json = await response.json();
   community.list = json.list;
 }
 
-const recruits = [
-  {
-    nickname: "닉네임1",
-    title: "프로덕트 디자인 개인 완성반1",
-    projectInfo: "과일베기 게임 프로젝트",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-05-25",
-  },
-  {
-    nickname: "닉네임2",
-    title: "프로덕트 디자인 개인 완성반2",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "calm.jpg",
-    regDate: "2023-04-01",
-  },
-  {
-    nickname: "닉네임3",
-    title: "프로덕트 디자인 개인 완성반3",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "frog-prince.jpg",
-    regDate: "2023-04-08",
-  },
-  {
-    nickname: "닉네임4",
-    title: "프로덕트 디자인 개인 완성반4",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "dandelion.jpg",
-    regDate: "2023-04-06",
-  },
-  {
-    nickname: "닉네임5",
-    title: "프로덕트 디자인 개인 완성반5",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-21",
-  },
-  {
-    nickname: "닉네임6",
-    title: "프로덕트 디자인 개인 완성반6",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-11",
-  },
-  {
-    nickname: "닉네임7",
-    title: "프로덕트 디자인 개인 완성반7",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-30",
-  },
-  {
-    nickname: "닉네임8",
-    title: "프로덕트 디자인 개인 완성반8",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-01",
-  },
-  {
-    nickname: "닉네임9",
-    title: "프로덕트 디자인 개인 완성반9",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-01",
-  },
-  {
-    nickname: "닉네임10",
-    title: "프로덕트 디자인 개인 완성반10",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-01",
-  },
-];
-
-function communityClickHandler(id){
+function communityClickHandler(id) {
   router.push("/community/" + id);
 }
-
 </script>
 
 <template>
   <Header />
   <div class="min-h-full px-4 pt-24 md:px-16 xl:min-w-full xl:pb-8 xl:pt-24">
     <figure class="flex items-center justify-center xl:mb-20">
-      <img src="/src/assets/images/butterfly.png" alt="Logo" class="w-8 sm:mr-2 sm:mt-2 sm:w-12 xl:w-20">
-      <figcaption class="py-16 text-center text-2xl font-extrabold md:text-5xl xl:text-7xl">
+      <img
+        src="/src/assets/images/butterfly.png"
+        alt="Logo"
+        class="w-8 sm:mr-2 sm:mt-2 sm:w-12 xl:w-20"
+      >
+      <figcaption
+        class="py-16 text-center text-2xl font-extrabold md:text-5xl xl:text-7xl"
+      >
         POFO COMMUNITY
       </figcaption>
     </figure>
@@ -143,7 +55,11 @@ function communityClickHandler(id){
     </div>
     <div class="mt-8 flex h-14 flex-col justify-evenly xl:h-20">
       <div class="flex items-center">
-        <img src="/src/assets/images/group.png" alt="User group icon" class="mr-2 w-8">
+        <img
+          src="/src/assets/images/group.png"
+          alt="User group icon"
+          class="mr-2 w-8"
+        >
         <h2 class="text-xl font-extrabold xl:text-3xl">
           팀원 모집
         </h2>
@@ -154,27 +70,57 @@ function communityClickHandler(id){
     </div>
 
     <!-- Recruit list -->
-    <div class="grid gap-x-6 gap-y-6 md:grid-cols-3 lg:grid-cols-4 xl:my-4 xl:grid-cols-5 xl:grid-rows-2">
-      <figure class="w-80 rounded-xl border-2 shadow-md sm:w-64 xl:w-full cursor-pointer" 
-              v-for="(community, index) in community.list" :key="index"
-              @click.prevent="communityClickHandler(community.id)">
-        <img :src="`http://localhost:8080/communityImage/` + community.thumbnail" alt="Recruit thumbnail" class="rounded-t-lg">
+    <div
+      class="grid gap-x-6 gap-y-6 md:grid-cols-3 lg:grid-cols-4 xl:my-4 xl:grid-cols-5 xl:grid-rows-2"
+    >
+      <figure
+        class="w-80 cursor-pointer rounded-xl border-2 shadow-md sm:w-64 xl:w-full"
+        v-for="(community, index) in community.list"
+        :key="index"
+        @click.prevent="communityClickHandler(community.id)"
+      >
+        <img
+          :src="`http://localhost:8080/communityImage/` + community.thumbnail"
+          alt="Recruit thumbnail"
+          class="rounded-t-lg h-52 w-full"
+        >
         <figcaption class="px-4 py-4">
-          <h3 class="text-md block truncate font-semibold" v-text="community.title" />
-          <span
-            class="sm:text:lg relative h-0 right-4 block w-24 rounded-tr-lg bg-white text-center font-bold xl:bottom-12 xl:text-xl"
-            v-if="(community.onlineType === true)">ON-LINE</span>
+          <h3
+            class="text-md block truncate font-semibold"
+            v-text="community.title"
+          />
           <span
             class="sm:text:lg relative right-4 block w-24 rounded-tr-lg bg-white text-center font-bold sm:bottom-12 xl:bottom-14 xl:text-xl"
-            v-if="(community.onlineType === false)">OFF-LINE</span>
-          <div class="flex sm:h-16 xl:h-20 flex-col justify-between">
-            <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.nickname}`" />
-            <span class="w-fit px-1 text-sm">장소:</span>
-            <span class="block w-fit rounded-md bg-red-100 px-1 text-sm" v-text="`${community.locationInfo}`" />
-            <span class="w-fit px-1 text-sm">기간:</span>
-            <span class="block w-fit rounded-md bg-red-100 px-1 text-sm" v-text="`${community.period}`" />
-            <span class="w-fit px-1 text-sm">인원:</span>
-            <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.teamSize}명` " />
+            v-if="community.onlineType === true"
+          >ON-LINE</span>
+          <span
+            class="sm:text:lg relative right-4 block w-24 rounded-tr-lg bg-white text-center font-bold sm:bottom-12 xl:bottom-14 xl:text-xl"
+            v-if="community.onlineType === false"
+          >OFF-LINE</span>
+          <div class="flex flex-col justify-between sm:h-16 xl:h-20">
+            <!-- <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.memberId}`" /> -->
+            <!-- <span class="block truncate text-sm" v-text="`${community.teamSize}`명" /> -->
+            <div>
+              <span class="w-fit px-1 text-sm">장소:</span>
+              <span
+                class="w-fit rounded-md bg-red-100 px-1 text-sm"
+                v-text="`${community.locationInfo}`"
+              />
+            </div>
+            <div>
+              <span class="w-fit px-1 text-sm">기간:</span>
+              <span
+                class="w-fit rounded-md bg-red-100 px-1 text-sm"
+                v-text="`${community.period}`"
+              />
+            </div>
+            <div>
+              <span class="w-fit px-1 text-sm">인원:</span>
+              <span
+                class="w-fit rounded-md bg-blue-100 px-1 text-sm"
+                v-text="`${community.teamSize}명`"
+              />
+            </div>
           </div>
         </figcaption>
       </figure>
