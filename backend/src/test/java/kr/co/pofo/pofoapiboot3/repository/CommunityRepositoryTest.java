@@ -17,6 +17,11 @@ class CommunityRepositoryTest {
 	@Autowired
 	private CommunityRepository repository;
 	
+	@Test
+	void test() {
+		System.out.println(repository.findIdByMemberId(26L));
+	}
+	
 	// @Test
 	// void test() {
 	// 	List<Community> list = repository.findAll();
@@ -35,10 +40,10 @@ class CommunityRepositoryTest {
 	// 	repository.insert(post);
 	// }
 
-	@Test
-	void test() {
-		Community community = repository.findById(9L);
-		System.out.println(community);
-	}
+//	@Test
+//	void test() {
+//		Community community = repository.findById(9L);
+//		System.out.println(community);
+//	}
 
 }
