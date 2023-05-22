@@ -125,15 +125,15 @@
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
                   <div class="profile-image-wrap">
-                    <router-link :to="'/profile/'+notification.fromId" v-if="notification.image == null" @click="closeModal"><img src="/src/assets/images/proflie.svg" class="profile-img-noti hover radiu-50"/></router-link>
-                    <router-link :to="'/profile/'+notification.fromId" v-else @click="closeModal"><img :src="'http://localhost:8080/profileImage/' + notification.image" class="profile-img-noti hover radiu-50"/></router-link>
+                    <router-link :to="'/profile/'+notification.fromMemberId" v-if="notification.image == null" @click="closeModal"><img src="/src/assets/images/proflie.svg" class="profile-img-noti hover radiu-50"/></router-link>
+                    <router-link :to="'/profile/'+notification.fromMemberId" v-else @click="closeModal"><img :src="'http://localhost:8080/profileImage/' + notification.image" class="profile-img-noti hover radiu-50"/></router-link>
                   </div>
                 </div>
               </div>
               <div class="modal-wall"></div>
               <div class="modal-content">
                 <div class="modal-title">
-                  <router-link :to="notification.url + ( notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromId : notification.portfolioId )">
+                  <router-link :to="notification.url + ( notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromMemberId : notification.portfolioId )">
                   <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다.">
                     {{notification.nickname+notification.text}}
                   </p>
