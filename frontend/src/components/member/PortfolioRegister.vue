@@ -137,6 +137,7 @@ function saveData(event, index) {
 }
 
 async function send(e) {
+  console.log(userDetails.id);
   let form = document.querySelector("#form")
   let formData = new FormData(form);
   formData.append("memberId",userDetails.id);
@@ -149,34 +150,34 @@ async function send(e) {
     }
   });
 
-  let order = 0;
-  for (let content of list) {
-    if (content.img.length != 0) {
-      for (let img of content.fileInfo) {
-        let formdata = new FormData();
-        formdata.append("contents", img);
-        formdata.append("orders", order++);
-        await fetch("http://localhost:8080/members/regcontent", {
-          method: "POST",
-          headers: {
-            "Accept": "application/json"
-          },
-          body: formdata
-        });
-      }
-    } else {
-      let formdata = new FormData();
-      formdata.append("contents", content.text);
-      formdata.append("orders", order++);
-      await fetch("http://localhost:8080/members/regcontent", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json"
-        },
-        body: formdata
-      });
-    }
-  }
+  // let order = 0;
+  // for (let content of list) {
+  //   if (content.img.length != 0) {
+  //     for (let img of content.fileInfo) {
+  //       let formdata = new FormData();
+  //       formdata.append("contents", img);
+  //       formdata.append("orders", order++);
+  //       await fetch("http://localhost:8080/members/regcontent", {
+  //         method: "POST",
+  //         headers: {
+  //           "Accept": "application/json"
+  //         },
+  //         body: formdata
+  //       });
+  //     }
+  //   } else {
+  //     let formdata = new FormData();
+  //     formdata.append("contents", content.text);
+  //     formdata.append("orders", order++);
+  //     await fetch("http://localhost:8080/members/regcontent", {
+  //       method: "POST",
+  //       headers: {
+  //         "Accept": "application/json"
+  //       },
+  //       body: formdata
+  //     });
+    // }
+  // }
 }
 
 
@@ -318,7 +319,7 @@ async function send(e) {
             </div>
             <div @dragover.stop.prevent="onDragover" @drop.stop.prevent="thumbmailDrop($event)"
               class="thumbnail-img-box margin-top-5">
-              <input @input="thumbnailImg($event, index)" class="d-none thumbnailInput" type="file" name="thumbnail"
+              <input @input="thumbnailImg($event, index)" class="d-none thumbnailInput" type="file" name="image"
                 accept="jpg,gif,png">
               <!-- <img  @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt=""> -->
               <img v-if="imgUpLoad" :src="thumbnail" alt="" class="thumnailImg-upload">

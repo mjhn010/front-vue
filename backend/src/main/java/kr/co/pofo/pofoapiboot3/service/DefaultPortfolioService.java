@@ -102,19 +102,20 @@ public class DefaultPortfolioService implements PortfolioService {
         portfolioRepository.updatehitCount(id);
     }
 
-    // 등록 (제목,썸네일,스킬)
+   // 등록 (제목,썸네일,스킬)
     public boolean regPofo(Portfolio pofo,String[] skills){
         // 될까 ? last_insert_id 안쓰고 될까 ?
         Integer pofoId = pofo.getId();
         // skills.setPortfolioId(pofoId);
         int result = portfolioRepository.insert(pofo);
-        int skillResult = skillRepository.insertUsedSkill(skills);
-        if(result == 1 && skillResult == 1)
-            return true;
-        else
-            return false;
+        // int skillResult = skillRepository.insertUsedSkill(skills);
+        // if(result == 1 && skillResult == 1)
+        //     return true;
+        // else
+        //     return false;
+        return true;
     }
-
+ 
     //등록(이미지, 텍스트)
     public boolean regContent(Portfolio pofo, PortfolioContents pofoContent){
         Integer pofoId = pofo.getId();
@@ -125,4 +126,6 @@ public class DefaultPortfolioService implements PortfolioService {
         else
             return false;
     }
+
+
 }

@@ -1,11 +1,5 @@
 package kr.co.pofo.pofoapiboot3.controller.member;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,29 +8,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
-import kr.co.pofo.pofoapiboot3.entity.Skill;
-import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
+import kr.co.pofo.pofoapiboot3.util.FileUpload;
 @RestController
 @RequestMapping("/members")
 public class PortfolioMemberController {
     @Autowired
     private PortfolioService portfolioService;
     @PostMapping("/regpofo")
-    public boolean regPofo(Portfolio pofo, String[] skills,Integer memberId) throws IllegalStateException, IOException{
-        System.out.println("나나나나나나나나나나나나난나나나나나나나나나나나나나난나나ㅏ난나나난나나나");
-        System.out.println("----------------------------------");
-        System.out.println("gkgkgkgkgkkgk         "+pofo);
-        System.out.println(skills.length);
-        System.out.println(memberId);
+    public boolean regPofo(Portfolio portfolio, String [] skills, MultipartFile image, HttpServletRequest request) throws Exception{
+        //파일 업로드용 객체 생성
+        FileUpload fileUpload = new FileUpload();
+        //UUID로 파일명 변경
+        String modifiedName = fileUpload.modifyImgName(image.getOriginalFilename());
+        //파일 업로드 실행
+        fileUpload.upload(image, modifiedName,request);
         
+        //UUID로 변경된 썸네일 이름 portfolio객체에 setting
+        portfolio.setThumbnail(modifiedName);
         
-
-        
-        portfolioService.regPofo(pofo, skills);
-        return true;
+        return true;    
     }
 
     @PostMapping("/regcontent")

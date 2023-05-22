@@ -22,4 +22,10 @@ public class Portfolio {
 	private String thumbnail; 
     private Long likes;
     private Integer collaboration;
+	public Portfolio(Integer memberId, String title, String thumbnail, Integer collaboration) {
+		this.memberId = memberId;
+		this.title = title;
+		this.thumbnail = thumbnail;
+		this.collaboration = collaboration;
+	}
 }
