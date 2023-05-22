@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class FileUpload {
 
-    public void upload(MultipartFile img, String modifiedName, HttpServletRequest request) {
+    @Autowired
+    private HttpServletRequest request;
+
+    public void upload(MultipartFile img, String modifiedName) {
         String urlPath = "/pofoThumbnail" + File.separator + modifiedName;
         String realPath = request.getServletContext().getRealPath(urlPath);
         try {

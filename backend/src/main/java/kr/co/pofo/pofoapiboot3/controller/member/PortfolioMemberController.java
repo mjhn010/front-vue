@@ -18,18 +18,19 @@ import kr.co.pofo.pofoapiboot3.util.FileUpload;
 public class PortfolioMemberController {
     @Autowired
     private PortfolioService portfolioService;
+
+    @Autowired
+    private FileUpload fileUpload;
+
     @PostMapping("/regpofo")
-    public boolean regPofo(Portfolio portfolio, String [] skills, MultipartFile image, HttpServletRequest request) throws Exception{
-        //파일 업로드용 객체 생성
-        FileUpload fileUpload = new FileUpload();
+    public boolean regPofo(Portfolio portfolio, String [] skills, MultipartFile image) throws Exception{
         //UUID로 파일명 변경
         String modifiedName = fileUpload.modifyImgName(image.getOriginalFilename());
         //파일 업로드 실행
-        fileUpload.upload(image, modifiedName,request);
-        
+        fileUpload.upload(image, modifiedName);
         //UUID로 변경된 썸네일 이름 portfolio객체에 setting
         portfolio.setThumbnail(modifiedName);
-        
+
         return true;    
     }
 
@@ -38,10 +39,8 @@ public class PortfolioMemberController {
                    MultipartHttpServletRequest request,PortfolioContents pofoContent,Portfolio pofo) {
        int types = 0;
        String content = "";
-    //    System.out.println("order : " + orders);
        if(contents==null) {
            content = request.getParameter("contents");
-           System.out.println(content);
        }
        else {
           types =1;
