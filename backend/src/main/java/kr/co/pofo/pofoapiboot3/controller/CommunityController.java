@@ -72,14 +72,14 @@ public class CommunityController {
      * 팀장은 수락
      */
     @PostMapping("apply")
-    public String applyTeam(Notification notification) {
+    public String apply(Notification notification) {
 
         notificationService.create(notification);
         return null;
     }
 
     // 팀 신청 취소
-    @DeleteMapping("apply")
+    @DeleteMapping("cancle")
     public String cancle(Notification notification) {
 
         notificationService.delete(notification);

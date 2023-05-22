@@ -22,10 +22,11 @@ let isApplied = ref(false);
 
 // --- Life Cycles -------------------------------------
 onMounted(() => {
-    fetchCommunity()
-    .then(() => checkApplicationStatus()) 
+    fetchCommunity();
+    if(userDetails.id != null) // 로그인된 경우만 확인함
+        checkApplicationStatus();
 })
-watch(() => [isApplied], checkApplicationStatus); // 변수가 변경될 때마다 함수 실행
+watch(() => [isApplied.value], checkApplicationStatus); // 변수가 변경될 때마다 함수 실행
 
 
 // --- Event Handlers ----------------------------------
@@ -58,7 +59,6 @@ async function applyBtnClickHandler(){
         showModal.value = true;
     }
     
-    
     if(isApplied.value) { // 신청한적 없을 경우 신청됨
         await fetch("http://localhost:8080/community/apply", {
             method: "POST",
@@ -67,16 +67,16 @@ async function applyBtnClickHandler(){
             },
             body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = !isApplied.value;
+        isApplied.value = true;
     } else if(!isApplied.value){ // 신청한 상태의 경우 취소됨
-        await fetch("http://localhost:8080/community/apply", {
+        await fetch("http://localhost:8080/community/cancle", {
             method: "DELETE",
             headers: {
                 "Content-type": "application/x-www-form-urlencoded"
             },
             body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = !isApplied.value;
+        isApplied.value = false;
     }
 
 }
@@ -99,8 +99,6 @@ async function checkApplicationStatus() {
     } else {
         isApplied.value = false;
     }
-
-
 
 }
 
