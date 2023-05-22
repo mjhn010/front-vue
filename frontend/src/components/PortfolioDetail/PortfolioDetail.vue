@@ -176,6 +176,10 @@ function toggleFollow() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
   }
+  if(state.isMine) {
+    alert("본인을 팔로우할 수 없습니다.");
+    return;
+  }
 
   if (!state.onFollowed) {
     postFollow();
@@ -230,6 +234,10 @@ function deleteFollow() {
 function toggleLike() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
+  }
+  if(state.isMine) {
+    alert("본인의 포트폴리오를 좋아요 할 수 없습니다.");
+    return;
   }
 
   if (!state.onLiked) {
@@ -331,6 +339,11 @@ function toggleBookmark() {
     return (showModal.value = true);
   }
 
+  if(state.isMine) {
+    alert("본인의 포트폴리오를 북마크할 수 없습니다.");
+    return;
+  }
+
   if (!state.onBookmarked) {
     postBookmark();
     postBookmarkNotification();
@@ -396,6 +409,10 @@ function deleteBookmark() {
 function toggleReport() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
+  }
+  if(state.isMine) {
+    alert("본인의 포트폴리오를 신고할 수 없습니다.");
+    return;
   }
 
   if (!state.onReported) {
@@ -1103,8 +1120,9 @@ onBeforeRouteUpdate((to, from, next) => {
           />
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
+            v-if="comment.memberId === useUserDetailsStore().id"
           >
-            삭제
+            삭제하기
           </div>
         </div>
       </div>
