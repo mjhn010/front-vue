@@ -16,4 +16,5 @@ public class Notification {
     private Integer clickFlag;
     private String image;
     private String nickname;
+    private String url;
 }
