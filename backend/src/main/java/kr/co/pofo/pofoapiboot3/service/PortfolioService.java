@@ -40,8 +40,8 @@ public interface PortfolioService {
     void updatehitCount(Integer id);
 
 	// 제목,스킬 등등 
-    boolean regPofo(Portfolio pofo, UsedSkill skills);
+    boolean regPofo(Portfolio pofo, String[] skills);
 	//등록 이미지,텍스트
-    boolean regContent(PortfolioContents pofoContent);
+    boolean regContent(Portfolio pofo, PortfolioContents pofoContent);
 
 }

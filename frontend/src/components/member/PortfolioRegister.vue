@@ -1,6 +1,7 @@
 <script setup>
 import Header from "../Header.vue";
 import { onMounted, onUpdated, reactive, ref } from "vue";
+import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 
 let showModal = ref(false);
 let thumbnail = ref('');
@@ -12,6 +13,8 @@ let listIndex = 0;
 // 체크박스 선택 하나만
 let singgle = ref(true);
 let team = ref(false);
+
+let userDetails = useUserDetailsStore();
 
 
 
@@ -136,11 +139,13 @@ function saveData(event, index) {
 }
 
 async function send(e) {
-  let form = document.querySelector("form")
+  let form = document.querySelector("#form")
   let formData = new FormData(form);
+  formData.append("memberId",userDetails.id);
   let res = await fetch("http://localhost:8080/members/regpofo", {
     method: "POST",
-    body: formData,
+    // body: formData,
+    body:formData,
     headers: {
       "Accept": "application/json",
     }
@@ -182,7 +187,7 @@ async function send(e) {
 <template>
   <div v-show="showModal" class="screen"></div>
   <Header />
-  <form action="" enctype="multipart/form-data">
+  <form id="form" action="/members" method="post" enctype="multipart/form-data">
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
@@ -315,7 +320,7 @@ async function send(e) {
             </div>
             <div @dragover.stop.prevent="onDragover" @drop.stop.prevent="thumbmailDrop($event)"
               class="thumbnail-img-box margin-top-5">
-              <input @input="thumbnailImg($event, index)" class="d-none thumbnailInput" type="file" name="thumbmail"
+              <input @input="thumbnailImg($event, index)" class="d-none thumbnailInput" type="file" name="thumbnail"
                 accept="jpg,gif,png">
               <!-- <img  @click.prevent="imgClickHandler" class="hover" src="/src/assets/images/img.png" alt=""> -->
               <img v-if="imgUpLoad" :src="thumbnail" alt="" class="thumnailImg-upload">
@@ -335,26 +340,26 @@ async function send(e) {
             <span class="thumbnail-span">기술스택</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="check-box margin-top-2">
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="1"
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="1"
                 checked="checked">java</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="2">javaScript</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="3">python</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="4">C</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="5">C#</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="6">VisualBasic</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="7">HTML</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="8">CSS</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="9">Spring</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skill" value="10">SpringBoot</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="2">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="3">python</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="4">C</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="5">C#</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="6">VisualBasic</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="7">HTML</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="8">CSS</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="9">Spring</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="10">SpringBoot</label>
           </div>
           <div class="modal-main-text margin-top-5">
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="select-team team-info margin-top-3">
             <label class="skill-label singgle"><input ref="singgle" @click="singgleChecked($event)" class="cb"
-                type="checkbox" checked name="type" value="0">개인</label>
+                type="checkbox" checked name="collaboration" value="0">개인</label>
             <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox"
-                name="type" value="1">팀</label>
+                name="collaboration" value="1">팀</label>
             <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
             <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
           </div>
