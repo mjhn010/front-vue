@@ -57,7 +57,6 @@ public class CommunityController {
     // 팀 신청 확인
     @PostMapping("getApplicationStatus")
     public boolean getApplicationStatus(Notification notification) {
-
         System.out.println(notification);
         boolean result = notificationService.isApplied(notification);
         System.out.println(result);
@@ -73,7 +72,7 @@ public class CommunityController {
      */
     @PostMapping("apply")
     public String apply(Notification notification) {
-
+        System.out.println("이번엔 나 호출??????????????????????????");
         notificationService.create(notification);
         return null;
     }

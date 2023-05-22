@@ -21,8 +21,8 @@ let isApplied = ref(false);
 //let isApplying = ref(false);
 
 // --- Life Cycles -------------------------------------
-onMounted(() => {
-    fetchCommunity();
+onMounted(async () => {
+    await fetchCommunity();
     if(userDetails.id != null) // 로그인된 경우만 확인함
         checkApplicationStatus();
 })
@@ -58,7 +58,6 @@ async function applyBtnClickHandler(){
     if(!userDetails.isAuthenticated){
         showModal.value = true;
     }
-    
     if(isApplied.value) { // 신청한적 없을 경우 신청됨
         await fetch("http://localhost:8080/community/apply", {
             method: "POST",
@@ -67,7 +66,7 @@ async function applyBtnClickHandler(){
             },
             body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = true;
+        isApplied.value = false;
     } else if(!isApplied.value){ // 신청한 상태의 경우 취소됨
         await fetch("http://localhost:8080/community/cancle", {
             method: "DELETE",
@@ -76,7 +75,7 @@ async function applyBtnClickHandler(){
             },
             body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = false;
+        isApplied.value = true;
     }
 
 }
@@ -91,10 +90,10 @@ async function checkApplicationStatus() {
         body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
     });
 
-    let result = await response.text();    
+    let result = await response.text();
     console.log(result);
 
-    if (result === "true") {
+    if (result === "false") {
         isApplied.value = true;
     } else {
         isApplied.value = false;
@@ -158,7 +157,7 @@ async function checkApplicationStatus() {
                     </p>
                     <button 
                         @click.prevent="applyBtnClickHandler">
-                        {{ isApplied ? '신청됨' : '신청하기' }}
+                        {{ !isApplied ? '신청됨' : '신청하기' }}
                     </button>
                 </div>
 
