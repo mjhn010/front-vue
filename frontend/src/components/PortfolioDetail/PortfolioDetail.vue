@@ -36,6 +36,7 @@ const state = reactive({
   likes: [],
   bookmarks: [],
   reports: [],
+  onFollowed: false,
   onLiked: false,
   onBookmarked: false,
   onReported: false,
@@ -71,14 +72,6 @@ function toggleCommentBox() {
   }
 }
 
-function contentToHTML(item) {
-  if (item.type === "0") {
-    return item.content;
-  } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="http://localhost:8080/portfolio/contents/${item.content}" alt="Content image"/>`;
-  }
-}
-
 function scrollLeft() {
   const scrollContainer = document.querySelector(".scroll-container");
   if (onCommentBoxOpen.value) {
@@ -93,7 +86,7 @@ function scrollRight() {
   } else scrollContainer.scrollLeft += 323.3;
 }
 
-async function scrollReset() {
+async function morePortfolioScrollReset() {
   const scrollContainer = document.querySelector(".scroll-container");
   scrollContainer.scrollLeft = 0;
 }
@@ -177,6 +170,47 @@ async function getData() {
     });
 }
 
+// Follow
+function toggleFollow() {
+  if (!useUserDetailsStore().id) {
+    return (showModal.value = true);
+  }
+
+  if (!state.onFollowed) {
+    postFollowNotification();
+    alert(state.member.nickname + "님을 팔로우합니다.");
+    return (state.onFollowed = true);
+  } else {
+    deleteFollowNotification();
+    alert("팔로우가 취소되었습니다.");
+    return (state.onFollowed = false);
+  }
+}
+
+function getFollow() {
+  fetch(`http://localhost:8080/follow`)
+    .then((res) => res.json())
+    .then((data) => {
+      state.onFollowed = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function deleteFollow() {
+  fetch(`http://localhost:8080/follow`, {
+    method: "DELETE",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      state.onFollowed = data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 // Like
 function toggleLike() {
   if (!useUserDetailsStore().id) {
@@ -185,9 +219,11 @@ function toggleLike() {
 
   if (!state.onLiked) {
     saveLike();
+    postLikeNotification();
     return (state.onLiked = true);
   } else {
     deleteLikes();
+    deleteLikeNotification();
     return (state.onLiked = false);
   }
 }
@@ -282,9 +318,11 @@ function toggleBookmark() {
 
   if (!state.onBookmarked) {
     postBookmark();
+    postBookmarkNotification();
     return (state.onBookmarked = true);
   } else {
     deleteBookmark();
+    deleteBookmarkNotification();
     return (state.onBookmarked = false);
   }
 }
@@ -408,6 +446,199 @@ function deleteReport() {
     .finally(getData);
 }
 
+// Like notification
+async function postLikeNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 0,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+async function deleteLikeNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 0,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+  };
+  console.log(notification);
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+// Comment notification
+async function postCommentNotification(commentId) {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 1,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    commentId: commentId,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+async function deleteCommentNotification(commentId) {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 1,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    commentId: commentId,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+// Bookmark notification
+async function postBookmarkNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 2,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+async function deleteBookmarkNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 2,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+// Follow notification
+async function postFollowNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 3,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    commentId: null,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
+async function deleteFollowNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 3,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    commentId: null,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
 // Lifecycle
 onMounted(() => {
   getData();
@@ -417,7 +648,7 @@ onBeforeRouteUpdate((to, from, next) => {
   if (to.params.portfolioId !== from.params.portfolioId) {
     portfolioId.value = to.params.portfolioId;
     scrollToTop();
-    scrollReset();
+    morePortfolioScrollReset();
     getData();
   }
   next();
@@ -478,7 +709,7 @@ onBeforeRouteUpdate((to, from, next) => {
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
-              @click="toggleCommentBox"
+              @click="toggleFollow"
             >팔로우</span>
           </div>
         </figcaption>
