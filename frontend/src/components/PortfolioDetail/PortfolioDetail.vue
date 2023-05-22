@@ -176,6 +176,10 @@ function toggleFollow() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
   }
+  if (state.isMine) {
+    alert("본인을 팔로우할 수 없습니다.");
+    return;
+  }
 
   if (!state.onFollowed) {
     postFollow();
@@ -202,10 +206,9 @@ function postFollow() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(follow),
-  })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
 }
 
 function deleteFollow() {
@@ -220,16 +223,19 @@ function deleteFollow() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(follow),
-  })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
 }
 
 // Like
 function toggleLike() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
+  }
+  if (state.isMine) {
+    alert("본인의 포트폴리오를 좋아요 할 수 없습니다.");
+    return;
   }
 
   if (!state.onLiked) {
@@ -325,10 +331,36 @@ function saveComment() {
   }
 }
 
+function deleteComment(id) {
+  if(!confirm("댓글을 삭제하시겠습니까?")) return;
+
+  const comment = {
+    id: id,
+  };
+
+  return fetch(`http://localhost:8080/pofo/${portfolioId.value}/comments`, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(comment),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
+    .finally(getData);
+}
+
 // Bookmark
 function toggleBookmark() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
+  }
+
+  if (state.isMine) {
+    alert("본인의 포트폴리오를 북마크할 수 없습니다.");
+    return;
   }
 
   if (!state.onBookmarked) {
@@ -396,6 +428,10 @@ function deleteBookmark() {
 function toggleReport() {
   if (!useUserDetailsStore().id) {
     return (showModal.value = true);
+  }
+  if (state.isMine) {
+    alert("본인의 포트폴리오를 신고할 수 없습니다.");
+    return;
   }
 
   if (!state.onReported) {
@@ -569,8 +605,7 @@ async function postFollowNotification() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(notification),
-  })
-      .catch((error) => {
+  }).catch((error) => {
     console.error("Error:", error);
   });
 }
@@ -611,28 +646,6 @@ async function postCommentNotification() {
   return fetch(url, {
     mode: "cors",
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(notification),
-  }).catch((error) => {
-    console.error("Error:", error);
-  });
-}
-
-async function deleteCommentNotification() {
-  const url = "http://localhost:8080/notifications";
-
-  const notification = {
-    typeId: 1,
-    fromMemberId: useUserDetailsStore().id,
-    toMemberId: state.portfolio.memberId,
-    portfolioId: portfolioId.value,
-  };
-
-  return fetch(url, {
-    mode: "cors",
-    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
@@ -1049,13 +1062,13 @@ onBeforeRouteUpdate((to, from, next) => {
           placeholder="이 작업에 대한 댓글을 남겨주세요."
         />
         <button
-          class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
-          @click="saveComment"
+          class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold hover:bg-blue-50"
+          @click="[saveComment(), postCommentNotification()]"
         >
           댓글 작성
         </button>
         <div
-          class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold"
+          class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold hover:bg-blue-50"
         >
           취소
         </div>
@@ -1098,13 +1111,16 @@ onBeforeRouteUpdate((to, from, next) => {
             />
           </figure>
           <p
+            :id="comment.id"
             class="col-span-7 my-4 text-sm"
             v-text="comment.content"
           />
           <div
-            class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
+            class="cursor-pointer text-start text-xs text-gray-500 hover:text-gray-800 hover:underline"
+            v-if="comment.memberId === useUserDetailsStore().id"
+            @click="deleteComment(comment.id)"
           >
-            답글 남기기
+            삭제하기
           </div>
         </div>
       </div>

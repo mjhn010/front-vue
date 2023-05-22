@@ -23,6 +23,7 @@ import kr.co.pofo.pofoapiboot3.service.ActivitiesService;
 import kr.co.pofo.pofoapiboot3.service.CollectionsService;
 import kr.co.pofo.pofoapiboot3.service.DefaultFollowService;
 import kr.co.pofo.pofoapiboot3.service.MemberService;
+import kr.co.pofo.pofoapiboot3.service.NotificationService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioLikeService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 
@@ -42,6 +43,9 @@ public class ProfileController {
     private ActivitiesService activitiesService;
     @Autowired
     private DefaultFollowService followService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("{id}")
     public ResponseEntity<Map<String, Object>> myProfile(@PathVariable("id") int id) {
@@ -67,7 +71,6 @@ public class ProfileController {
     //팔로우 확인
     @PostMapping("isFollowed")
     public String isFollowed(Follow follow){
-        System.out.println("나호출"  +  follow);
         int result = followService.checkFollowed(follow);
         if(result == 0){
             return "no";
@@ -79,10 +82,11 @@ public class ProfileController {
     //팔로우
     @PostMapping("follow")
     public String following(Follow follow) {
-        System.out.println(follow);
         followService.add(follow);
+        notificationService.createFromProfile(follow.getRequesterId(),follow.getRequestedId());
         return "ok";
     }
+    
     //팔로우 취소
     @DeleteMapping("follow")
     public String followCancle(Follow follow) {
