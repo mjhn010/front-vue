@@ -48,6 +48,7 @@
 
     <select id="findById" resultMap="notificationResultMap">
 		select
+            n.id,
 		 	n.from_member_id,
 			n.to_member_id,
 			n.reg_date,
@@ -82,6 +83,25 @@
             (${fromMemberId}, ${toMemberId}, ${type})
     </insert>
 
+
+    <update id="updateFlag">
+
+        update 
+            notification
+        set
+            click_flag = 1
+        where
+            id = ${id}
+    
+    </update>
+
+    <delete id="deleteById">
+        delete
+            from
+        notification
+        where
+            id = ${id}
+    </delete>
     <!-- 팀 신청 확인 -->
     <select id="existsBy" resultMap="notificationResultMap">
         select * 

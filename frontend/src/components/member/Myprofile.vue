@@ -122,10 +122,10 @@ function closeModifyModal() {
 }
 
 //팔로우 모달관련 이벤트 핸들러
-function followModal(e, title, t) {
+function followModal(e, title, type) {
     followingList = reactive([]);
     followModalTitle.value = title;
-    modalType.value = t;
+    modalType.value = type;
     fetch(`http://localhost:8080/follow/${userDetails.id}?type=${modalType.value}`)
         .then(response => response.json())
         .then(json => {
@@ -151,7 +151,7 @@ async function cancleFollow(id) {
 
     if (result === 'ok') {
         showFollowModal.value = false;
-        load();
+        await load();
         followModal(null, '팔로잉', 0);
     }
 }
@@ -168,7 +168,7 @@ async function follow(id) {
     let result = await response.text();
     if (result === 'ok') {
         showFollowModal.value = false;
-        load();
+        await load();
         followModal(null, '팔로우', 1);
     }
 }
@@ -208,7 +208,7 @@ async function modifyInfo() {
 
     if (result) {
         showLoaing.value = false;
-        newUserInfo();
+        await load();
         location.reload();
     }
 }
@@ -266,13 +266,6 @@ function isPassword() {
     return regExp.test(pwd.value);
 }
 
-async function newUserInfo() {
-    let response = await fetch(`http://localhost:8080/user/newuserinfo/${userDetails.id}`);
-    let json = await response.json();
-    userDetails.nickname = json.result.nickname;
-    userDetails.profileSrc = json.result.image;
-    userDetails.url = json.result.url;
-}
 </script>
 <template>
     <Header></Header>

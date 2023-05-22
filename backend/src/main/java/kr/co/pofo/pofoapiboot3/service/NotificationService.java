@@ -13,6 +13,10 @@ public interface NotificationService {
 
     void createFromProfile(int requesterId, int requestedId);
 
+    void updateFlag(int id);
+
+    void remove(int id);
+
     // 팀 신청 확인
     boolean isApplied(Notification notification);
 }
