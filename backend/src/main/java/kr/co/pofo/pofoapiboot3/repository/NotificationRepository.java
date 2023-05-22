@@ -21,4 +21,8 @@ public interface NotificationRepository {
     void deleteById(int id);
     // 팀 신청 확인
     Notification existsBy(Notification notification);
+
+    void updateAcceptFlag(int id);
+
+    void updateRejectFlag(int id);
 }

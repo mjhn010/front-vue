@@ -52,5 +52,13 @@ public class DefaultNotificationService implements NotificationService {
 
         return result != null;
     }
+    @Override
+    public void updateAcceptFlag(int id) {
+        repository.updateAcceptFlag(id);
+    }
 
+    @Override
+    public void updateReject(int id) {
+        repository.updateRejectFlag(id);
+    }
 }
