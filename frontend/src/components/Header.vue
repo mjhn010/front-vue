@@ -119,7 +119,7 @@
         </div>
 
         <!-- v-for 시작 지점 -->
-        <div class="alarm-item" v-for="notification in notificationList">
+        <div class="alarm-item" v-for="(notification , index) in notificationList">
           <div class="alarm-content">
             <div class="modal-wrap">
               <div class="modal-thumbnail">
@@ -134,12 +134,12 @@
               <div class="modal-content">
                 <div class="modal-title">
                   <router-link :to="notification.url + ( notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromMemberId : notification.portfolioId )">
-                  <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다.">
+                  <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다." @click="changeClickFlag($event, index)" :class="{'readed' : notification.clickFlag==1}">
                     {{notification.nickname+notification.text}}
                   </p>
                   </router-link>
                   <div class="modal-date">{{ notification.regDate.substring(0,10) }}</div>
-                  <span class="hover" style="font-weight: bold;">X</span>
+                  <span class="hover" style="font-weight: bold;" @click="removeNotification($event, index)">X</span>
                 </div>
                 <!--수락 거절 버튼 클릭 하고 싶으면-->
                 <div class="modal-title-wall"></div>
@@ -206,11 +206,15 @@
   border-radius: 50px;
   object-fit: cover
 }
+
+.readed{
+  color: gray;
+}
 </style>
 
 <script setup>
 import { vOnClickOutside } from '@vueuse/components'
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, onUpdated } from 'vue';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -223,14 +227,13 @@ let router = useRouter();
 let route = useRoute();
 
 let loginUrl = ref("");
-onMounted(() => {
-  if(route.path != '/login');
+onMounted(async () => {
+  if(route.path != '/login'){
   let returnURL = route.path;
   loginUrl.value = '/login?returnURL='+returnURL;
-  load();
+}
+  await load();
 });
-
-
 
 let notiText = reactive(['님이 좋아요를 누르셨습니다.', 
                         '님이 댓글을 다셨습니다.', 
@@ -285,5 +288,25 @@ function logoutHandler(){
   isModalOpenProfile.value = false;
   router.push("/index");
 }
+
+async function changeClickFlag (e, index){
+  console.log(notificationList[index]);
+  await fetch(`http://localhost:8080/notifications/changeflag/${notificationList[index].id}`,{
+    method : "PUT"
+  });
+
+}
+
+async function removeNotification(e, index){
+  let res = await fetch(`http://localhost:8080/notifications/remove/${notificationList[index].id}`,{
+    method : "DELETE"
+  });
+  let result = await res.text();
+  if(result =='ok'){
+    closeModal();
+    await load();
+    isModalOpenNotify.value = true;
+  }
+} 
 
 </script>
