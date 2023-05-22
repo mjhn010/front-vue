@@ -10,7 +10,8 @@ public class Notification {
     private Integer typeId;
     private Integer fromMemberId;
     private Integer toMemberId;
-    private Integer commentId;
     private Date regDate;
+    private Integer portfolioId;
+    private Integer communityId;
     private Integer clickFlag;
 }

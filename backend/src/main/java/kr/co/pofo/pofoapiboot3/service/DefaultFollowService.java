@@ -14,13 +14,11 @@ public class DefaultFollowService {
     @Autowired
     private FollowRepository followRepository;
 
-    public int add(Follow follow) {
-        int result = followRepository.insert(follow);
-        return result;
+    public void add(Follow follow) {
+        followRepository.insert(follow);
     }
-    public int delete(Follow follow) {
-        int result = followRepository.delete(follow);
-        return result;
+    public void delete(Follow follow) {
+        followRepository.delete(follow);
     }
 
     public int checkFollowed(Follow follow) {

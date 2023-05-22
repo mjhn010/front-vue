@@ -7,7 +7,7 @@
         INSERT INTO
             notification
         VALUES
-            (DEFAULT, #{typeId}, #{fromMemberId}, #{toMemberId}, #{commentId}, DEFAULT, DEFAULT)
+            (DEFAULT, #{typeId}, #{fromMemberId}, #{toMemberId}, DEFAULT, #{portfolioId}, #{communityId}, DEFAULT)
     </insert>
 
     <delete id="delete">
@@ -20,13 +20,17 @@
         AND
             to_member_id = #{toMemberId}
         <choose>
-            <when test="commentId != null">
+            <when test="portfolioId != null">
                 AND
-                    comment_id = #{commentId}
+                    portfolio_id = #{portfolioId}
+                AND
+                    community_id IS NULL
             </when>
             <otherwise>
                 AND
-                    comment_id IS NULL
+                    portfolio_id IS NULL
+                AND
+                    community_id = #{communityId}
             </otherwise>
         </choose>
     </delete>

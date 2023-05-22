@@ -6,15 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import kr.co.pofo.pofoapiboot3.entity.Follow;
 import kr.co.pofo.pofoapiboot3.entity.Member;
 import kr.co.pofo.pofoapiboot3.service.DefaultFollowService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("follow")
 public class FollowController {
@@ -36,5 +34,15 @@ public class FollowController {
         }
         dto.put("counts", counts);
         return dto;
+    }
+
+    @PostMapping
+    public void add(@RequestBody Follow follow){
+        followService.add(follow);
+    }
+
+    @DeleteMapping
+    public void delete(@RequestBody Follow follow){
+        followService.delete(follow);
     }
 }
