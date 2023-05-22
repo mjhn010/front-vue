@@ -13,4 +13,6 @@ public interface NotificationRepository {
     void delete(Notification notification);
 
     List<Notification> findById(int id);
+
+    void insertFromProfile(int fromMemberId, int toMemberId, int type);
 }

@@ -29,4 +29,10 @@ public class DefaultNotificationService implements NotificationService {
         return repository.findById(id);
     }
 
+    @Override
+    public void createFromProfile(int fromMemberId, int toMemberId) {
+        int type = 3;
+        repository.insertFromProfile(fromMemberId,toMemberId,type);
+    }
+
 }

@@ -74,5 +74,12 @@
 			m.reg_date
 	</select>
 
+    <insert id="insertFromProfile">
+        INSERT INTO
+            notification
+            (from_member_id,to_member_id,type_id)
+        VALUES
+            (${fromMemberId}, ${toMemberId}, ${type})
+    </insert>
 
 </mapper>

@@ -10,4 +10,6 @@ public interface NotificationService {
     void delete(Notification notification);
 
     List<Notification> getList(int id);
+
+    void createFromProfile(int requesterId, int requestedId);
 }

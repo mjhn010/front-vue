@@ -169,7 +169,6 @@ onBeforeRouteUpdate((to, from, next) => {
                         @mouseleave.stop.prevent="followingBtnMouseLeaveHandler">{{ followingText }}
                     </button>
 
-                    <!-- <button class="d-none">팔로우</button> -->
                 </div>
             </div>
 
