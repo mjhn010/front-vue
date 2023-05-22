@@ -45,8 +45,6 @@ public class FollowController {
     @PostMapping
     public void add(@RequestBody Follow follow){
         followService.add(follow);
-        //from -> requester, to -> requested
-        notificationService.createFromProfile(follow.getRequesterId(),follow.getRequestedId());
     }
 
     @DeleteMapping
