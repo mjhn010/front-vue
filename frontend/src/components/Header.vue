@@ -244,7 +244,7 @@ let notificationList = reactive([]);
 
 async function load(){
   if(userDetails.isAuthenticated){
-    let response = await fetch("http://localhost:8080/notification/list/"+userDetails.id);
+    let response = await fetch("http://localhost:8080/notifications/list/"+userDetails.id);
     let notiList = await response.json();
     notificationList = notiList;
     for(let item of notificationList)
