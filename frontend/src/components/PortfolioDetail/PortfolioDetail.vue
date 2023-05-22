@@ -1050,7 +1050,7 @@ onBeforeRouteUpdate((to, from, next) => {
         />
         <button
           class="col-span-2 col-start-5 mr-1 flex h-9 items-center justify-center rounded-full border text-center text-sm font-semibold"
-          @click="saveComment"
+          @click="[saveComment(), postCommentNotification()]"
         >
           댓글 작성
         </button>
@@ -1104,7 +1104,7 @@ onBeforeRouteUpdate((to, from, next) => {
           <div
             class="col-span-2 cursor-pointer text-start text-xs text-gray-500"
           >
-            답글 남기기
+            삭제
           </div>
         </div>
       </div>
