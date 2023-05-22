@@ -36,6 +36,7 @@ const state = reactive({
   likes: [],
   bookmarks: [],
   reports: [],
+  onFollowed: false,
   onLiked: false,
   onBookmarked: false,
   onReported: false,
@@ -71,14 +72,6 @@ function toggleCommentBox() {
   }
 }
 
-function contentToHTML(item) {
-  if (item.type === "0") {
-    return item.content;
-  } else if (item.type === "1") {
-    return `<img class="mb-12 w-fit" src="http://localhost:8080/portfolio/contents/${item.content}" alt="Content image"/>`;
-  }
-}
-
 function scrollLeft() {
   const scrollContainer = document.querySelector(".scroll-container");
   if (onCommentBoxOpen.value) {
@@ -93,7 +86,7 @@ function scrollRight() {
   } else scrollContainer.scrollLeft += 323.3;
 }
 
-async function scrollReset() {
+async function morePortfolioScrollReset() {
   const scrollContainer = document.querySelector(".scroll-container");
   scrollContainer.scrollLeft = 0;
 }
@@ -167,11 +160,67 @@ async function getData() {
     .catch((error) => {
       console.error("Error:", error);
     });
+
   fetch(`http://localhost:8080/pofo/${portfolioId.value}/skills`)
     .then((res) => res.json())
     .then((data) => {
       state.skills = data;
     })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Follow
+function toggleFollow() {
+  if (!useUserDetailsStore().id) {
+    return (showModal.value = true);
+  }
+
+  if (!state.onFollowed) {
+    postFollow();
+    postFollowNotification();
+    alert(state.member.nickname + "님을 팔로우합니다.");
+    return (state.onFollowed = true);
+  } else {
+    deleteFollow();
+    deleteFollowNotification();
+    alert("팔로우가 취소되었습니다.");
+    return (state.onFollowed = false);
+  }
+}
+
+function postFollow() {
+  const follow = {
+    requesterId: useUserDetailsStore().id,
+    requestedId: state.member.id,
+  };
+
+  return fetch("http://localhost:8080/follow", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(follow),
+  })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function deleteFollow() {
+  const follow = {
+    requesterId: useUserDetailsStore().id,
+    requestedId: state.member.id,
+  };
+
+  return fetch("http://localhost:8080/follow", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(follow),
+  })
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -185,9 +234,11 @@ function toggleLike() {
 
   if (!state.onLiked) {
     saveLike();
+    postLikeNotification();
     return (state.onLiked = true);
   } else {
     deleteLikes();
+    deleteLikeNotification();
     return (state.onLiked = false);
   }
 }
@@ -282,9 +333,11 @@ function toggleBookmark() {
 
   if (!state.onBookmarked) {
     postBookmark();
+    postBookmarkNotification();
     return (state.onBookmarked = true);
   } else {
     deleteBookmark();
+    deleteBookmarkNotification();
     return (state.onBookmarked = false);
   }
 }
@@ -408,6 +461,187 @@ function deleteReport() {
     .finally(getData);
 }
 
+// Like notification
+async function postLikeNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 0,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+async function deleteLikeNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 0,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+// Bookmark notification
+async function postBookmarkNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 2,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+async function deleteBookmarkNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 2,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+// Follow notification
+async function postFollowNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 3,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  })
+      .catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+async function deleteFollowNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 3,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+// Comment notification
+async function postCommentNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 1,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+async function deleteCommentNotification() {
+  const url = "http://localhost:8080/notifications";
+
+  const notification = {
+    typeId: 1,
+    fromMemberId: useUserDetailsStore().id,
+    toMemberId: state.portfolio.memberId,
+    portfolioId: portfolioId.value,
+  };
+
+  return fetch(url, {
+    mode: "cors",
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notification),
+  }).catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
 // Lifecycle
 onMounted(() => {
   getData();
@@ -417,7 +651,7 @@ onBeforeRouteUpdate((to, from, next) => {
   if (to.params.portfolioId !== from.params.portfolioId) {
     portfolioId.value = to.params.portfolioId;
     scrollToTop();
-    scrollReset();
+    morePortfolioScrollReset();
     getData();
   }
   next();
@@ -478,7 +712,7 @@ onBeforeRouteUpdate((to, from, next) => {
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
-              @click="toggleCommentBox"
+              @click="toggleFollow"
             >팔로우</span>
           </div>
         </figcaption>
@@ -578,7 +812,9 @@ onBeforeRouteUpdate((to, from, next) => {
             class="text-xs font-semibold text-white sm:text-sm"
             v-if="state.portfolio.awardDate != null"
             v-text="
-              `${state.portfolio.awardDate.substring(0, 10).replace(/-/g, '.')}`+ ' | '
+              `${state.portfolio.awardDate
+                .substring(0, 10)
+                .replace(/-/g, '.')}` + ' | '
             "
           />
           <span

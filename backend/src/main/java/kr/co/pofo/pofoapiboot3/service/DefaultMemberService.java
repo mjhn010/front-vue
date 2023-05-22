@@ -111,4 +111,9 @@ public class DefaultMemberService implements MemberService {
     public int addUUID(String email, String uuid) {
         return repository.insertUUID(email, uuid);
     }
+
+    @Override
+    public String getImageById(int id) {
+       return repository.findImageById(id);
+    }
 }

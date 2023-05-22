@@ -6,8 +6,8 @@
 
     <insert id="insert" parameterType="Follow">
 		insert into 
-            follow (requester_id,requested_id)
-		values(#{requesterId},#{requestedId})
+            follow
+		values(#{requesterId},#{requestedId}, DEFAULT)
 	</insert>
 
      <delete id="delete" parameterType="Follow">

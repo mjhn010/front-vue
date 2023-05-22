@@ -49,7 +49,6 @@ async function registerHandler() {
 }
 
 function imageBoxClickHandler(){
-    console.log("clicked");
     let fileInput = fileInputRef.value;
     
     // fileInput.click(); // 이 방법 보다는..?
@@ -63,7 +62,6 @@ function imageBoxClickHandler(){
 }
 
 function btnHandler(){
-    console.log("clicked");
     let fileInput = fileInputRef.value;
     
     // fileInput.click(); // 이 방법 보다는 아래의 방법으로

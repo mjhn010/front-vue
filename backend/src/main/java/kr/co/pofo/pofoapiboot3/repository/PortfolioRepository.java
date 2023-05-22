@@ -2,10 +2,15 @@ package kr.co.pofo.pofoapiboot3.repository;
 
 import java.util.List;
 
+import javax.sound.sampled.Port;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
+import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
+import kr.co.pofo.pofoapiboot3.entity.Skill;
+import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
 import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 
 @Mapper
@@ -37,22 +42,28 @@ public interface PortfolioRepository {
     
     // 스택 검색
     int[] findSkillIdsByQuery(String query);
-	
-	void insert(Portfolio pf);
-
+    
 	int findId();
-
+    
 	
-
-//	Detail
+    
+    //	Detail
 	Portfolio findPortfolioById(Integer id);
-
+    
     List<Portfolio> findMorePortfolio(Integer currentPortfolioId, Integer memberId);
-
-// myprofile
+    
+    // myprofile
     List<Portfolio> findByUserId(int id);
     Integer countOfhits(int id);
-
+    
     // 조회수 증가
     void updatehitCount(Integer id);
+    
+    
+    // register 
+    
+    
+	//등록
+	int insert(Portfolio pofo);
+    int contentInsert(PortfolioContents pofoContent);
 }

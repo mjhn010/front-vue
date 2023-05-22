@@ -123,7 +123,6 @@ function closeModifyModal() {
 
 //팔로우 모달관련 이벤트 핸들러
 function followModal(e, title, t) {
-    console.log(e.target)
     followingList = reactive([]);
     followModalTitle.value = title;
     modalType.value = t;

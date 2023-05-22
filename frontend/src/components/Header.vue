@@ -119,23 +119,27 @@
         </div>
 
         <!-- v-for 시작 지점 -->
-        <div class="alarm-item">
+        <div class="alarm-item" v-for="notification in notificationList">
           <div class="alarm-content">
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
                   <div class="profile-image-wrap">
-                    <img src="/src/assets/images/proflie.svg" class="profile-img-noti" />
+                    <router-link :to="'/profile/'+notification.fromMemberId" v-if="notification.image == null" @click="closeModal"><img src="/src/assets/images/proflie.svg" class="profile-img-noti hover radiu-50"/></router-link>
+                    <router-link :to="'/profile/'+notification.fromMemberId" v-else @click="closeModal"><img :src="'http://localhost:8080/profileImage/' + notification.image" class="profile-img-noti hover radiu-50"/></router-link>
                   </div>
                 </div>
               </div>
               <div class="modal-wall"></div>
               <div class="modal-content">
                 <div class="modal-title">
-                  <p class="modal-msg-text-notify" title="Thomas님이 좋아요를 누르셨습니다.">
-                    Thomas님이 좋아요를 누르셨습니다.
+                  <router-link :to="notification.url + ( notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromMemberId : notification.portfolioId )">
+                  <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다.">
+                    {{notification.nickname+notification.text}}
                   </p>
-                  <div class="modal-date">2023년 04월 21일</div>
+                  </router-link>
+                  <div class="modal-date">{{ notification.regDate.substring(0,10) }}</div>
+                  <span class="hover" style="font-weight: bold;">X</span>
                 </div>
                 <!--수락 거절 버튼 클릭 하고 싶으면-->
                 <div class="modal-title-wall"></div>
@@ -178,6 +182,8 @@
   </div>
 </template>
 
+
+
 <style>
 @import url("/src/assets/css/common/reset.css");
 @import url("/src/assets/css/common/style.css");
@@ -188,6 +194,17 @@
 .profile-img{
   width: 28px;
   height: 28px;
+}
+
+.hover:hover{
+  cursor: pointer;
+}
+.width-300px{
+  width: 300px;
+}
+.radiu-50{
+  border-radius: 50px;
+  object-fit: cover
 }
 </style>
 
@@ -210,13 +227,10 @@ onMounted(() => {
   if(route.path != '/login');
   let returnURL = route.path;
   loginUrl.value = '/login?returnURL='+returnURL;
+  load();
 });
 
 
-// 누가 행위를 했는지 - 닉네임 값 저장 예정
-let from = ref('');
-// 누가 알림을 받는지 - 닉네임 값 저장 예정
-let to = ref('');
 
 let notiText = reactive(['님이 좋아요를 누르셨습니다.', 
                         '님이 댓글을 다셨습니다.', 
@@ -225,6 +239,19 @@ let notiText = reactive(['님이 좋아요를 누르셨습니다.',
                         '님이 참여하기를 선택하였습니다.',
                         '님이 참여 수락을 하였습니다.']);
 
+
+let notificationList = reactive([]);
+
+async function load(){
+  if(userDetails.isAuthenticated){
+    let response = await fetch("http://localhost:8080/notifications/list/"+userDetails.id);
+    let notiList = await response.json();
+    notificationList = notiList;
+    console.log(notificationList);
+    for(let item of notificationList)
+      item.text = notiText[item.typeId];
+  }
+}
 
 function showModalMessage() {
   isModalOpenNotify.value = false;

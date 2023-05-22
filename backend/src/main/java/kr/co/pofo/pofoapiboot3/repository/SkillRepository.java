@@ -20,9 +20,12 @@ public interface SkillRepository {
 //	UsedSkill
 	List<Skill> findSkillsByPortfolioId(Integer portfolioId);
 
-	void insertUsedSkill(UsedSkill usedSkill);
+	// void insertUsedSkill(UsedSkill usedSkill);
 
 	void updateUsedSkill(UsedSkill usedSkill);
 
 	void deleteUsedSkill(UsedSkill usedSkill);
+
+
+	int insertUsedSkill(UsedSkill usedSkills);
 }

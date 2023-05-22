@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.pofo.pofoapiboot3.repository.NotificationRepository">
+
+<resultMap id="notificationResultMap" type="Notification">
+		<result property="regDate" column="reg_date" />
+		<result property="toMemberId" column="to_member_id" />
+		<result property="fromMemberId" column="from_member_id" />
+		<result property="clickFlag" column="click_flag" />
+		<result property="typeId" column="type_id" />
+		<result property="portfolioId" column="portfolio_id" />
+		<result property="communityId" column="community_id" />
+</resultMap>
+
+    <insert id="insert">
+        INSERT INTO
+            notification
+        VALUES
+            (DEFAULT, #{typeId}, #{fromMemberId}, #{toMemberId}, DEFAULT, #{portfolioId}, #{communityId}, DEFAULT)
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM
+            notification
+        WHERE
+            type_id = #{typeId}
+        AND
+            from_member_id = #{fromMemberId}
+        AND
+            to_member_id = #{toMemberId}
+        <choose>
+            <when test="portfolioId != null">
+                AND
+                    portfolio_id = #{portfolioId}
+                AND
+                    community_id IS NULL
+            </when>
+            <otherwise>
+                AND
+                    portfolio_id IS NULL
+                AND
+                    community_id = #{communityId}
+            </otherwise>
+        </choose>
+    </delete>
+
+    <select id="findById" resultMap="notificationResultMap">
+		select
+		 	n.from_member_id,
+			n.to_member_id,
+			n.reg_date,
+			n.type_id,
+			n.click_flag,
+			n.portfolio_id,
+			n.community_id,
+			t.url as url,
+			m.image,
+			m.nickname
+		from
+			notification n
+		inner join
+			notification_type t
+		on
+			n.type_id = t.id
+		inner join
+			member m
+		on
+			m.id = n.from_member_id
+		where
+			n.to_member_id = ${id}
+		order by
+			m.reg_date
+	</select>
+
+    <insert id="insertFromProfile">
+        INSERT INTO
+            notification
+            (from_member_id,to_member_id,type_id)
+        VALUES
+            (${fromMemberId}, ${toMemberId}, ${type})
+    </insert>
+
+</mapper>

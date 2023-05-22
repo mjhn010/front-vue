@@ -8,6 +8,7 @@ import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
 import kr.co.pofo.pofoapiboot3.entity.Skill;
+import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
 import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 
 public interface PortfolioService {
@@ -39,8 +40,8 @@ public interface PortfolioService {
     void updatehitCount(Integer id);
 
 	// 제목,스킬 등등 
-    boolean regPofo(Portfolio pofo, Skill skills);
+    boolean regPofo(Portfolio pofo, String[] skills);
 	//등록 이미지,텍스트
-    boolean regContent(PortfolioContents pofoContent);
+    boolean regContent(Portfolio pofo, PortfolioContents pofoContent);
 
 }

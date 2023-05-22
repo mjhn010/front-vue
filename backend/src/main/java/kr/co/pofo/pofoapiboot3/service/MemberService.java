@@ -28,4 +28,6 @@ public interface MemberService {
     int addUUID(String email, String uid);
 
     int modifyInfo(Member member);
+
+    String getImageById(int id);
 }

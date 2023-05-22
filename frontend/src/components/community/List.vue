@@ -82,7 +82,7 @@ function communityClickHandler(id) {
         <img
           :src="`http://localhost:8080/communityImage/` + community.thumbnail"
           alt="Recruit thumbnail"
-          class="rounded-t-lg h-52 w-full"
+          class="rounded-t-lg h-52 w-full object-cover"
         >
         <figcaption class="px-4 py-4">
           <h3
