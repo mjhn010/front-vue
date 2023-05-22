@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.pofo.pofoapiboot3.entity.Follow;
 import kr.co.pofo.pofoapiboot3.entity.Member;

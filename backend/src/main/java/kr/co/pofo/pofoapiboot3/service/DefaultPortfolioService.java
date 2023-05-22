@@ -101,19 +101,21 @@ public class DefaultPortfolioService implements PortfolioService {
 
     // 등록 (제목,썸네일,스킬)
     public boolean regPofo(Portfolio pofo, Skill skills){
-        int result = portfolioRepository.insert(pofo,skills);
-        if(result == 1)
-            return true;
-        else
-            return false;
+        // int result = portfolioRepository.insert(pofo,skills);
+        // if(result == 1)
+        //     return true;
+        // else
+        //     return false;
+        return true;
     }
 
     //등록(이미지, 텍스트)
     public boolean regContent(PortfolioContents pofoContent){
-        int result = portfolioRepository.contentInsert(pofoContent);
-        if(result == 1)
-            return true;
-        else
-            return false;
+        // int result = portfolioRepository.contentInsert(pofoContent);
+        // if(result == 1)
+        //     return true;
+        // else
+        //     return false;
+        return true;
     }
 }

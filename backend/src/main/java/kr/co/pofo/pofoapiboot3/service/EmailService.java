@@ -1,7 +1,6 @@
 package kr.co.pofo.pofoapiboot3.service;
 
 import jakarta.servlet.http.HttpSession;
-import kr.co.pofo.pofoapiboot3.entity.Member;
 
 public interface EmailService {
 

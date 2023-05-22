@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
-import kr.co.pofo.pofoapiboot3.entity.Member;
 import kr.co.pofo.pofoapiboot3.repository.EmailRepository;
 
 @Service
