@@ -15,4 +15,8 @@ public interface NotificationRepository {
     List<Notification> findById(int id);
 
     void insertFromProfile(int fromMemberId, int toMemberId, int type);
+
+    void updateFlag(int id);
+
+    void deleteById(int id);
 }

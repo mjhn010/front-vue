@@ -35,4 +35,14 @@ public class DefaultNotificationService implements NotificationService {
         repository.insertFromProfile(fromMemberId,toMemberId,type);
     }
 
+    @Override
+    public void updateFlag(int id) {
+        repository.updateFlag(id);
+    }
+
+    @Override
+    public void remove(int id) {
+        repository.deleteById(id);
+    }
+
 }
