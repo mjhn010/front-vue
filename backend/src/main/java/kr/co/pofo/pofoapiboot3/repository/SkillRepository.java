@@ -1,6 +1,7 @@
 package kr.co.pofo.pofoapiboot3.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.co.pofo.pofoapiboot3.entity.Skill;
 import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
@@ -20,12 +21,9 @@ public interface SkillRepository {
 //	UsedSkill
 	List<Skill> findSkillsByPortfolioId(Integer portfolioId);
 
-	// void insertUsedSkill(UsedSkill usedSkill);
-
-	void updateUsedSkill(UsedSkill usedSkill);
-
-	void deleteUsedSkill(UsedSkill usedSkill);
+    
 
 
-	int insertUsedSkill(UsedSkill usedSkills);
+
+
 }

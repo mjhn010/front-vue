@@ -61,7 +61,9 @@
         INSERT INTO
             used_skill(portfolio_id, communitiy_id, skill_id)
         VALUES
-            (#{portfolioId}, #{recruitId}, #{skillId})
+             //<foreach collection="skill" item="skill" separator=",">
+                (#{portfolioId}, #{recruitId}, #{skillId})
+             </foreach>
     </insert>
 
     <update id="updateUsedSkill">

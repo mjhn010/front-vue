@@ -25,7 +25,7 @@ public interface PortfolioService {
 	List<PortfolioView> getViewList(String q, String o);
 	List<PortfolioView> getViewList(Integer type, String o);
 	
-	void add(Portfolio pf);
+	// void add(Portfolio pf);
 
 	int getId();
 
@@ -39,9 +39,10 @@ public interface PortfolioService {
     // 조회수 증가
     void updatehitCount(Integer id);
 
-	// 제목,스킬 등등 
-    boolean regPofo(Portfolio pofo, String[] skills);
+
 	//등록 이미지,텍스트
     boolean regContent(Portfolio pofo, PortfolioContents pofoContent);
+
+	boolean regPofo(Portfolio portfolio);
 
 }

@@ -12,26 +12,38 @@ import jakarta.servlet.http.HttpServletRequest;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
+import kr.co.pofo.pofoapiboot3.service.SkillService;
 import kr.co.pofo.pofoapiboot3.util.FileUpload;
 @RestController
 @RequestMapping("/members")
 public class PortfolioMemberController {
     @Autowired
     private PortfolioService portfolioService;
-
+    @Autowired
+    private SkillService skillService;
     @Autowired
     private FileUpload fileUpload;
 
     @PostMapping("/regpofo")
-    public boolean regPofo(Portfolio portfolio, String [] skills, MultipartFile image) throws Exception{
+    public boolean regPofo(Portfolio pofo,String [] skills, MultipartFile image) throws Exception{
         //UUID로 파일명 변경
         String modifiedName = fileUpload.modifyImgName(image.getOriginalFilename());
         //파일 업로드 실행
         fileUpload.upload(image, modifiedName);
         //UUID로 변경된 썸네일 이름 portfolio객체에 setting
-        portfolio.setThumbnail(modifiedName);
+        
+        pofo.setThumbnail(modifiedName);
+        
+        System.out.println("마마마마마마마마마맘마마마마마마마마마마마"+pofo.getMemberId());
+        
+        System.out.println("썸네일"+pofo.getThumbnail());
 
-        return true;    
+        boolean result = portfolioService.regPofo(pofo);
+
+        // for(String skill : skills){
+        //     skillService.regPofo(portfolio.getId(),skill);
+        // }
+        return result;
     }
 
     @PostMapping("/regcontent")

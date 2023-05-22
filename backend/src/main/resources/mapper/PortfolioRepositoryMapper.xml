@@ -132,10 +132,10 @@
 
 
 	<!-- 등록 -->
-	<insert id="insert" parameterType="Portfolio">
-	<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+	<insert id="regPofo" parameterType="Portfolio">
+	<!-- <selectKey keyProperty="id" resultType="Integer" order="AFTER">
     SELECT LAST_INSERT_ID()
-  </selectKey>
+  </selectKey> -->
 		insert into portfolio(member_id,title,thumbnail,collaboration)
 		values(#{memberId},#{title},#{thumbnail},#{collaboration});
 	</insert>

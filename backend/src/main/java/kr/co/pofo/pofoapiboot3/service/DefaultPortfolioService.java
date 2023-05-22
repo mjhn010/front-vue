@@ -64,10 +64,10 @@ public class DefaultPortfolioService implements PortfolioService {
         return list;
     }
 
-    @Override
-    public void add(Portfolio pf) {
-        portfolioRepository.insert(pf);
-    }
+    // @Override
+    // public void add(Portfolio pf) {
+    //     portfolioRepository.insert(pf);
+    // }
 
     @Override
     public int getId() {
@@ -102,19 +102,7 @@ public class DefaultPortfolioService implements PortfolioService {
         portfolioRepository.updatehitCount(id);
     }
 
-   // 등록 (제목,썸네일,스킬)
-    public boolean regPofo(Portfolio pofo,String[] skills){
-        // 될까 ? last_insert_id 안쓰고 될까 ?
-        Integer pofoId = pofo.getId();
-        // skills.setPortfolioId(pofoId);
-        int result = portfolioRepository.insert(pofo);
-        // int skillResult = skillRepository.insertUsedSkill(skills);
-        // if(result == 1 && skillResult == 1)
-        //     return true;
-        // else
-        //     return false;
-        return true;
-    }
+  
  
     //등록(이미지, 텍스트)
     public boolean regContent(Portfolio pofo, PortfolioContents pofoContent){
@@ -126,6 +114,18 @@ public class DefaultPortfolioService implements PortfolioService {
         else
             return false;
     }
+
+    @Override
+    public boolean regPofo(Portfolio portfolio) {
+       int result = portfolioRepository.regPofo(portfolio);
+       if(result == 1){
+            return true;
+       }
+       else
+        return false;
+    }
+
+   
 
 
 }

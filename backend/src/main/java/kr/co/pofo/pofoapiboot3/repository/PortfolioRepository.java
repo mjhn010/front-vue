@@ -64,6 +64,7 @@ public interface PortfolioRepository {
     
     
 	//등록
-	int insert(Portfolio pofo);
+	int regPofo(Portfolio portfolio);
     int contentInsert(PortfolioContents pofoContent);
+
 }
