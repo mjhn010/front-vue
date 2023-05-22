@@ -1,20 +1,24 @@
 package kr.co.pofo.pofoapiboot3.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import kr.co.pofo.pofoapiboot3.entity.Notification;
 import kr.co.pofo.pofoapiboot3.repository.NotificationRepository;
+import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultNotificationService {
-    @Autowired
-    private NotificationRepository notificationRepository;
+public class DefaultNotificationService implements NotificationService {
+    private final NotificationRepository repository;
 
-    public List<Notification> getList(int id){
-        return notificationRepository.findById(id);
+    public DefaultNotificationService(NotificationRepository repository) {
+        this.repository = repository;
     }
 
+    @Override
+    public void create(Notification notification) {
+        repository.insert(notification);
+    }
+
+    @Override
+    public void delete(Notification notification) {
+        repository.delete(notification);
+    }
 }

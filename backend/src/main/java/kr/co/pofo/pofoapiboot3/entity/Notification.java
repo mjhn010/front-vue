@@ -1,26 +1,17 @@
 package kr.co.pofo.pofoapiboot3.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Notification {
-    private int fromId;
-    private int toId;
-    private String url;
+    private Integer id;
+    private Integer typeId;
+    private Integer fromMemberId;
+    private Integer toMemberId;
     private Date regDate;
-    private int clicked;
-    private int typeId;
-    private String nickname;
-    private String image;
-    private int portfolioId;
-    private int communityId;
+    private Integer portfolioId;
+    private Integer communityId;
+    private Integer clickFlag;
 }
-
