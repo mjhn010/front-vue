@@ -118,7 +118,6 @@ async function sendEmail() {
 async function checkNum() {
     let response = await fetch(`http://localhost:8080/email/check?certificationnum=${certiNum.value}&email=${email.value}`);
     let result = await response.text();
-    console.log(result)
     if (result == 'ok') {
         buttonText.value = '인증 성공';
         isVisible.value = false;

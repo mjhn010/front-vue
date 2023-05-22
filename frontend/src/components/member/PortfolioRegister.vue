@@ -108,7 +108,6 @@ function dropHandler(event, index) {
 // 체크박스 하나만 선택해서 하기 선택자 사용하지않고 짜증나네
 function singgleChecked(e) {
   if (e.target == singgle.value) {
-    console.log(e.target)
     singgle.value.checked = true;
     team.value.checked = false;
     let look = e.target.closest(".select-team")
@@ -120,7 +119,6 @@ function singgleChecked(e) {
 }
 function teamChecked(e) {
   if (e.target == team.value) {
-    console.log(e.target)
     team.value.checked = true;
     singgle.value.checked = false;
     let look = e.target.closest(".select-team")

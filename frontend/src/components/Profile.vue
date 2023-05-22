@@ -1,7 +1,7 @@
 <script setup>
 import Header from './Header.vue'
 import { onMounted, reactive, ref} from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import Modal from './Modal.vue';
 import FollowModal from './FollowModal.vue';
@@ -137,6 +137,13 @@ function followModal(e, title, t) {
     })
 }
 
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.id !== from.params.id) {
+        route.params.id = to.params.id;
+        load();
+  }
+  next();
+});
 
 </script>
 <template>

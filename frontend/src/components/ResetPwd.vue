@@ -22,7 +22,6 @@ onMounted(() => {
       `http://localhost:8080/email/uuidcheck?uuid=${query}`
     );
     let result = await response.text();
-    console.log(result);
     if (result == "ok") {
       router.push("/pwdreset?uuid=" + query);
     } else {

@@ -11,7 +11,7 @@
                 <div class="line margin-top-2 flex-row-between1"></div>
 
                 <div class="flex-row-between1">
-                    <span class="hover margin-top-2" @click="changeURL($event, following.id)">
+                    <span class="hover margin-top-2" @click="changeURL($event, following.id), $emit('ok')" >
                         <img class="profile-img margin-top-2 " v-if="!following.image" src="/src/assets/images/proflie.svg">
                         <img class="profile-img margin-top-2 " v-else
                             :src="'http://localhost:8080/profileImage/' + following.image">
@@ -27,7 +27,7 @@
             <span v-for="(follower, index) in list" v-if="type == 1">
                 <div class="line margin-top-2 flex-row-between1"></div>
                 <div class="flex-row-between1">
-                    <span class="hover margin-top-2" @click="changeURL($event, follower.id)">
+                    <span class="hover margin-top-2" @click="changeURL($event, follower.id), $emit('ok')">
                         <img class="profile-img margin-top-2 " v-if="!follower.image" src="/src/assets/images/proflie.svg">
                         <img class="profile-img margin-top-2 " v-else
                             :src="'http://localhost:8080/profileImage/' + follower.image">
@@ -55,6 +55,8 @@
 </style>
 
 <script setup>
+import { useRouter, useRoute } from 'vue-router';
+let router = useRouter();
 let props = defineProps({
     title: "",
     show: false,
@@ -65,9 +67,7 @@ let props = defineProps({
 });
 
 function changeURL(e, id) {
-    let index = location.href.lastIndexOf('/');
-    location.href = location.href.substring(0, index + 1) + id;
-    location.reload();
+    router.push("/profile/"+id);
 }
 
 </script>

@@ -21,7 +21,7 @@
   position: absolute;
   top: 50px;
   right: 5px;
-  width: 420px;
+  min-width: 500px;
   height: 520px;
   visibility: visible;
   margin-bottom: 7px;
@@ -30,6 +30,7 @@
   border: 1px solid rgb(229, 229, 229);
   border-radius: 8px;
   z-index: 100;
+  overflow: auto;
 }
 .noti-content-profile {
   display: flex;
@@ -77,7 +78,7 @@
   right: 36%;
   z-index: 1;
 }
-.noti-content-notify::after {
+.noti-content-notify::before {
   background-color: rgb(255, 255, 255);
   border-color: rgb(228, 232, 232) rgb(228, 232, 232) rgb(255, 255, 255)
     transparent;
@@ -85,12 +86,11 @@
   border-width: 1px;
   content: " ";
   height: 10px;
-  position: absolute;
-  right: 75px;
-  top: -6px;
+  position: fixed;
+  top: 44px;
   transform: rotate(-45deg);
   width: 10px;
-  right: 28.6%;
+  right: 6.5%;
   z-index: 1;
 }
 .noti-content-profile::after {
