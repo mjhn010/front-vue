@@ -132,8 +132,18 @@
 
 
 	<!-- 등록 -->
-	<insert id="register" parameterType="Portfolio">
+	<insert id="insert" parameterType="Portfolio">
+	<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+    SELECT LAST_INSERT_ID()
+  </selectKey>
 		insert into portfolio(member_id,title,hit,reg_date,delete_date,award_date,thumbnail,likes,collaboration)
-		values(#{memberId},#{title},#{hit},#{regDate},#{deleteDate},#{awardDate},#{thumbnail},#{likes},#{collaboration})
+		values(#{memberId},#{title},#{hit},#{regDate},#{deleteDate},#{awardDate},#{thumbnail},#{likes},#{collaboration});
 	</insert>
+
+	 <insert id="contentInsert" parameterType="PortfolioContents">
+        INSERT INTO
+            portfolio_contents(portfolio_id, orders, type, content)
+        VALUES
+            (#{portfolioId}, #{orders}, #{type}, #{content})
+    </insert>
 </mapper>

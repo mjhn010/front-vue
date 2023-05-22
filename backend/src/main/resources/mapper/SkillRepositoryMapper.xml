@@ -49,9 +49,17 @@
             portfolio_id = ${id}
     </select>
 
-    <insert id="insertUsedSkill">
+    <!-- <insert id="insertUsedSkill" parameterType="UsedSkill">
         INSERT INTO
             skill(portfolio_id, recruit_id, skill_id)
+        VALUES
+            (#{portfolioId}, #{recruitId}, #{skillId})
+    </insert> -->
+
+
+    <insert id="insertUsedSkill" parameterType="UsedSkill">
+        INSERT INTO
+            used_skill(portfolio_id, communitiy_id, skill_id)
         VALUES
             (#{portfolioId}, #{recruitId}, #{skillId})
     </insert>
@@ -73,4 +81,5 @@
         WHERE
             id = #{id}
     </delete>
+
 </mapper>

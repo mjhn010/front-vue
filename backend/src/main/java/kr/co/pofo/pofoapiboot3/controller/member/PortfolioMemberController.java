@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.Skill;
+import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
 @RestController
 @RequestMapping("/members")
@@ -20,20 +21,20 @@ public class PortfolioMemberController {
     @Autowired
     private PortfolioService portfolioService;
     @PostMapping("/regpofo")
-    public boolean regPofo(Portfolio pofo, Skill skills){
+    public boolean regPofo(Portfolio pofo, UsedSkill skills){
         
 
         System.out.println("--------------------------------");
-        portfolioService.regPofo(pofo,skills);
-        return regPofo(pofo, skills);
+        boolean result =  portfolioService.regPofo(pofo,skills);
+        return result;
     }
 
     @PostMapping("/regcontent")
     public boolean regContent(@RequestParam(required = false) MultipartFile contents, 
-                   MultipartHttpServletRequest request, int orders,PortfolioContents pofoContent) {
+                   MultipartHttpServletRequest request,PortfolioContents pofoContent) {
        int types = 0;
        String content = "";
-       System.out.println("order : " + orders);
+    //    System.out.println("order : " + orders);
        if(contents==null) {
            content = request.getParameter("contents");
            System.out.println(content);
