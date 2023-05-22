@@ -73,6 +73,15 @@
 			id=${id}
 	</update>
 
+	<select id="findImageById" resultType="String">
+		select
+			image
+		from
+			member
+		where
+			id = ${id}
+	</select>
+
 </mapper>
 
 

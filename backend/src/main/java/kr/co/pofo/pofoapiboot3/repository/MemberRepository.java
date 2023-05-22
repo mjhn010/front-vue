@@ -21,4 +21,6 @@ public interface MemberRepository {
 	int insertUUID(String email, String uuid);
 
 	int update(Member member);
+
+    String findImageById(int id);
 }

@@ -28,7 +28,6 @@ async function fetchCommunity() {
     let json = await response.json();
     data.community = json.community;
 
-    console.log(data.community);
 }
 
 function nicknameClickHandler(e, memberId) {

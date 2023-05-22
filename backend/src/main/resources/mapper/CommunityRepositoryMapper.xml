@@ -28,6 +28,15 @@
 		values(#{memberId}, #{title}, #{onlineType}, #{locationInfo}, #{period}, #{teamSize},
 		#{thumbnail})
 	</insert>
+
+	<!-- 커뮤니티 id 조회 -->
+	<select id="findIdByMemberId" resultType="Long">
+		select id
+		from community
+		where member_id = #{memberId}
+		order by reg_date desc
+		limit 1 offset 0
+	</select>
 	
 	<!-- 커뮤니티 목록조회 -->
 	<select id="findViewAll" resultMap="communityViewResultMap">

@@ -12,10 +12,13 @@ public interface CommunityRepository {
 
     // 커뮤니티 등록
     int insert(Community post);
+    Long findIdByMemberId(Long memberId);
 
     // 커뮤니티 목록조회
     List<CommunityView> findViewAll();
 
     // 커뮤니티 상세조회
     CommunityView findById(Long id);
+
+
 }

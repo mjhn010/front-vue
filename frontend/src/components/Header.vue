@@ -16,7 +16,7 @@
     </div>
     <ul class="m-menu user-bar">
       <li class="login-li">
-        <router-link to="/login">로그인</router-link>
+        <router-link :to="loginUrl">로그인</router-link>
       </li>
       <li class="sign-up-li">
         <router-link to="/signup">
@@ -78,13 +78,11 @@
   <div class="head-popup" :class="modalChange" v-if="isModalOpenMessage" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
-        <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="noti-title-content">
           메시지<a href="#" class="font-size-14">모든메시지 보기 ></a>
         </div>
         <div class="alarm-item">
           <div class="alarm-content">
-          <!-- 메시지 모달 -->
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
@@ -108,56 +106,55 @@
               </div>
             </div>
             <div class="bottom-line"></div>
-              <!-- 메시지모달끝 -->
           </div>
         </div>
       </div>
-      <!-- <div class="noti-background">
-          <div class="alarm-empty"></div>
-        </div> -->
     </div>
   </div>
   <div class="head-popup" :class="modalChange" v-if="isModalOpenNotify" v-on-click-outside="closeModal">
-    <div class="noti-list" @click.stop>
+    <div class="noti-list">
       <div class="noti-header">
-        <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="noti-title-content">
-          알림<a href="#" class="font-size-14"></a>
+          알림
         </div>
-        <div class="alarm-item">
+
+        <!-- v-for 시작 지점 -->
+        <div class="alarm-item" v-for="notification in notificationList">
           <div class="alarm-content">
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
                   <div class="profile-image-wrap">
-                    <img src="/src/assets/images/proflie.svg" class="profile-img-noti" />
+                    <router-link :to="'/profile/'+notification.fromMemberId" v-if="notification.image == null" @click="closeModal"><img src="/src/assets/images/proflie.svg" class="profile-img-noti hover radiu-50"/></router-link>
+                    <router-link :to="'/profile/'+notification.fromMemberId" v-else @click="closeModal"><img :src="'http://localhost:8080/profileImage/' + notification.image" class="profile-img-noti hover radiu-50"/></router-link>
                   </div>
                 </div>
               </div>
               <div class="modal-wall"></div>
               <div class="modal-content">
                 <div class="modal-title">
-                  <p class="modal-msg-text-notify" title="Thomas님이 좋아요를 누르셨습니다.">
-                    Thomas님이 좋아요를 누르셨습니다.
+                  <router-link :to="notification.url + ( notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromMemberId : notification.portfolioId )">
+                  <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다.">
+                    {{notification.nickname+notification.text}}
                   </p>
-                  <div class="modal-date">2023년 04월 21일</div>
+                  </router-link>
+                  <div class="modal-date">{{ notification.regDate.substring(0,10) }}</div>
+                  <span class="hover" style="font-weight: bold;">X</span>
                 </div>
+                <!--수락 거절 버튼 클릭 하고 싶으면-->
                 <div class="modal-title-wall"></div>
               </div>
             </div>
             <div class="bottom-line"></div>
           </div>
         </div>
+        
       </div>
-      <!-- <div class="noti-background">
-          <div class="alarm-empty"></div>
-        </div> -->
     </div>
   </div>
   <div class="head-popup" :class="modalChange" v-if="isModalOpenProfile" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
-        <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="user-main-wrap">
             <div class="profile-image-wrap" v-if="userDetails.profileSrc==null">
               <img src="/src/assets/images/proflie.svg" class="profile-img-mypage" />
@@ -185,6 +182,8 @@
   </div>
 </template>
 
+
+
 <style>
 @import url("/src/assets/css/common/reset.css");
 @import url("/src/assets/css/common/style.css");
@@ -196,11 +195,22 @@
   width: 28px;
   height: 28px;
 }
+
+.hover:hover{
+  cursor: pointer;
+}
+.width-300px{
+  width: 300px;
+}
+.radiu-50{
+  border-radius: 50px;
+  object-fit: cover
+}
 </style>
 
 <script setup>
 import { vOnClickOutside } from '@vueuse/components'
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -211,6 +221,37 @@ let modalChange = ref("");
 let userDetails = useUserDetailsStore();
 let router = useRouter();
 let route = useRoute();
+
+let loginUrl = ref("");
+onMounted(() => {
+  if(route.path != '/login');
+  let returnURL = route.path;
+  loginUrl.value = '/login?returnURL='+returnURL;
+  load();
+});
+
+
+
+let notiText = reactive(['님이 좋아요를 누르셨습니다.', 
+                        '님이 댓글을 다셨습니다.', 
+                        '님이 북마크 등록을 하였습니다.', 
+                        '님이 팔로우하였습니다.', 
+                        '님이 참여하기를 선택하였습니다.',
+                        '님이 참여 수락을 하였습니다.']);
+
+
+let notificationList = reactive([]);
+
+async function load(){
+  if(userDetails.isAuthenticated){
+    let response = await fetch("http://localhost:8080/notifications/list/"+userDetails.id);
+    let notiList = await response.json();
+    notificationList = notiList;
+    console.log(notificationList);
+    for(let item of notificationList)
+      item.text = notiText[item.typeId];
+  }
+}
 
 function showModalMessage() {
   isModalOpenNotify.value = false;

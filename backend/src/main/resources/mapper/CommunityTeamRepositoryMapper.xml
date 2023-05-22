@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="kr.co.pofo.pofoapiboot3.repository.CommunityTeamRepository">
+	<resultMap id="communityTeamResultMap" type="CommunityTeam">
+		<result property="memberId" column="member_id" />
+		<result property="communityId" column="community_id" />
+	</resultMap>
+
+	<!-- 팀 등록 -->
+	<insert id="insert" parameterType="CommunityTeam">
+		insert into community_team(community_id, member_id)
+		values(#{communityId}, #{memberId})
+	</insert>
+	
+</mapper>
+    
