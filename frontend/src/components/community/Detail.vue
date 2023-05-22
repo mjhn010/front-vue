@@ -58,24 +58,25 @@ async function applyBtnClickHandler(){
     if(!userDetails.isAuthenticated){
         showModal.value = true;
     }
+    
     if(isApplied.value) { // 신청한적 없을 경우 신청됨
         await fetch("http://localhost:8080/community/apply", {
             method: "POST",
             headers: {
                 "Content-type": "application/x-www-form-urlencoded"
             },
-            body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
+            body: `typeId=4&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = false;
+        isApplied.value = true;
     } else if(!isApplied.value){ // 신청한 상태의 경우 취소됨
         await fetch("http://localhost:8080/community/cancle", {
             method: "DELETE",
             headers: {
                 "Content-type": "application/x-www-form-urlencoded"
             },
-            body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
+            body: `typeId=4&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = true;
+        isApplied.value = false;
     }
 
 }
@@ -87,10 +88,10 @@ async function checkApplicationStatus() {
         headers: {
             "Content-type": "application/x-www-form-urlencoded"
         },
-        body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
+        body: `typeId=4&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
     });
 
-    let result = await response.text();
+    let result = await response.text();    
     console.log(result);
 
     if (result === "false") {
@@ -98,7 +99,6 @@ async function checkApplicationStatus() {
     } else {
         isApplied.value = false;
     }
-
 }
 
 
@@ -157,7 +157,7 @@ async function checkApplicationStatus() {
                     </p>
                     <button 
                         @click.prevent="applyBtnClickHandler">
-                        {{ !isApplied ? '신청됨' : '신청하기' }}
+                        {{ isApplied ? '신청됨' : '신청하기' }}
                     </button>
                 </div>
 

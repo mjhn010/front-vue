@@ -72,7 +72,7 @@
 		where
 			n.to_member_id = ${id}
 		order by
-			m.reg_date
+			n.reg_date desc
 	</select>
 
     <insert id="insertFromProfile">
