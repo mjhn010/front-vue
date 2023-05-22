@@ -14,4 +14,6 @@ public class Notification {
     private Integer portfolioId;
     private Integer communityId;
     private Integer clickFlag;
+    private String image;
+    private String nickname;
 }

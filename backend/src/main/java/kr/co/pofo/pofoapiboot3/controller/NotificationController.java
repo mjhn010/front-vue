@@ -22,7 +22,6 @@ public class NotificationController {
     @Autowired
     private DefaultNotificationService service;
     @Autowired
-    private MemberService memberservice;
 
     @GetMapping("list/{id}")
     public List<Notification> notificationList(@PathVariable int id){
