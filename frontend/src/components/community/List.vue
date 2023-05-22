@@ -1,7 +1,7 @@
 <script setup>
 import Header from "@/components/Header.vue";
 import { reactive, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 // --- Variables ---------------------------------------
 let community = reactive({
@@ -21,98 +21,6 @@ async function fetchCommunities() {
   let json = await response.json();
   community.list = json.list;
 }
-
-const recruits = [
-  {
-    nickname: "닉네임1",
-    title: "프로덕트 디자인 개인 완성반1",
-    projectInfo: "과일베기 게임 프로젝트",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-05-25",
-  },
-  {
-    nickname: "닉네임2",
-    title: "프로덕트 디자인 개인 완성반2",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "calm.jpg",
-    regDate: "2023-04-01",
-  },
-  {
-    nickname: "닉네임3",
-    title: "프로덕트 디자인 개인 완성반3",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "frog-prince.jpg",
-    regDate: "2023-04-08",
-  },
-  {
-    nickname: "닉네임4",
-    title: "프로덕트 디자인 개인 완성반4",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "dandelion.jpg",
-    regDate: "2023-04-06",
-  },
-  {
-    nickname: "닉네임5",
-    title: "프로덕트 디자인 개인 완성반5",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-21",
-  },
-  {
-    nickname: "닉네임6",
-    title: "프로덕트 디자인 개인 완성반6",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-11",
-  },
-  {
-    nickname: "닉네임7",
-    title: "프로덕트 디자인 개인 완성반7",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-30",
-  },
-  {
-    nickname: "닉네임8",
-    title: "프로덕트 디자인 개인 완성반8",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-01",
-  },
-  {
-    nickname: "닉네임9",
-    title: "프로덕트 디자인 개인 완성반9",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "1",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-01",
-  },
-  {
-    nickname: "닉네임10",
-    title: "프로덕트 디자인 개인 완성반10",
-    projectInfo:
-      "소수정예 1:1 피드백으로 프로덕트 디자인 과정을 마스터해봅시다.",
-    coopInfo: "0",
-    image: "cherryblossom.jpg",
-    regDate: "2023-04-01",
-  },
-];
 
 function communityClickHandler(id) {
   router.push("/community/" + id);
