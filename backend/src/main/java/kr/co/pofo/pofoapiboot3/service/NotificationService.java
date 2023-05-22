@@ -12,4 +12,7 @@ public interface NotificationService {
     List<Notification> getList(int id);
 
     void createFromProfile(int requesterId, int requestedId);
+
+    // 팀 신청 확인
+    boolean isApplied(Notification notification);
 }

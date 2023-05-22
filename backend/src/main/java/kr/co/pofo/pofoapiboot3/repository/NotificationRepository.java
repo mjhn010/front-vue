@@ -15,4 +15,7 @@ public interface NotificationRepository {
     List<Notification> findById(int id);
 
     void insertFromProfile(int fromMemberId, int toMemberId, int type);
+
+    // 팀 신청 확인
+    Notification existsBy(Notification notification);
 }

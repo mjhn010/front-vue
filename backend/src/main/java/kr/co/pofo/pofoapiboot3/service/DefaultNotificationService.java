@@ -35,4 +35,13 @@ public class DefaultNotificationService implements NotificationService {
         repository.insertFromProfile(fromMemberId,toMemberId,type);
     }
 
+    // 팀 신청 확인
+    @Override
+    public boolean isApplied(Notification notification) {
+        
+        Notification result = repository.existsBy(notification);
+
+        return result != null;
+    }
+
 }

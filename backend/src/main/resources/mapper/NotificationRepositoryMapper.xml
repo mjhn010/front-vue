@@ -82,4 +82,16 @@
             (${fromMemberId}, ${toMemberId}, ${type})
     </insert>
 
+    <!-- 팀 신청 확인 -->
+    <select id="existsBy" resultMap="notificationResultMap">
+        select * 
+        from notification
+        where
+            type_id = 5
+            and from_member_id = #{fromMemberId}
+            and to_member_id = #{toMemberId}
+            and community_id = #{communityId}
+    </select>
+
+
 </mapper>

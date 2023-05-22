@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, ref } from 'vue';
+import { reactive, onMounted, ref, watch } from 'vue';
 import Header from '../Header.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
@@ -18,12 +18,15 @@ let router = useRouter();
 let showModal = ref(false);
 
 let isApplied = ref(false);
-// let isApplying = ref(false);
+//let isApplying = ref(false);
 
 // --- Life Cycles -------------------------------------
 onMounted(() => {
-    fetchCommunity();
+    fetchCommunity()
+    .then(() => checkApplicationStatus()) 
 })
+watch(() => [isApplied], checkApplicationStatus); // 변수가 변경될 때마다 함수 실행
+
 
 // --- Event Handlers ----------------------------------
 async function fetchCommunity() {
@@ -54,7 +57,9 @@ async function applyBtnClickHandler(){
     if(!userDetails.isAuthenticated){
         showModal.value = true;
     }
+
     
+
     // 신청한적 없을 경우 신청됨
     if (isApplied.value) {
         await fetch("http://localhost:8080/community/apply", {
@@ -62,7 +67,7 @@ async function applyBtnClickHandler(){
             headers: {
                 "Content-type": "application/x-www-form-urlencoded"
             },
-            body: `fromMemberId=${userDetails.id}&toMemberId=${route.params.id}`
+            body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
     }
     // 신청한 상태의 경우 취소됨
@@ -70,7 +75,30 @@ async function applyBtnClickHandler(){
 
     // }
 
-    isApplied.value = !isApplied.value;
+    // isApplied.value = !isApplied.value;
+}
+
+// 팀 신청 확인
+async function checkApplicationStatus() {
+    let response = await fetch("http://localhost:8080/community/getApplicationStatus", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: `typeId=${5}&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
+    });
+
+    let result = await response.text();    
+    console.log(result);
+
+    if (result === "true") {
+        isApplied.value = true;
+    } else {
+        isApplied.value = false;
+    }
+
+
+
 }
 
 
