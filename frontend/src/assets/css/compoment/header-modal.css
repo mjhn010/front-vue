@@ -114,12 +114,12 @@
   flex-direction: column;
   overflow: hidden auto;
 }
+
 .alarm-content {
   position: relative;
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  cursor: pointer;
 }
 .modal-wrap {
   flex-grow: 1;
@@ -156,28 +156,28 @@
   width: 40px;
   height: 40px;
 }
+
 .modal-wall {
   width: 16px;
   height: 100%;
   flex-shrink: 0;
 }
+
 .modal-content {
   flex-grow: 1;
   overflow: hidden;
 }
+
 .modal-title {
   display: flex;
   justify-content: space-between;
   color: rgb(22, 28, 28);
 }
+
 .modal-name {
   width: 60%;
 }
-.modal-title {
-  display: flex;
-  justify-content: space-between;
-  color: rgb(22, 28, 28);
-}
+
 .modal-name p {
   margin-block: 0px;
 }

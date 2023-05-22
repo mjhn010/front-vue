@@ -18,8 +18,7 @@ let showFollowModal = ref(false);
 let followModalTitle = ref('');
 let followList = reactive([]);
 let modalType = ref();
-let currentFollowingList = reactive([]);
-
+let followingList = null;
 
 let showQuitModal = ref(false);
 
@@ -44,8 +43,6 @@ let isModifyNickname = ref(false);
 let isModifyPwd = ref(false);
 
 let showLoaing = ref(false);
-
-
 
 let model = reactive({
     myInfo: {},
@@ -125,51 +122,55 @@ function closeModifyModal() {
 }
 
 //팔로우 모달관련 이벤트 핸들러
-async function followModal(e, title, t) {
+function followModal(e, title, t) {
+    console.log(e.target)
+    followingList = reactive([]);
     followModalTitle.value = title;
     modalType.value = t;
-    let response = await fetch(`http://localhost:8080/follow/${userDetails.id}?type=${modalType.value}`);
-    followList = await response.json();
-    
-    //팔로우 상태 확인
-    for(let item of followList){
-        followCheck(item.id);
-    }
-    showFollowModal.value = true;
+    fetch(`http://localhost:8080/follow/${userDetails.id}?type=${modalType.value}`)
+        .then(response => response.json())
+        .then(json => {
+            followList = json.list;
+            followingList = json.counts;
+        })
+        .then(() => {
+            showFollowModal.value = true;
+        })
 }
 
 //팔로우 취소
-async function cancleFollow (id){
+async function cancleFollow(id) {
     let profileId = id;
     let response = await fetch("http://localhost:8080/profile/follow", {
-            method: "DELETE",
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded"
-            },
-            body: `requesterId=${userDetails.id}&requestedId=${profileId}`
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: `requesterId=${userDetails.id}&requestedId=${profileId}`
     });
     let result = await response.text();
 
-    if(result ==='ok'){
+    if (result === 'ok') {
         showFollowModal.value = false;
         load();
-        followModal(null,'팔로잉', 0);
+        followModal(null, '팔로잉', 0);
     }
 }
 
-async function follow(){
+async function follow(id) {
+    let profileId = id;
     let response = await fetch("http://localhost:8080/profile/follow", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded"
-            },
-            body: `requesterId=${userDetails.id}&requestedId=${route.params.id}`
-        });
+        method: "POST",
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: `requesterId=${userDetails.id}&requestedId=${profileId}`
+    });
     let result = await response.text();
-    if(result ==='ok'){
+    if (result === 'ok') {
         showFollowModal.value = false;
         load();
-        followModal(null,'팔로우', 1);
+        followModal(null, '팔로우', 1);
     }
 }
 // --------------------------------------------------
@@ -186,7 +187,7 @@ async function modifyInfo() {
     }
 
     showLoaing.value = true;
-    isThis.value =false;
+    isThis.value = false;
 
     let formData = new FormData();
     if (fileInfo)
@@ -273,24 +274,6 @@ async function newUserInfo() {
     userDetails.profileSrc = json.result.image;
     userDetails.url = json.result.url;
 }
-
-async function followCheck(id) {
-    let profileId = id;
-    let response = await fetch(`http://localhost:8080/profile/isFollowed`, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded"
-        },
-        body: `requesterId=${userDetails.id}&requestedId=${profileId}`
-    });
-    let result = await response.text();
-    if (result === 'yes') 
-        currentFollowingList.push(true);
-    else
-        currentFollowingList.push(false);
-}
-
-
 </script>
 <template>
     <Header></Header>
@@ -300,8 +283,9 @@ async function followCheck(id) {
             <h1 class="d-none">왼편 프로필 창</h1>
             <div class="profile-info">
                 <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
-                    v-if="userDetails.profileSrc == null" @click.prevent="profileUpdate"/>
-                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else @click.prevent="profileUpdate"/>
+                    v-if="userDetails.profileSrc == null" @click.prevent="profileUpdate" />
+                <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img" v-else
+                    @click.prevent="profileUpdate" />
                 <div class="nickname">
                     {{ model.myInfo.nickname }}
                 </div>
@@ -329,13 +313,13 @@ async function followCheck(id) {
                     <div class="margin-bottom-5 font-size-15s bold">{{ model.activities.collected }}</div>
                     <div class="font-size-14 font-gray">컬렉션 북마크</div>
                 </div>
-                <div class="hover" @click.prevent="followModal($event, '팔로잉', 0)">
-                    <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.following }}</div>
-                    <div class="font-size-14 font-gray hover">팔로잉</div>
+                <div>
+                    <div class="margin-bottom-5 font-size-15 bold hover" @click.prevent="followModal($event, '팔로잉', 0)">{{ model.activities.following }}</div>
+                    <div class="font-size-14 font-gray hover" @click.prevent="followModal($event, '팔로잉', 0)">팔로잉</div>
                 </div>
-                <div class="hover" @click.prevent="followModal($event, '팔로워', 1)">
-                    <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.follower }}</div>
-                    <div class="font-size-14 font-gray">팔로워</div>
+                <div>
+                    <div class="margin-bottom-5 font-size-15 bold hover" @click.prevent="followModal($event, '팔로워', 1)">{{ model.activities.follower }}</div>
+                    <div class="font-size-14 font-gray hover" @click.prevent="followModal($event, '팔로워', 1)">팔로워</div>
                 </div>
             </div>
         </section>
@@ -374,7 +358,8 @@ async function followCheck(id) {
     <!--  개인 정보 수정 모달창  -->
     <div class="black-bg" v-if="isThis">
         <div class="white-bg">
-            <h4 class="d-inline">기본정보</h4><img class="xMark hover" @click="closeModifyModal" src="/src/assets/images/xMark.png"/>
+            <h4 class="d-inline">기본정보</h4><img class="xMark hover" @click="closeModifyModal"
+                src="/src/assets/images/xMark.png" />
             <div class="center">
                 <div class="margin-top-5 profile-select">
                     <img class="profile-img" src="/src/assets/images/proflie.svg" alt="마이프로필"
@@ -425,14 +410,15 @@ async function followCheck(id) {
     </div>
     <Modal :show="showQuitModal" @ok="dlgOkHandler" type=2 title="진심으로 탈퇴요?" />
     <Modal :show="showValidModal" @ok="dlgOkHandler" type=1 title="입력값을 확인하세요" />
-    <FollowModal :show="showFollowModal" :title="followModalTitle" :list="followList" :type="modalType" 
-    :currentFollowingList="currentFollowingList" v-if="showFollowModal" @ok="dlgOkHandler" @cancleFollow="cancleFollow" @follow="follow"/>
+
+    <FollowModal :show="showFollowModal" :title="followModalTitle" :list="followList" :type="modalType"
+        :currentFollowingList="followingList" v-if="showFollowModal" @ok="dlgOkHandler" @cancleFollow="cancleFollow"
+        @follow="follow" />
 
     <!-- 로딩 gif -->
     <div class="loading-screen" v-show="showLoaing">
         <img class="loading-white-bg" src="/src/assets/images/loading.gif">
     </div>
-
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
@@ -538,7 +524,7 @@ input:read-only {
     box-sizing: border-box;
 }
 
-.hover:hover{
+.hover:hover {
     cursor: pointer;
 }
 </style>

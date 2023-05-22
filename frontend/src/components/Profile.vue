@@ -4,17 +4,24 @@ import { onMounted, reactive, ref} from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import Modal from './Modal.vue';
+import FollowModal from './FollowModal.vue';
 
 let userDetails = useUserDetailsStore();
 
 //현재 클릭되어있는 TAB
-let current = ref();
+let current = ref(0);
 let route = useRoute();
 let isFollow = ref(true);
 let isFollowing = ref(false);
 let followingText = ref("팔로잉");
 
 let showModal = ref(false);
+
+let showFollowModal = ref(false);
+let followModalTitle = ref('');
+let followList = reactive([]);
+let modalType = ref();
+
 
 let model = reactive({
     myInfo: {},
@@ -75,6 +82,7 @@ function clickCollections() {
 //모달 끄기
 function dlgOkHandler(){
     showModal.value=false;
+    showFollowModal.value = false;
 }
 
 //팔로우버튼 클릭 이벤트핸들러
@@ -115,6 +123,20 @@ function followingBtnMouseOverHandler() {
 function followingBtnMouseLeaveHandler() {
     followingText.value = "팔로잉"
 }
+
+function followModal(e, title, t) {
+    followModalTitle.value = title;
+    modalType.value = t;
+    fetch(`http://localhost:8080/follow/${route.params.id}?type=${modalType.value}`)
+        .then(response => response.json())
+        .then(json => {
+            followList = json.list;
+        })
+        .then(() => {
+            showFollowModal.value = true;
+    })
+}
+
 
 </script>
 <template>
@@ -164,12 +186,12 @@ function followingBtnMouseLeaveHandler() {
                     <div class="font-size-14 font-gray">컬렉션 북마크</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">{{model.activities.following}}</div>
-                    <div class="font-size-14 font-gray">팔로잉</div>
+                    <div class="margin-bottom-5 font-size-15 bold hover" @click.prevent="followModal($event, '팔로잉', 0)">{{model.activities.following}}</div>
+                    <div class="font-size-14 font-gray hover" @click.prevent="followModal($event, '팔로잉', 0)">팔로잉</div>
                 </div>
                 <div>
-                    <div class="margin-bottom-5 font-size-15 bold">{{ model.activities.follower }}</div>
-                    <div class="font-size-14 font-gray">팔로워</div>
+                    <div class="margin-bottom-5 font-size-15 bold hover" @click.prevent="followModal($event, '팔로워', 1)">{{ model.activities.follower }}</div>
+                    <div class="font-size-14 font-gray hover" @click.prevent="followModal($event, '팔로워', 1)">팔로워</div>
                 </div>
             </div>
         </section>
@@ -180,8 +202,7 @@ function followingBtnMouseLeaveHandler() {
                     <div @click="clickWork">
                         <span :class="{ 'non-seleted': current != 0, 'selected': current == 0 }">작업</span>
                         <span class="num" :class="{ 'num-non-selected': current != 0 }">{{ model.list[0].length }}</span>
-                    </div>
-                    <div @click="clickLikes">
+                    </div><div @click="clickLikes">
                         <span :class="{ 'non-seleted': current != 1, 'selected': current == 1 }">좋아요</span>
                         <span class="num" :class="{ 'num-non-selected': current != 1 }">{{ model.list[1].length }}</span>
                     </div>
@@ -209,6 +230,8 @@ function followingBtnMouseLeaveHandler() {
         </section>
     </main>
     <Modal :show="showModal" @ok="dlgOkHandler" type=0 title="로그인이 필요한 기능입니다."/>
+    <FollowModal :show="showFollowModal" :title="followModalTitle" :list="followList" :type="modalType" notMyProfile= true
+        v-if="showFollowModal" @ok="dlgOkHandler" @load="load"/>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
@@ -243,5 +266,9 @@ function followingBtnMouseLeaveHandler() {
 
 .thumbnail:hover img {
     filter: brightness(80%);
+}
+
+.hover:hover {
+    cursor: pointer;
 }
 </style>

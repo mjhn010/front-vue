@@ -1,5 +1,6 @@
 package kr.co.pofo.pofoapiboot3.controller;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,11 +67,13 @@ public class ProfileController {
     //팔로우 확인
     @PostMapping("isFollowed")
     public String isFollowed(Follow follow){
+        System.out.println("나호출"  +  follow);
         int result = followService.checkFollowed(follow);
         if(result == 0){
             return "no";
+        }else{
+            return "yes";
         }
-        return "yes";
     }
 
     //팔로우

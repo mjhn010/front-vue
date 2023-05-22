@@ -16,7 +16,7 @@
     </div>
     <ul class="m-menu user-bar">
       <li class="login-li">
-        <router-link to="/login">로그인</router-link>
+        <router-link :to="loginUrl">로그인</router-link>
       </li>
       <li class="sign-up-li">
         <router-link to="/signup">
@@ -78,13 +78,11 @@
   <div class="head-popup" :class="modalChange" v-if="isModalOpenMessage" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
-        <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="noti-title-content">
           메시지<a href="#" class="font-size-14">모든메시지 보기 ></a>
         </div>
         <div class="alarm-item">
           <div class="alarm-content">
-          <!-- 메시지 모달 -->
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
@@ -108,22 +106,19 @@
               </div>
             </div>
             <div class="bottom-line"></div>
-              <!-- 메시지모달끝 -->
           </div>
         </div>
       </div>
-      <!-- <div class="noti-background">
-          <div class="alarm-empty"></div>
-        </div> -->
     </div>
   </div>
   <div class="head-popup" :class="modalChange" v-if="isModalOpenNotify" v-on-click-outside="closeModal">
-    <div class="noti-list" @click.stop>
+    <div class="noti-list">
       <div class="noti-header">
-        <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="noti-title-content">
-          알림<a href="#" class="font-size-14"></a>
+          알림
         </div>
+
+        <!-- v-for 시작 지점 -->
         <div class="alarm-item">
           <div class="alarm-content">
             <div class="modal-wrap">
@@ -142,22 +137,20 @@
                   </p>
                   <div class="modal-date">2023년 04월 21일</div>
                 </div>
+                <!--수락 거절 버튼 클릭 하고 싶으면-->
                 <div class="modal-title-wall"></div>
               </div>
             </div>
             <div class="bottom-line"></div>
           </div>
         </div>
+        
       </div>
-      <!-- <div class="noti-background">
-          <div class="alarm-empty"></div>
-        </div> -->
     </div>
   </div>
   <div class="head-popup" :class="modalChange" v-if="isModalOpenProfile" v-on-click-outside="closeModal">
     <div class="noti-list" @click.stop>
       <div class="noti-header">
-        <!-- <div class="noti-title">읽지않은 알림</div> -->
         <div class="user-main-wrap">
             <div class="profile-image-wrap" v-if="userDetails.profileSrc==null">
               <img src="/src/assets/images/proflie.svg" class="profile-img-mypage" />
@@ -200,7 +193,7 @@
 
 <script setup>
 import { vOnClickOutside } from '@vueuse/components'
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -211,6 +204,27 @@ let modalChange = ref("");
 let userDetails = useUserDetailsStore();
 let router = useRouter();
 let route = useRoute();
+
+let loginUrl = ref("");
+onMounted(() => {
+  if(route.path != '/login');
+  let returnURL = route.path;
+  loginUrl.value = '/login?returnURL='+returnURL;
+});
+
+
+// 누가 행위를 했는지 - 닉네임 값 저장 예정
+let from = ref('');
+// 누가 알림을 받는지 - 닉네임 값 저장 예정
+let to = ref('');
+
+let notiText = reactive(['님이 좋아요를 누르셨습니다.', 
+                        '님이 댓글을 다셨습니다.', 
+                        '님이 북마크 등록을 하였습니다.', 
+                        '님이 팔로우하였습니다.', 
+                        '님이 참여하기를 선택하였습니다.',
+                        '님이 참여 수락을 하였습니다.']);
+
 
 function showModalMessage() {
   isModalOpenNotify.value = false;

@@ -57,6 +57,7 @@
         where
             id 
         in (select requester_id from follow where requested_id = ${id})
+        order by id
     </select>
 
     <select id="findFollowing" resultType="Member">
@@ -67,5 +68,6 @@
         where
             id 
         in (select requested_id from follow where requester_id = ${id})
+        order by id
     </select>
 </mapper>
