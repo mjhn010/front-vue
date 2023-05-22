@@ -32,6 +32,11 @@ onBeforeMount(()=>{
 onMounted(fetchPortfolios);
 watch(() => [portfolio.sort, portfolio.collaboration, portfolio.language, portfolio.query], fetchPortfolios); // 변수가 변경될 때마다 함수 실행
 
+// 스크롤 이벤트 리스너 등록
+onMounted(() => {
+  window.addEventListener('scroll', scrollHandler);
+});
+
 // --- Event Handlers ----------------------------------
 function queryUpdateHandler(query) {
   portfolio.query = query;
@@ -62,6 +67,7 @@ function profileIdClickHandler(e, memberId){
   else
     router.push("profile/"+memberId);
 }
+
 
 
 </script>

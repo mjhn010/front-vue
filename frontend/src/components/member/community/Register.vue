@@ -43,6 +43,7 @@ async function registerHandler() {
 
     if (result == "true") {
         alert("Post created successfully.");
+        router.push("/community/list");
     } else {
         alert("Failed to create post.");
     }
@@ -130,8 +131,11 @@ function resetHandler(){
             <main class="team-c-main margin-top-1">
                 <div class="first-img-box">
                     <div class="img-box" @click="imageBoxClickHandler">
-                        <div class="info"
+                        <div 
+                            class="info"
+                            
                             >
+                            <span >{{imgRef}}</span>
                             <span >이미지를 업로드 하세요.</span>
                             <span >JPEG,JPG,GIF 이미지파일</span>
                         </div>
