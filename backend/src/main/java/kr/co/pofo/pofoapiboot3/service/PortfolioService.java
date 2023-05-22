@@ -2,8 +2,12 @@ package kr.co.pofo.pofoapiboot3.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
+import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
+import kr.co.pofo.pofoapiboot3.entity.Skill;
 import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 
 public interface PortfolioService {
@@ -33,4 +37,10 @@ public interface PortfolioService {
 
     // 조회수 증가
     void updatehitCount(Integer id);
+
+	// 제목,스킬 등등 
+    boolean regPofo(Portfolio pofo, Skill skills);
+	//등록 이미지,텍스트
+    boolean regContent(PortfolioContents pofoContent);
+
 }
