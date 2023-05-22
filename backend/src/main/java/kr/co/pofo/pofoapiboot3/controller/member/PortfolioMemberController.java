@@ -36,17 +36,18 @@ public class PortfolioMemberController {
 
     @PostMapping("/regcontent")
     public boolean regContent(@RequestParam(required = false) MultipartFile contents, 
-                   MultipartHttpServletRequest request,PortfolioContents pofoContent,Portfolio pofo) {
+                   MultipartHttpServletRequest request, PortfolioContents pofoContent,Portfolio pofo) {
        int types = 0;
        String content = "";
+       // null이면 문자열 데이터
        if(contents==null) {
            content = request.getParameter("contents");
        }
+       // 아니면 파일 데이터
        else {
           types =1;
-          content = contents.getOriginalFilename();
+          content = fileUpload.modifyImgName(contents.getOriginalFilename());
           pofoContent.setContent(content);
-          System.out.println(content);
        }
        boolean result = portfolioService.regContent(pofo,pofoContent);
 
