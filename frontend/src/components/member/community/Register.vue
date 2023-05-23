@@ -133,9 +133,8 @@ function resetHandler(){
                     <div class="img-box" @click="imageBoxClickHandler">
                         <div 
                             class="info"
-                            
+                            v-if="imgRef.value == null"
                             >
-                            <span >{{imgRef}}</span>
                             <span >이미지를 업로드 하세요.</span>
                             <span >JPEG,JPG,GIF 이미지파일</span>
                         </div>
