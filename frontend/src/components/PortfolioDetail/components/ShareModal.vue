@@ -21,11 +21,11 @@ const props = defineProps({
     default: false,
   },
   likeCount: {
-    type: Number,
+    type: String,
     required: true,
   },
   commentCount: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
@@ -59,8 +59,8 @@ function shareMessage() {
       },
     },
     social: {
-      likeCount: props.likeCount,
-      commentCount: props.commentCount,
+      likeCount: parseInt(props.likeCount),
+      commentCount: parseInt(props.commentCount),
     },
     buttons: [
       {
