@@ -17,7 +17,7 @@ module.exports = {
       none: 'none',
       spin: 'spin 1s linear infinite',
       ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
-      pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      pulse: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       bounce: 'bounce 1s infinite',
     },
     aria: {
@@ -57,6 +57,9 @@ module.exports = {
       'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))',
       'fire': "url('/src/assets/images/fire-icon.svg')",
       'heart': "url('/src/assets/images/heart.svg')",
+      'twitter': "url('/src/assets/images/twitter.svg')",
+      'naver': "url('/src/assets/images/naver.png')",
+      'kakao': "url('/src/assets/images/kakao.png')",
     },
     backgroundOpacity: ({ theme }) => theme('opacity'),
     backgroundPosition: {

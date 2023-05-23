@@ -6,6 +6,7 @@ import { onBeforeRouteUpdate } from "vue-router";
 // Components
 import Modal from "@/components/Modal.vue";
 import Header from "@/components/Header.vue";
+import ShareModal from "@/components/PortfolioDetail/components/ShareModal.vue";
 
 // Mock data
 const portfolioCopyright = [
@@ -17,10 +18,15 @@ const portfolioCopyright = [
 
 // Modal
 let showModal = ref(false);
+let showShareModal = ref(false);
 
 //모달 끄기
 function dlgOkHandler() {
   showModal.value = false;
+}
+
+function shareModalHandler() {
+  showShareModal.value = !showShareModal.value;
 }
 
 // Data
@@ -31,7 +37,7 @@ const state = reactive({
   portfolio: {},
   contents: [],
   skills: [],
-  more: [],
+  morePortfolios: [],
   comments: [],
   likes: [],
   bookmarks: [],
@@ -51,10 +57,8 @@ async function checkMine() {
   }
 }
 
-function copyLink() {
-  const url = window.location.href;
-  navigator.clipboard.writeText(url);
-  alert("링크가 복사되었습니다.");
+function onShareClick() {
+  shareModalHandler();
 }
 
 function scrollToTop() {
@@ -155,7 +159,7 @@ async function getData() {
   fetch(`http://localhost:8080/pofo/${portfolioId.value}/more`)
     .then((res) => res.json())
     .then((data) => {
-      state.more = data;
+      state.morePortfolios = data;
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -332,7 +336,7 @@ function saveComment() {
 }
 
 function deleteComment(id) {
-  if(!confirm("댓글을 삭제하시겠습니까?")) return;
+  if (!confirm("댓글을 삭제하시겠습니까?")) return;
 
   const comment = {
     id: id,
@@ -680,6 +684,14 @@ onBeforeRouteUpdate((to, from, next) => {
     title="로그인이 필요한 기능입니다."
     style="z-index: 1"
   />
+  <share-modal
+    :show="showShareModal"
+    @ok="shareModalHandler"
+    :portfolio-title="`${state.portfolio.title}`"
+    :portfolio-thumbnail="`${state.portfolio.thumbnail}`"
+    :nickname="`${state.member.nickname}`"
+    style="z-index: 1"
+  />
   <div
     class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
@@ -701,7 +713,7 @@ onBeforeRouteUpdate((to, from, next) => {
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          >
+          />
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -726,26 +738,21 @@ onBeforeRouteUpdate((to, from, next) => {
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleFollow"
-            >팔로우</span>
+              >팔로우</span
+            >
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template
-          :key="item.id"
-          v-for="item in state.contents"
-        >
+        <template :key="item.id" v-for="item in state.contents">
           <img
             v-if="item.type === '1'"
             :src="`http://localhost:8080/portfolio/contents/${item.content}`"
             alt="Content image"
-          >
-          <p
-            v-else
-            v-html="item.content"
           />
+          <p v-else v-html="item.content" />
         </template>
       </main>
 
@@ -774,7 +781,7 @@ onBeforeRouteUpdate((to, from, next) => {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          >
+          />
         </div>
       </div>
       <!-- Banner -->
@@ -815,7 +822,8 @@ onBeforeRouteUpdate((to, from, next) => {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-        >POFO PICK 선정</span>
+          >POFO PICK 선정</span
+        >
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -853,12 +861,14 @@ onBeforeRouteUpdate((to, from, next) => {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
+          <span class="block text-sm font-semibold text-gray-500"
+            >프로필 자세히 보기</span
+          >
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="mt-0.5 h-4 w-4 opacity-50"
-          >
+          />
         </router-link>
       </div>
 
@@ -866,19 +876,23 @@ onBeforeRouteUpdate((to, from, next) => {
       <div class="w-full">
         <div
           class="scroll-container scrollbar-hide flex h-60 overflow-x-scroll scroll-smooth"
-          :class="onCommentBoxOpen ? 'ml-8 mr-10 gap-x-12' : ' mx-8 gap-x-9'"
+          :class="
+            onCommentBoxOpen
+              ? 'ml-8 mr-10 xl:gap-x-12'
+              : ' mx-8 md:gap-x-1.5 xl:gap-x-9'
+          "
         >
           <figure
             class="h-48 w-96 cursor-pointer"
             :key="morePortfolio.id"
-            v-for="morePortfolio in state.more"
+            v-for="morePortfolio in state.morePortfolios"
           >
             <router-link :to="`/pofo/${morePortfolio.id}`">
               <img
                 :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              >
+              />
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="morePortfolio.title"
@@ -918,10 +932,10 @@ onBeforeRouteUpdate((to, from, next) => {
           @click="scrollToTop"
         >
           <img
-            class="mb-2 h-12 w-12 rounded-full border-2"
-            src="/src/assets/images/temp/d.bronze.jpg"
+            class="mb-2 h-12 w-12 rounded-full border-2 duration-200 hover:opacity-50"
+            :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
-          >
+          />
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -978,7 +992,7 @@ onBeforeRouteUpdate((to, from, next) => {
       >
         <div
           class="share-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
-          @click="copyLink"
+          @click="onShareClick"
         />
         공유하기
       </div>
@@ -1050,7 +1064,7 @@ onBeforeRouteUpdate((to, from, next) => {
         />
         <div
           class="share-icon col-start-7 mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
-          @click="copyLink"
+          @click="onShareClick"
         />
         <span
           class="col-span-2 my-5 font-bold"
@@ -1094,12 +1108,9 @@ onBeforeRouteUpdate((to, from, next) => {
                 class="h-12 w-12 rounded-full"
                 :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              >
+              />
             </router-link>
-            <router-link
-              class="h-0"
-              :to="`/profile/${comment.memberId}`"
-            >
+            <router-link class="h-0" :to="`/profile/${comment.memberId}`">
               <div
                 class="col-start-2 font-bold hover:text-gray-600"
                 v-text="comment.memberNickname"
