@@ -72,7 +72,7 @@ function toggleCommentBox() {
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
 
   const scrollContainer = document.querySelector(".scroll-container");
-  if (onCommentBoxOpen.value) {
+  if (onCommentBoxOpen.value && scrollContainer.scrollLeft !== 0) {
     scrollContainer.scrollLeft += 12;
   } else {
     scrollContainer.scrollLeft -= 12;
