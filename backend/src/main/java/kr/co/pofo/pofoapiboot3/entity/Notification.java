@@ -17,4 +17,5 @@ public class Notification {
     private String image;
     private String nickname;
     private String url;
+    private int acceptFlag;
 }

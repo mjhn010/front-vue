@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.pofo.pofoapiboot3.entity.CommunityTeam;
 import kr.co.pofo.pofoapiboot3.entity.CommunityView;
 import kr.co.pofo.pofoapiboot3.entity.Notification;
 import kr.co.pofo.pofoapiboot3.service.CommunityService;
+import kr.co.pofo.pofoapiboot3.service.CommunityTeamService;
 import kr.co.pofo.pofoapiboot3.service.NotificationService;
 
 
@@ -26,6 +28,9 @@ public class CommunityController {
     
     @Autowired
     private CommunityService service;
+
+    @Autowired
+    private CommunityTeamService communityTeamService;
 
     @Autowired
     private NotificationService notificationService;
@@ -72,7 +77,6 @@ public class CommunityController {
      */
     @PostMapping("apply")
     public String apply(Notification notification) {
-        System.out.println("이번엔 나 호출??????????????????????????");
         notificationService.create(notification);
         return null;
     }
@@ -80,10 +84,28 @@ public class CommunityController {
     // 팀 신청 취소
     @DeleteMapping("cancle")
     public String cancle(Notification notification) {
-
         notificationService.delete(notification);
         return null;
     }
     
+    @GetMapping("getcommunityteaminfo")
+    public CommunityTeam getCommunityTeamInfo(CommunityTeam team){
+        if(communityTeamService.getInfo(team) == null)
+            return new CommunityTeam(null, null, null, 3);
+        return communityTeamService.getInfo(team);
+    }
 
+    @PostMapping("accept")
+    public String accept (int memberId, int communityId, int id){
+        communityTeamService.add(memberId, communityId);
+        notificationService.updateAcceptFlag(id);
+        return "ok";
+    }
+
+    @PostMapping("reject")
+    public String reject (int memberId, int communityId, int id){
+        communityTeamService.addReject(memberId, communityId);
+        notificationService.updateReject(id);
+        return "ok";
+    }
 }

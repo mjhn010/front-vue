@@ -12,6 +12,7 @@
 		<result property="typeId" column="type_id" />
 		<result property="portfolioId" column="portfolio_id" />
 		<result property="communityId" column="community_id" />
+        <result property="acceptFlag" column="accept_flag" />
 </resultMap>
 
     <insert id="insert">
@@ -56,6 +57,7 @@
 			n.click_flag,
 			n.portfolio_id,
 			n.community_id,
+            n.accept_flag,
 			t.url as url,
 			m.image,
 			m.nickname
@@ -114,5 +116,20 @@
             and community_id = #{communityId}
     </select>
 
+    <update id="updateAcceptFlag">
+        update notification
+        set
+            accept_flag = 1
+        where
+            id = ${id}
+    </update>
+
+    <update id="updateRejectFlag">
+        update notification
+        set
+            accept_flag = 2
+        where
+            id = ${id}
+    </update>
 
 </mapper>

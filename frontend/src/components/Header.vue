@@ -66,8 +66,9 @@
       </button>
       <li>
         <button @click="showModalProfile">
-          <img class="header-profile" src="/src/assets/images/proflie.svg" alt="마이프로필"  v-if="userDetails.profileSrc==null"/>
-          <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="header-profile" v-else/>
+          <img class="header-profile" src="/src/assets/images/proflie.svg" alt="마이프로필"
+            v-if="userDetails.profileSrc == null" />
+          <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="header-profile" v-else />
         </button>
       </li>
       <li>
@@ -119,28 +120,38 @@
         </div>
 
         <!-- v-for 시작 지점 -->
-        <div class="alarm-item" v-for="(notification , index) in notificationList">
+        <div class="alarm-item" v-for="(notification, index) in notificationList">
           <div class="alarm-content">
             <div class="modal-wrap">
               <div class="modal-thumbnail">
                 <div class="modal-thumbnail-circle">
                   <div class="profile-image-wrap">
-                    <router-link :to="'/profile/'+notification.fromMemberId" v-if="notification.image == null" @click="closeModal"><img src="/src/assets/images/proflie.svg" class="profile-img-noti hover radiu-50"/></router-link>
-                    <router-link :to="'/profile/'+notification.fromMemberId" v-else @click="closeModal"><img :src="'http://localhost:8080/profileImage/' + notification.image" class="profile-img-noti hover radiu-50"/></router-link>
+                    <router-link :to="'/profile/' + notification.fromMemberId" v-if="notification.image == null"
+                      @click="closeModal"><img src="/src/assets/images/proflie.svg"
+                        class="profile-img-noti hover radiu-50" /></router-link>
+                    <router-link :to="'/profile/' + notification.fromMemberId" v-else @click="closeModal"><img
+                        :src="'http://localhost:8080/profileImage/' + notification.image"
+                        class="profile-img-noti hover radiu-50" /></router-link>
                   </div>
                 </div>
               </div>
               <div class="modal-wall"></div>
               <div class="modal-content">
                 <div class="modal-title">
-                  <router-link :to="notification.url + ( notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromMemberId : notification.portfolioId )">
-                  <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다." @click="changeClickFlag($event, index)" :class="{'readed' : notification.clickFlag==1}">
-                    {{notification.nickname+notification.text}}
-                  </p>
+                  <router-link
+                    :to="notification.url + (notification.typeId > 5 ? notification.communityId : (notification.typeId > 2) ? notification.fromMemberId : notification.portfolioId)">
+                    <p class="modal-msg-text-notify hover width-300px" title="Thomas님이 좋아요를 누르셨습니다."
+                      @click="changeClickFlag($event, index)" :class="{ 'readed': notification.clickFlag == 1 }">
+                      {{ notification.nickname + notification.text }}
+                    </p>
                   </router-link>
-                  <div class="modal-date">{{ notification.regDate.substring(0,10) }}</div>
+                  <div class="modal-date">{{ notification.regDate.substring(0, 10) }}</div>
                   <span class="hover" style="font-weight: bold;" @click="removeNotification($event, index)">X</span>
                 </div>
+                <button v-if="notification.typeId == 4 && notification.acceptFlag == 0" class="element" @click.prevent="accetpBtn(index)">수락하기</button>
+                <button v-if="notification.typeId == 4 && notification.acceptFlag == 0" class="element" @click.prevent="rejectBtn(index)">거절하기</button>
+                <button v-if="notification.typeId == 4 && notification.acceptFlag == 1" class="element2">수락 완료</button>
+                <button v-if="notification.typeId == 4 && notification.acceptFlag == 2" class="element2">반려 완료</button>
                 <!--수락 거절 버튼 클릭 하고 싶으면-->
                 <div class="modal-title-wall"></div>
               </div>
@@ -148,7 +159,7 @@
             <div class="bottom-line"></div>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -156,12 +167,12 @@
     <div class="noti-list" @click.stop>
       <div class="noti-header">
         <div class="user-main-wrap">
-            <div class="profile-image-wrap" v-if="userDetails.profileSrc==null">
-              <img src="/src/assets/images/proflie.svg" class="profile-img-mypage" />
-            </div>
-            <div class="profile-image-wrap" v-else>
-              <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img-mypage" />
-            </div>
+          <div class="profile-image-wrap" v-if="userDetails.profileSrc == null">
+            <img src="/src/assets/images/proflie.svg" class="profile-img-mypage" />
+          </div>
+          <div class="profile-image-wrap" v-else>
+            <img :src="'http://localhost:8080/profileImage/' + userDetails.profileSrc" class="profile-img-mypage" />
+          </div>
           <div class="user-detail-wrap">
             <div class="user-detail-nickname">{{ userDetails.nickname }}</div>
             <div class="user-detail-email">{{ userDetails.email }}</div>
@@ -191,24 +202,48 @@
 @import url("/src/assets/css/common/buttons.css");
 @import url("/src/assets/css/compoment/header-modal.css");
 @import url("/src/assets/css/compoment/header.css");
-.profile-img{
+
+.profile-img {
   width: 28px;
   height: 28px;
 }
 
-.hover:hover{
+.hover:hover {
   cursor: pointer;
 }
-.width-300px{
+
+.width-300px {
   width: 300px;
 }
-.radiu-50{
+
+.radiu-50 {
   border-radius: 50px;
   object-fit: cover
 }
 
-.readed{
+.readed {
   color: gray;
+}
+
+.element {
+  margin-left: 1px;
+  color: white;
+  background-color: rgb(42, 197, 198);
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease;
+}
+
+.element:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* 호버 시 그림자 효과 추가 */
+}
+
+.element2{
+  margin-left: 1px;
+  color: white;
+  background-color: black;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease;
 }
 </style>
 
@@ -228,30 +263,30 @@ let route = useRoute();
 
 let loginUrl = ref("");
 onMounted(async () => {
-  if(route.path != '/login'){
-  let returnURL = route.path;
-  loginUrl.value = '/login?returnURL='+returnURL;
-}
+  if (route.path != '/login') {
+    let returnURL = route.path;
+    loginUrl.value = '/login?returnURL=' + returnURL;
+  }
   await load();
 });
 
-let notiText = reactive(['님이 좋아요를 누르셨습니다.', 
-                        '님이 댓글을 다셨습니다.', 
-                        '님이 북마크 등록을 하였습니다.', 
-                        '님이 팔로우하였습니다.', 
-                        '님이 참여하기를 선택하였습니다.',
-                        '님이 참여 수락을 하였습니다.']);
+let notiText = reactive(['님이 좋아요를 누르셨습니다.',
+  '님이 댓글을 다셨습니다.',
+  '님이 북마크 등록을 하였습니다.',
+  '님이 팔로우하였습니다.',
+  '님이 참여하기를 선택하였습니다.',
+  '님이 참여 수락을 하였습니다.']);
 
 
 let notificationList = reactive([]);
 
-async function load(){
-  if(userDetails.isAuthenticated){
-    let response = await fetch("http://localhost:8080/notifications/list/"+userDetails.id);
+async function load() {
+  if (userDetails.isAuthenticated) {
+    let response = await fetch("http://localhost:8080/notifications/list/" + userDetails.id);
     let notiList = await response.json();
     notificationList = notiList;
     console.log(notificationList);
-    for(let item of notificationList)
+    for (let item of notificationList)
       item.text = notiText[item.typeId];
   }
 }
@@ -281,7 +316,7 @@ function closeModal() {
   isModalOpenProfile.value = false;
 }
 
-function logoutHandler(){
+function logoutHandler() {
   userDetails.logout();
   isModalOpenMessage.value = false;
   isModalOpenNotify.value = false;
@@ -289,24 +324,56 @@ function logoutHandler(){
   router.push("/index");
 }
 
-async function changeClickFlag (e, index){
+async function changeClickFlag(e, index) {
   console.log(notificationList[index]);
-  await fetch(`http://localhost:8080/notifications/changeflag/${notificationList[index].id}`,{
-    method : "PUT"
+  await fetch(`http://localhost:8080/notifications/changeflag/${notificationList[index].id}`, {
+    method: "PUT"
   });
 
 }
 
-async function removeNotification(e, index){
-  let res = await fetch(`http://localhost:8080/notifications/remove/${notificationList[index].id}`,{
-    method : "DELETE"
+async function removeNotification(e, index) {
+  let res = await fetch(`http://localhost:8080/notifications/remove/${notificationList[index].id}`, {
+    method: "DELETE"
   });
   let result = await res.text();
-  if(result =='ok'){
+  if (result == 'ok') {
     closeModal();
     await load();
     isModalOpenNotify.value = true;
   }
-} 
+}
+
+async function accetpBtn(index) {
+  let res = await fetch(`http://localhost:8080/community/accept`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded"
+    },
+    body: `memberId=${notificationList[index].fromMemberId}&communityId=${notificationList[index].communityId}&id=${notificationList[index].id}`
+  })
+  let result = await res.text();
+  if (result == 'ok') {
+    closeModal();
+    await load();
+    isModalOpenNotify.value = true;
+  }
+}
+
+async function rejectBtn(index) {
+  let res = await fetch(`http://localhost:8080/community/reject`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded"
+    },
+    body: `memberId=${notificationList[index].fromMemberId}&communityId=${notificationList[index].communityId}&id=${notificationList[index].id}`
+  })
+  let result = await res.text();
+  if (result == 'ok') {
+    closeModal();
+    await load();
+    isModalOpenNotify.value = true;
+  }
+}
 
 </script>

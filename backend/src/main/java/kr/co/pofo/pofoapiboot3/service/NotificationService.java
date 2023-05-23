@@ -19,4 +19,8 @@ public interface NotificationService {
 
     // 팀 신청 확인
     boolean isApplied(Notification notification);
+
+    void updateAcceptFlag(int id);
+
+    void updateReject(int id);
 }

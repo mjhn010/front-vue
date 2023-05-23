@@ -18,11 +18,16 @@ let router = useRouter();
 let showModal = ref(false);
 
 let isApplied = ref(false);
+
+let teamInfo = reactive({});
 //let isApplying = ref(false);
+
+let btnText = ref('');
 
 // --- Life Cycles -------------------------------------
 onMounted(async () => {
     await fetchCommunity();
+    await getCommunityTeamInfo();
     if(userDetails.id != null) // 로그인된 경우만 확인함
         checkApplicationStatus();
 })
@@ -67,7 +72,7 @@ async function applyBtnClickHandler(){
             },
             body: `typeId=4&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = true;
+        isApplied.value = !isApplied.value;
     } else if(!isApplied.value){ // 신청한 상태의 경우 취소됨
         await fetch("http://localhost:8080/community/cancle", {
             method: "DELETE",
@@ -76,9 +81,8 @@ async function applyBtnClickHandler(){
             },
             body: `typeId=4&fromMemberId=${userDetails.id}&toMemberId=${data.community.memberId}&communityId=${route.params.id}`
         });
-        isApplied.value = false;
+        isApplied.value = !isApplied.value;
     }
-
 }
 
 // 팀 신청 확인
@@ -92,13 +96,21 @@ async function checkApplicationStatus() {
     });
 
     let result = await response.text();    
-    console.log(result);
 
     if (result === "false") {
         isApplied.value = true;
+        btnText.value = '신청하기';
     } else {
         isApplied.value = false;
+        btnText.value = '신청됨';
     }
+}
+
+async function getCommunityTeamInfo(){
+    let response = await fetch(`http://localhost:8080/community/getcommunityteaminfo?communityId=${route.params.id}&memberId=${userDetails.id}`);
+    let json = await response.json();
+    teamInfo  = json;
+    console.log(teamInfo);
 }
 
 
@@ -155,12 +167,19 @@ async function checkApplicationStatus() {
                     <p>
                         자세한 팀원 모집은 알림과 채팅 기능을 이용해보세요!
                     </p>
-                    <button 
-                        @click.prevent="applyBtnClickHandler">
-                        {{ isApplied ? '신청됨' : '신청하기' }}
+                    <!-- 0이면 참여 -->
+                    <button v-if="teamInfo.participateFlag==0" class="disabled" disabled="true">
+                        참여중
+                    </button>
+                    <!-- 1이면 게시글 작성자가 거절 -->
+                    <button v-else-if="teamInfo.participateFlag==1" class="disabled" disabled="true">
+                        거절됨
+                    </button>
+                    <!-- 그 외 참여여부 확이 -->
+                    <button v-else @click.prevent="applyBtnClickHandler">
+                        {{ btnText }}
                     </button>
                 </div>
-
             </div>
         </div>
 
@@ -185,6 +204,9 @@ main {
 
 }
 
+.disabled{
+    background-color: gray !important;
+}
 .css-l68de9 {
     display: block;
     object-fit: cover;
