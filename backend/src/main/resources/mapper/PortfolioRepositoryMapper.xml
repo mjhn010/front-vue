@@ -38,7 +38,7 @@
 				reg_date desc
 			</otherwise>
 		</choose>
-		limit ${size} offset ${offset}
+		<!-- limit ${size} offset ${offset} -->
 	</select>
 
 	<!-- 스택 검색 -->

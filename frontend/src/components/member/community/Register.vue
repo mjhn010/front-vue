@@ -20,6 +20,7 @@ let community = reactive({
 
 let fileInputRef = ref(null);
 let imgRef = ref(null);
+let isUploaded = ref(false);
 
 
 // --- Event Handlers ----------------------------------
@@ -83,6 +84,7 @@ function fileInputHandler(e) {
 
         reader.onload = function (event) {
             imgRef.value.src = event.target.result;
+            isUploaded.value = true;
         };
 
         reader.readAsDataURL(file);
@@ -102,7 +104,8 @@ function resetHandler(){
     community.period = "";
     community.teamSize = null;
     community.thumbnail = "";
-    imgRef.value.src = null;
+    imgRef.value.src = "/src/assets/images/img.png";
+    isUploaded.value = false;
 }
 
 </script>
@@ -133,13 +136,14 @@ function resetHandler(){
                     <div class="img-box" @click="imageBoxClickHandler">
                         <div 
                             class="info"
-                            v-if="imgRef.value == null"
+                            v-if="isUploaded == false"
                             >
                             <span >이미지를 업로드 하세요.</span>
                             <span >JPEG,JPG,GIF 이미지파일</span>
                         </div>
                         <div>
-                            <img ref="imgRef" />
+                            <img class="img-ref" :class="{'d-none': isUploaded}" src="/src/assets/images/img.png" ref="imgRef" />
+                            <img :class="{'d-none': !isUploaded}" src="" ref="imgRef" />
                         </div>
                     </div>
                     <input type="file" class="d-none" ref="fileInputRef" @input="fileInputHandler" name="image">
@@ -190,5 +194,11 @@ function resetHandler(){
 .nickname::placeholder {
     color: rgb(60, 59, 59); 
 }
+
+.img-box .img-ref {
+
+    object-fit: none;
+    margin-top: -40px;
+  }
 
 </style>

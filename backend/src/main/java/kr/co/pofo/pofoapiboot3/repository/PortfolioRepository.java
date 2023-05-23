@@ -2,15 +2,11 @@ package kr.co.pofo.pofoapiboot3.repository;
 
 import java.util.List;
 
-import javax.sound.sampled.Port;
-
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
-import kr.co.pofo.pofoapiboot3.entity.Skill;
-import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
 import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 
 @Mapper
