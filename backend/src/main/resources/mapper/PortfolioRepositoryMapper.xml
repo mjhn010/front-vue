@@ -124,7 +124,7 @@
 	</select>
 
 	<!-- 조회수 증가 -->
-	<update id="updatehitCount" parameterType="Portfolio">
+	<update id="updateHitCount" parameterType="Portfolio">
 		update portfolio
 		set hit = hit+1
 		where id = #{id};

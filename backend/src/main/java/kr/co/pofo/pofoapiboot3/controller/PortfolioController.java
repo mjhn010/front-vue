@@ -12,7 +12,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/pofo/{portfolioId}")
+@RequestMapping("/pofo")
 public class PortfolioController {
     private final PortfolioService portfolioService;
     private final MemberService memberService;
@@ -22,7 +22,7 @@ public class PortfolioController {
         this.memberService = memberService;
     }
 
-    @GetMapping
+    @GetMapping("{portfolioId}")
     public Map<String,Object> getPortfolio(@PathVariable("portfolioId") Integer portfolioId) {
         Portfolio portfolio = portfolioService.getPortfolioById(portfolioId);
         Member member = memberService.getById(portfolio.getMemberId());
@@ -34,14 +34,16 @@ public class PortfolioController {
         return objectMap;
     }
 
-    @GetMapping("/more")
+    @GetMapping("{portfolioId}/more")
     public List<Portfolio> getMorePortfolio(@PathVariable("portfolioId") Integer portfolioId) {
         return portfolioService.getMorePortfolio(portfolioId);
     }
 
     // 조회수 증가
-    private void updatehitCount(Integer id){
-        portfolioService.updatehitCount(id);
+    @GetMapping("/update/{id}")
+    public void updateHitCount(@PathVariable("id") Integer id){
+        System.out.println("who am i?" + id);
+        portfolioService.updateHitCount(id);
     }
 
 

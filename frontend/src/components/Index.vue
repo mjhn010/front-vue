@@ -68,6 +68,11 @@ function profileIdClickHandler(e, memberId){
     router.push("profile/"+memberId);
 }
 
+async function portfolioClickHandler(id) {
+  console.log("조회수 안녕?");
+  const url = new URL(`http://localhost:8080/pofo/update/${id}`);
+  await fetch(url);
+}
 
 
 </script>
@@ -81,7 +86,11 @@ function profileIdClickHandler(e, memberId){
       <div class="slider">
         <Carousel :itemsToShow="3.125" :wrapAround="true" :transition="500">
           <Slide v-for="(portfolio, index) in portfolio.weeklyPopularList" :key="index">
-            <router-link :to="'/pofo/' + portfolio.id" class="carousel__item">
+            <router-link 
+                        :to="'/pofo/' + portfolio.id" 
+                        class="carousel__item"
+                        @click.prevent="portfolioClickHandler(portfolio.id)"
+                        >
               <img :src="'http://localhost:8080/portfolio/thumbnails/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
               <div class="overlay">
                 <h2>{{ portfolio.title }}</h2>
@@ -171,7 +180,12 @@ function profileIdClickHandler(e, memberId){
         <h1 class="d-none">포트폴리오 리스트 섹션</h1>
         <ul>
           <li v-for="(portfolio, index) in portfolio.list" :key="index">
-            <router-link :to="'/pofo/' + portfolio.id" class="thumbnail" :data-title="portfolio.title">
+            <router-link 
+                        :to="'/pofo/' + portfolio.id" 
+                        class="thumbnail" 
+                        :data-title="portfolio.title"
+                        @click.prevent="portfolioClickHandler(portfolio.id)"
+                        >
               <img :src="'http://localhost:8080/portfolio/thumbnails/' + portfolio.thumbnail" alt="포트폴리오 섬네일 이미지">
             </router-link>
             <div class="information">

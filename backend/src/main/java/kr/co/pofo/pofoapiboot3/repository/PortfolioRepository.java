@@ -53,7 +53,7 @@ public interface PortfolioRepository {
     Integer countOfhits(int id);
     
     // 조회수 증가
-    void updatehitCount(Integer id);
+    void updateHitCount(Integer id);
     
     
     // register 

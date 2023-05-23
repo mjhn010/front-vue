@@ -37,7 +37,7 @@ public interface PortfolioService {
 	List<Portfolio> getByUserId(int id);
 
     // 조회수 증가
-    void updatehitCount(Integer id);
+    void updateHitCount(Integer id);
 
 
 	//등록 이미지,텍스트

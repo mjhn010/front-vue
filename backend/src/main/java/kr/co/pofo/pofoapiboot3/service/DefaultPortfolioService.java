@@ -19,7 +19,7 @@ public class DefaultPortfolioService implements PortfolioService {
     private PortfolioRepository portfolioRepository;
     @Autowired
     private SkillRepository skillRepository;
-    
+
     // 디폴트 포트폴리오 리스트
     @Override
     public List<PortfolioView> getViewList(Integer page, String sort, Integer collaboration, Integer skillId) {
@@ -97,8 +97,8 @@ public class DefaultPortfolioService implements PortfolioService {
 
     // 조회수 증가
     @Override
-    public void updatehitCount(Integer id) {
-        portfolioRepository.updatehitCount(id);
+    public void updateHitCount(Integer id) {
+        portfolioRepository.updateHitCount(id);
     }
 
   
