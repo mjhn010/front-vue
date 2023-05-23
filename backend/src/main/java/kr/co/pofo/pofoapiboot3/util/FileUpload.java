@@ -16,8 +16,12 @@ public class FileUpload {
     @Autowired
     private HttpServletRequest request;
 
-    public void upload(MultipartFile img, String modifiedName) {
-        String urlPath = "/pofoThumbnail" + File.separator + modifiedName;
+    public void upload(MultipartFile img, String modifiedName, int type) {
+        String urlPath = "";
+        if(type == 0)
+            urlPath = "portfolio/thumbnails" + File.separator + modifiedName;
+        if(type == 1) 
+            urlPath = "portfolio/contents" + File.separator + modifiedName;
         String realPath = request.getServletContext().getRealPath(urlPath);
         try {
             img.transferTo(new File(realPath));

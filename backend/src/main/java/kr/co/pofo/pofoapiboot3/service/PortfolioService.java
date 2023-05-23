@@ -45,4 +45,8 @@ public interface PortfolioService {
 
 	boolean regPofo(Portfolio portfolio);
 
+    int getByTitleAndMemberId(String title, Integer memberId);
+
+	boolean regContent(PortfolioContents pofoContent);
+
 }

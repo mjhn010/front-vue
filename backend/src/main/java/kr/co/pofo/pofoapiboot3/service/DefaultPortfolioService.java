@@ -125,7 +125,20 @@ public class DefaultPortfolioService implements PortfolioService {
         return false;
     }
 
-   
+    @Override
+    public int getByTitleAndMemberId(String title, Integer memberId){
+        return portfolioRepository.findByTitleAndMemberId(title, memberId);
+    }
+
+    @Override
+    public boolean regContent(PortfolioContents pofoContent) {
+       int result = portfolioRepository.regContent(pofoContent);
+       if(result == 1)
+        return true;
+       else
+        return false;
+    }
+       
 
 
 }

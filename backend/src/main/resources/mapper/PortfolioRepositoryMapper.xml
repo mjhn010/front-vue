@@ -140,10 +140,23 @@
 		values(#{memberId},#{title},#{thumbnail},#{collaboration});
 	</insert>
 
-	 <insert id="contentInsert" parameterType="PortfolioContents">
+
+	<select id="findByTitleAndMemberId" resultType="int">
+		select
+			id
+		from
+			portfolio
+		where
+			title = #{title}
+		and
+			member_id = ${memberId}
+	</select>
+
+
+	<insert id="regContent" parameterType="portfolioContents">
         INSERT INTO
-            portfolio_contents(portfolio_id, orders, type, content)
+            portfolio_contents(portfolio_id, content,type,orders)
         VALUES
-            (#{portfolioId}, #{orders}, #{type}, #{content})
+            (#{portfolioId},#{content},#{type},#{orders})
     </insert>
 </mapper>

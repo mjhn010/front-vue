@@ -67,4 +67,7 @@ public interface PortfolioRepository {
 	int regPofo(Portfolio portfolio);
     int contentInsert(PortfolioContents pofoContent);
 
+    int findByTitleAndMemberId(String title, Integer memberId);
+
+    int regContent(PortfolioContents pofoContent);
 }

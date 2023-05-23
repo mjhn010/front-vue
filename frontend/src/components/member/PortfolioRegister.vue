@@ -150,34 +150,34 @@ async function send(e) {
     }
   });
 
-  // let order = 0;
-  // for (let content of list) {
-  //   if (content.img.length != 0) {
-  //     for (let img of content.fileInfo) {
-  //       let formdata = new FormData();
-  //       formdata.append("contents", img);
-  //       formdata.append("orders", order++);
-  //       await fetch("http://localhost:8080/members/regcontent", {
-  //         method: "POST",
-  //         headers: {
-  //           "Accept": "application/json"
-  //         },
-  //         body: formdata
-  //       });
-  //     }
-  //   } else {
-  //     let formdata = new FormData();
-  //     formdata.append("contents", content.text);
-  //     formdata.append("orders", order++);
-  //     await fetch("http://localhost:8080/members/regcontent", {
-  //       method: "POST",
-  //       headers: {
-  //         "Accept": "application/json"
-  //       },
-  //       body: formdata
-  //     });
-    // }
-  // }
+  let order = 0;
+  for (let content of list) {
+    if (content.img.length != 0) {
+      for (let img of content.fileInfo) {
+        let formdata = new FormData();
+        formdata.append("contents", img);
+        formdata.append("orders", order++);
+        await fetch("http://localhost:8080/members/regcontent", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json"
+          },
+          body: formdata
+        });
+      }
+    } else {
+      let formdata = new FormData();
+      formdata.append("contents", content.text);
+      formdata.append("orders", order++);
+      await fetch("http://localhost:8080/members/regcontent", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json"
+        },
+        body: formdata
+      });
+    }
+  }
 }
 
 

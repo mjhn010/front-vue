@@ -21,6 +21,11 @@ public interface SkillRepository {
 //	UsedSkill
 	List<Skill> findSkillsByPortfolioId(Integer portfolioId);
 
+
+    // void insertUsedSkill(Integer id, String skill);
+
+	void insertUsedSkill(Map<String, Object> paramMap);
+
     
 
 

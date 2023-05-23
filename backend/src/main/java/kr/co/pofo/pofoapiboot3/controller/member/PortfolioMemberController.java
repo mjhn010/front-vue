@@ -1,5 +1,8 @@
 package kr.co.pofo.pofoapiboot3.controller.member;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
@@ -23,47 +25,54 @@ public class PortfolioMemberController {
     private SkillService skillService;
     @Autowired
     private FileUpload fileUpload;
+    private int id;
 
     @PostMapping("/regpofo")
     public boolean regPofo(Portfolio pofo,String [] skills, MultipartFile image) throws Exception{
         //UUID로 파일명 변경
         String modifiedName = fileUpload.modifyImgName(image.getOriginalFilename());
         //파일 업로드 실행
-        fileUpload.upload(image, modifiedName);
+        fileUpload.upload(image, modifiedName,0);
         //UUID로 변경된 썸네일 이름 portfolio객체에 setting
-        
         pofo.setThumbnail(modifiedName);
-        
-        System.out.println("마마마마마마마마마맘마마마마마마마마마마마"+pofo.getMemberId());
-        
-        System.out.println("썸네일"+pofo.getThumbnail());
-
         boolean result = portfolioService.regPofo(pofo);
-
-        // for(String skill : skills){
-        //     skillService.regPofo(portfolio.getId(),skill);
-        // }
+        
+        id = portfolioService.getByTitleAndMemberId(pofo.getTitle(), pofo.getMemberId());
+        
+        skillService.regPofoSkills(id,skills);
         return result;
     }
 
     @PostMapping("/regcontent")
     public boolean regContent(@RequestParam(required = false) MultipartFile contents, 
-                   MultipartHttpServletRequest request, PortfolioContents pofoContent,Portfolio pofo) {
+                   MultipartHttpServletRequest request, int orders) {
        int types = 0;
+
+       PortfolioContents pofoContent = new PortfolioContents(); 
+       pofoContent.setOrders(orders);
+       pofoContent.setPortfolioId(id);
+       System.out.println("id id id id id id id id id id id id"+id);
        String content = "";
        // null이면 문자열 데이터
        if(contents==null) {
            content = request.getParameter("contents");
+           pofoContent.setContent(content);
+           pofoContent.setType(types);
+           System.out.println("text text text text text text text text text"+content);
+           boolean result = portfolioService.regContent(pofoContent);
+           return result;
        }
-       // 아니면 파일 데이터
+       //아니면 파일 데이터
        else {
           types =1;
           content = fileUpload.modifyImgName(contents.getOriginalFilename());
+          fileUpload.upload(contents, content, 1);
           pofoContent.setContent(content);
+          pofoContent.setType(types);
+          System.out.println("img img img img img img img img img"+content);
+          boolean result = portfolioService.regContent(pofoContent);
+          return result;
        }
-       boolean result = portfolioService.regContent(pofo,pofoContent);
-
-       return result;
     }
    
 }

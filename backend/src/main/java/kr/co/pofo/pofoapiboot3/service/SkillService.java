@@ -8,6 +8,8 @@ import java.util.List;
 public interface SkillService {
     List<Skill> getSkillsByPortfolioId(Integer portfolioId);
 
+    boolean regPofoSkills(int id, String[] skills);
+
     
 
 }
