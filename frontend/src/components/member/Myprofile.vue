@@ -91,7 +91,8 @@ function clickLikes() {
 
 function clickCollections() {
     current.value = 2;
-    m.currentList = model.list[2];
+    model.currentList = model.list[2];
+    
 }
 
 watch(nickname, () => {

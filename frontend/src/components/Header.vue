@@ -285,7 +285,6 @@ async function load() {
     let response = await fetch("http://localhost:8080/notifications/list/" + userDetails.id);
     let notiList = await response.json();
     notificationList = notiList;
-    console.log(notificationList);
     for (let item of notificationList)
       item.text = notiText[item.typeId];
   }
