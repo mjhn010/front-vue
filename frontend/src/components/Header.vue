@@ -249,7 +249,7 @@
 
 <script setup>
 import { vOnClickOutside } from '@vueuse/components'
-import { ref, reactive, onMounted, onUpdated } from 'vue';
+import { ref, reactive, onMounted, onUpdated, defineEmits } from 'vue';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -375,5 +375,23 @@ async function rejectBtn(index) {
     isModalOpenNotify.value = true;
   }
 }
+
+function isIndexPage() {
+    const path = window.location.pathname;
+    return path === '/index';
+  }
+
+  function handleSearchEnter(event) {
+      const query = event.target.value;
+      const router = useRouter();
+      if (isIndexPage()) {
+        // $emit('query-updated', query);
+        const emit = defineEmits(['query-updated', query])
+      } else {
+        router.push({ path: '/index', query: { query } });
+        const emit = defineEmits(['query-updated', query])
+      }
+  }
+
 
 </script>
