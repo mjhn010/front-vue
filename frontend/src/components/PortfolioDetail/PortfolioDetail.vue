@@ -711,7 +711,7 @@ onBeforeRouteUpdate((to, from, next) => {
       :class="onCommentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
-      <figure class="flex p-6">
+      <figure class="flex p-6 border-b">
         <router-link
           :to="
             state.isMine

@@ -34,12 +34,14 @@ import Signup from "/src/components/Signup.vue";
 import PortfolioRegister from "@/components/member/PortfolioRegister.vue";
 // 프로필 페이지
 import Profile from "/src/components/Profile.vue";
+import PortfolioPreview from "@/components/member/PortfolioPreview.vue";
 
 const routes = [
   {path: "/", component: Index},
   {path: "/index", component: Index},
 
   { path: "/pofo/reg", component: PortfolioRegister },
+  { path: "/pofo/preview", component: PortfolioPreview },
   { path: "/pofo/:portfolioId", component: PortfolioDetail },
 
   // community경로
