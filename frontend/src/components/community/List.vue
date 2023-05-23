@@ -101,21 +101,21 @@ function communityClickHandler(id) {
             <!-- <span class="block w-fit rounded-md bg-blue-100 px-1 text-sm" v-text="`${community.memberId}`" /> -->
             <!-- <span class="block truncate text-sm" v-text="`${community.teamSize}`명" /> -->
             <div>
-              <span class="w-fit px-1 text-sm">장소:</span>
+              <span class="w-fit px-1 text-sm font-bold">장소 </span>
               <span
                 class="w-fit rounded-md bg-red-100 px-1 text-sm"
                 v-text="`${community.locationInfo}`"
               />
             </div>
             <div>
-              <span class="w-fit px-1 text-sm">기간:</span>
+              <span class="w-fit px-1 text-sm font-bold">기간 </span>
               <span
                 class="w-fit rounded-md bg-red-100 px-1 text-sm"
                 v-text="`${community.period}`"
               />
             </div>
             <div>
-              <span class="w-fit px-1 text-sm">인원:</span>
+              <span class="w-fit px-1 text-sm font-bold">인원 </span>
               <span
                 class="w-fit rounded-md bg-blue-100 px-1 text-sm"
                 v-text="`${community.teamSize}명`"

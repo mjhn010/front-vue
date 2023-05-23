@@ -15,6 +15,6 @@ public class PortfolioContents {
     private Integer id;
     private Integer portfolioId;
     private String content;
-    private Integer type;
+    private String type;
     private Integer orders;
 }
