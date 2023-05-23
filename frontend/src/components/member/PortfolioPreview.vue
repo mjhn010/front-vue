@@ -80,13 +80,13 @@ const portfolios = [
             class="text-sm font-bold sm:text-2xl"
             v-text="props.portfolio.title"
           />
-          <div>
-            <router-link>
+          <div class="flex">
+            <div>
               <span
                 class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
                 v-text="props.member.nickname"
               />
-            </router-link>
+            </div>
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
@@ -191,12 +191,7 @@ const portfolios = [
       <!-- Member's portfolio list bar -->
       <div class="flex justify-between px-7 py-6">
         <span class="block font-semibold text-gray-900">모든 작업 목록</span>
-        <router-link
-          :to="
-            props.isMine
-              ? `/member/profile/${props.member.id}`
-              : `/profile/${props.member.id}`
-          "
+        <div
           class="flex items-center justify-end"
         >
           <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
@@ -205,7 +200,7 @@ const portfolios = [
             alt="Chevron right icon"
             class="mt-0.5 h-4 w-4 opacity-50"
           >
-        </router-link>
+        </div>
       </div>
 
       <!-- Member's portfolio list -->
@@ -218,7 +213,7 @@ const portfolios = [
             :key="morePortfolio.id"
             v-for="morePortfolio in portfolios"
           >
-            <router-link :to="`/pofo/${morePortfolio.id}`">
+            <div>
               <img
                 :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
@@ -228,7 +223,7 @@ const portfolios = [
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="morePortfolio.title"
               />
-            </router-link>
+            </div>
           </figure>
         </div>
 
