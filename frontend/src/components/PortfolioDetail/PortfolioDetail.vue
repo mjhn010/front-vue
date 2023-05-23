@@ -3,7 +3,6 @@ import { onMounted, reactive, ref } from "vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
 import { onBeforeRouteUpdate } from "vue-router";
 
-
 // Components
 import Modal from "@/components/Modal.vue";
 import Header from "@/components/Header.vue";
@@ -67,7 +66,7 @@ function scrollToTop() {
 }
 
 function toggleCommentBox() {
-  if(onCommentBoxOpen.value) {
+  if (onCommentBoxOpen.value) {
     resetCommentInput();
   }
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
@@ -723,7 +722,7 @@ onBeforeRouteUpdate((to, from, next) => {
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          />
+          >
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -748,21 +747,26 @@ onBeforeRouteUpdate((to, from, next) => {
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleFollow"
-              >팔로우</span
-            >
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template :key="item.id" v-for="item in state.contents">
+        <template
+          :key="item.id"
+          v-for="item in state.contents"
+        >
           <img
             v-if="item.type === '1'"
             :src="`http://localhost:8080/portfolio/contents/${item.content}`"
             alt="Content image"
+          >
+          <p
+            v-else
+            v-html="item.content"
           />
-          <p v-else v-html="item.content" />
         </template>
       </main>
 
@@ -791,7 +795,7 @@ onBeforeRouteUpdate((to, from, next) => {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          />
+          >
         </div>
       </div>
       <!-- Banner -->
@@ -832,8 +836,7 @@ onBeforeRouteUpdate((to, from, next) => {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-          >POFO PICK 선정</span
-        >
+        >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -871,14 +874,12 @@ onBeforeRouteUpdate((to, from, next) => {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500"
-            >프로필 자세히 보기</span
-          >
+          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="mt-0.5 h-4 w-4 opacity-50"
-          />
+          >
         </router-link>
       </div>
 
@@ -902,7 +903,7 @@ onBeforeRouteUpdate((to, from, next) => {
                 :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              />
+              >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="morePortfolio.title"
@@ -945,7 +946,7 @@ onBeforeRouteUpdate((to, from, next) => {
             class="mb-2 h-12 w-12 rounded-full border-2 duration-200 hover:opacity-50"
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
-          />
+          >
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -1034,7 +1035,7 @@ onBeforeRouteUpdate((to, from, next) => {
         />
         <div class="col-span-7 flex h-16 flex-col justify-between">
           <h2
-            class="text-lg col-span-7 font-bold"
+            class="col-span-7 text-lg font-bold"
             v-text="state.portfolio.title"
           />
           <span
@@ -1119,9 +1120,12 @@ onBeforeRouteUpdate((to, from, next) => {
                 class="h-12 w-12 rounded-full"
                 :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              />
+              >
             </router-link>
-            <router-link class="h-0" :to="`/profile/${comment.memberId}`">
+            <router-link
+              class="h-0"
+              :to="`/profile/${comment.memberId}`"
+            >
               <div
                 class="col-start-2 font-bold hover:text-gray-600"
                 v-text="comment.memberNickname"
