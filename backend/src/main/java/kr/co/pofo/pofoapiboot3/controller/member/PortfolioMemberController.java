@@ -56,7 +56,7 @@ public class PortfolioMemberController {
        if(contents==null) {
            content = request.getParameter("contents");
            pofoContent.setContent(content);
-           pofoContent.setType(types);
+           pofoContent.setType((Integer.toString(types)));
            boolean result = portfolioService.regContent(pofoContent);
            return result;
        }
@@ -66,7 +66,7 @@ public class PortfolioMemberController {
           content = fileUpload.modifyImgName(contents.getOriginalFilename());
           fileUpload.upload(contents, content, 1);
           pofoContent.setContent(content);
-          pofoContent.setType(types);
+          pofoContent.setType((Integer.toString(types)));
           boolean result = portfolioService.regContent(pofoContent);
           return result;
        }
