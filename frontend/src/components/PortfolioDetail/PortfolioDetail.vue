@@ -851,7 +851,7 @@ onBeforeRouteUpdate((to, from, next) => {
           <span
             class="text-xs font-semibold text-white sm:text-sm"
             v-text="
-              state.portfolio.collaboration === '0'
+              state.portfolio.collaboration === 0
                 ? '개인 프로젝트'
                 : '팀 프로젝트'
             "
