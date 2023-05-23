@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from "vue";
 import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
 import { onBeforeRouteUpdate } from "vue-router";
 
+
 // Components
 import Modal from "@/components/Modal.vue";
 import Header from "@/components/Header.vue";
@@ -66,6 +67,9 @@ function scrollToTop() {
 }
 
 function toggleCommentBox() {
+  if(onCommentBoxOpen.value) {
+    resetCommentInput();
+  }
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
 
   const scrollContainer = document.querySelector(".scroll-container");
@@ -333,6 +337,10 @@ function saveComment() {
       })
       .finally(getData);
   }
+}
+
+function resetCommentInput() {
+  document.querySelector("#comment-input").value = null;
 }
 
 function deleteComment(id) {
@@ -690,6 +698,8 @@ onBeforeRouteUpdate((to, from, next) => {
     :portfolio-title="`${state.portfolio.title}`"
     :portfolio-thumbnail="`${state.portfolio.thumbnail}`"
     :nickname="`${state.member.nickname}`"
+    :like-count="`${state.likes.length}`"
+    :comment-count="`${state.comments.length}`"
     style="z-index: 1"
   />
   <div
@@ -1019,16 +1029,16 @@ onBeforeRouteUpdate((to, from, next) => {
     >
       <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
         <div
-          class="x-mark-icon absolute cursor-pointer"
+          class="x-mark-icon absolute cursor-pointer opacity-75 hover:opacity-100"
           @click="toggleCommentBox"
         />
         <div class="col-span-7 flex h-16 flex-col justify-between">
           <h2
-            class="text-md col-span-7 font-bold"
+            class="text-lg col-span-7 font-bold"
             v-text="state.portfolio.title"
           />
           <span
-            class="col-span-7 mb-5 text-xs font-bold text-gray-500"
+            class="col-span-7 mb-5 text-sm font-bold text-gray-500"
             v-text="
               state.portfolio.collaboration === '0'
                 ? '개인 프로젝트'
@@ -1083,6 +1093,7 @@ onBeforeRouteUpdate((to, from, next) => {
         </button>
         <div
           class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold hover:bg-blue-50"
+          @click="resetCommentInput"
         >
           취소
         </div>
@@ -1218,7 +1229,7 @@ main:deep(div) {
   width: 28px;
   height: 28px;
   margin-left: 82%;
-  margin-top: -1%;
+  margin-top: 0%;
   background-image: url("/src/assets/images/x-mark.svg");
 }
 
