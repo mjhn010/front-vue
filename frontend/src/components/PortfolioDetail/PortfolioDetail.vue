@@ -446,6 +446,8 @@ function toggleReport() {
   }
 
   if (!state.onReported) {
+    if (!confirm("포트폴리오를 신고하시겠습니까?")) return;
+
     postReport();
     return (state.onReported = true);
   } else {

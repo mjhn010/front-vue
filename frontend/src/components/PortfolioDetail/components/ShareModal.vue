@@ -32,6 +32,7 @@ const props = defineProps({
 
 const url = window.location.href;
 const uri = encodeURI(encodeURIComponent(url));
+const portfolioId = window.location.hash.split("/")[2];
 
 function shareToNaver() {
   const title = encodeURI(props.portfolioTitle);
@@ -42,6 +43,7 @@ function shareToNaver() {
 
 function copyLink() {
   navigator.clipboard.writeText(url);
+  alert("URL이 복사되었습니다.");
 }
 
 // Kakao share
@@ -50,7 +52,7 @@ function shareMessage() {
     objectType: "feed",
     content: {
       title: props.portfolioTitle,
-      description: "#프론트엔드 #팀프로젝트",
+      description: "#프로젝트",
       imageUrl: `http://localhost:8080/portfolio/thumbnails/${props.portfolioThumbnail}`,
       link: {
         // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
@@ -117,7 +119,7 @@ function shareMessage() {
       <nav class="mb-10 mt-12 grid grid-cols-3">
         <a
           class="flex flex-col items-center"
-          :href="`https://twitter.com/intent/tweet?text=${uri}`"
+          :href="`http://twitter.com/share?text=${portfolioTitle}%0A&url=http://127.0.0.1:5173/%23/pofo/${portfolioId}`"
         >
           <div
             class="absolute h-20 w-12 bg-twitter bg-no-repeat hover:opacity-75"
@@ -135,7 +137,7 @@ function shareMessage() {
         </div>
         <div class="flex flex-col items-center">
           <div
-            class="absolute block h-12 w-12 bg-kakao bg-cover hover:opacity-75 cursor-pointer"
+            class="absolute block h-12 w-12 cursor-pointer bg-kakao bg-cover hover:opacity-75"
             @click="shareMessage"
           />
           <span class="mt-14 text-sm">카카오</span>
@@ -149,6 +151,7 @@ function shareMessage() {
         />
         <div
           class="flex w-3/12 cursor-pointer items-center justify-center rounded-r-lg border p-1 text-sm text-gray-700 hover:bg-blue-50"
+          @click="copyLink"
         >
           URL 복사
         </div>
