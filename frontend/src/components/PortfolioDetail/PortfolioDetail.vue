@@ -66,6 +66,9 @@ function scrollToTop() {
 }
 
 function toggleCommentBox() {
+  if (onCommentBoxOpen.value) {
+    resetCommentInput();
+  }
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
 
   const scrollContainer = document.querySelector(".scroll-container");
@@ -333,6 +336,10 @@ function saveComment() {
       })
       .finally(getData);
   }
+}
+
+function resetCommentInput() {
+  document.querySelector("#comment-input").value = null;
 }
 
 function deleteComment(id) {
@@ -690,6 +697,8 @@ onBeforeRouteUpdate((to, from, next) => {
     :portfolio-title="`${state.portfolio.title}`"
     :portfolio-thumbnail="`${state.portfolio.thumbnail}`"
     :nickname="`${state.member.nickname}`"
+    :like-count="`${state.likes.length}`"
+    :comment-count="`${state.comments.length}`"
     style="z-index: 1"
   />
   <div
@@ -713,7 +722,7 @@ onBeforeRouteUpdate((to, from, next) => {
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
             @click="scrollToTop"
-          />
+          >
         </router-link>
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
@@ -738,21 +747,26 @@ onBeforeRouteUpdate((to, from, next) => {
             <span
               class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
               @click="toggleFollow"
-              >팔로우</span
-            >
+            >팔로우</span>
           </div>
         </figcaption>
       </figure>
 
       <!-- Main -->
       <main>
-        <template :key="item.id" v-for="item in state.contents">
+        <template
+          :key="item.id"
+          v-for="item in state.contents"
+        >
           <img
             v-if="item.type === '1'"
             :src="`http://localhost:8080/portfolio/contents/${item.content}`"
             alt="Content image"
+          >
+          <p
+            v-else
+            v-html="item.content"
           />
-          <p v-else v-html="item.content" />
         </template>
       </main>
 
@@ -781,7 +795,7 @@ onBeforeRouteUpdate((to, from, next) => {
             class="h-6 w-6"
             :key="copyright.name"
             v-for="copyright in portfolioCopyright"
-          />
+          >
         </div>
       </div>
       <!-- Banner -->
@@ -822,8 +836,7 @@ onBeforeRouteUpdate((to, from, next) => {
         <span
           class="text-sm font-bold text-blue-300"
           v-if="state.portfolio.awardDate != null"
-          >POFO PICK 선정</span
-        >
+        >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
           v-text="state.portfolio.title"
@@ -841,7 +854,7 @@ onBeforeRouteUpdate((to, from, next) => {
           <span
             class="text-xs font-semibold text-white sm:text-sm"
             v-text="
-              state.portfolio.collaboration === '0'
+              state.portfolio.collaboration === 0
                 ? '개인 프로젝트'
                 : '팀 프로젝트'
             "
@@ -861,14 +874,12 @@ onBeforeRouteUpdate((to, from, next) => {
           @click="scrollToTop"
           class="flex items-center justify-end"
         >
-          <span class="block text-sm font-semibold text-gray-500"
-            >프로필 자세히 보기</span
-          >
+          <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
             alt="Chevron right icon"
             class="mt-0.5 h-4 w-4 opacity-50"
-          />
+          >
         </router-link>
       </div>
 
@@ -892,7 +903,7 @@ onBeforeRouteUpdate((to, from, next) => {
                 :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
                 class="h-full w-72 rounded-t-lg"
-              />
+              >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"
                 v-text="morePortfolio.title"
@@ -935,7 +946,7 @@ onBeforeRouteUpdate((to, from, next) => {
             class="mb-2 h-12 w-12 rounded-full border-2 duration-200 hover:opacity-50"
             :src="`http://localhost:8080/profileImage/${state.member.image}`"
             alt="Profile image"
-          />
+          >
         </router-link>
 
         <figcaption class="block text-center text-sm font-bold">
@@ -1019,16 +1030,16 @@ onBeforeRouteUpdate((to, from, next) => {
     >
       <div class="mx-5 mt-7 grid grid-cols-7 gap-x-3 border-b pb-5">
         <div
-          class="x-mark-icon absolute cursor-pointer"
+          class="x-mark-icon absolute cursor-pointer opacity-75 hover:opacity-100"
           @click="toggleCommentBox"
         />
         <div class="col-span-7 flex h-16 flex-col justify-between">
           <h2
-            class="text-md col-span-7 font-bold"
+            class="col-span-7 text-lg font-bold"
             v-text="state.portfolio.title"
           />
           <span
-            class="col-span-7 mb-5 text-xs font-bold text-gray-500"
+            class="col-span-7 mb-5 text-sm font-bold text-gray-500"
             v-text="
               state.portfolio.collaboration === '0'
                 ? '개인 프로젝트'
@@ -1083,6 +1094,7 @@ onBeforeRouteUpdate((to, from, next) => {
         </button>
         <div
           class="col-start-7 flex cursor-pointer items-center justify-center rounded-full border text-sm font-semibold hover:bg-blue-50"
+          @click="resetCommentInput"
         >
           취소
         </div>
@@ -1108,9 +1120,12 @@ onBeforeRouteUpdate((to, from, next) => {
                 class="h-12 w-12 rounded-full"
                 :src="`/src/assets/images/temp/${comment.memberImage}`"
                 alt="Profile image"
-              />
+              >
             </router-link>
-            <router-link class="h-0" :to="`/profile/${comment.memberId}`">
+            <router-link
+              class="h-0"
+              :to="`/profile/${comment.memberId}`"
+            >
               <div
                 class="col-start-2 font-bold hover:text-gray-600"
                 v-text="comment.memberNickname"
@@ -1218,7 +1233,7 @@ main:deep(div) {
   width: 28px;
   height: 28px;
   margin-left: 82%;
-  margin-top: -1%;
+  margin-top: 0%;
   background-image: url("/src/assets/images/x-mark.svg");
 }
 

@@ -2,6 +2,7 @@
 import Header from "../Header.vue";
 import { onMounted, onUpdated, reactive, ref } from "vue";
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
+import { useRouter } from "vue-router";
 
 let showModal = ref(false);
 let thumbnail = ref('');
@@ -15,7 +16,7 @@ let singgle = ref(true);
 let team = ref(false);
 
 let userDetails = useUserDetailsStore();
-
+let router = useRouter();
 
 
 function arrayRemove(event, index) {
@@ -148,6 +149,7 @@ async function send(e) {
     headers: {
       "Accept": "application/json",
     }
+   
   });
 
   let order = 0;
@@ -178,15 +180,25 @@ async function send(e) {
       });
     }
   }
+
+
+  // 로딩
+  //   setTimeout()무조건 써야함 왜냐하면 이미지 로딩때문에 써야함.
+  //  return router.push("/index");
+   return router.push("/member/profile/"+userDetails.id);
 }
 
+
+
+
+  
 
 
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
   <Header />
-  <form id="form" action="/members" method="post" enctype="multipart/form-data">
+  <form @submit.prevent="send($event)" id="form"  method="post" enctype="multipart/form-data">
     <div class="container">
       <main class="reg-main">
         <div class="reg-title-box">
@@ -366,7 +378,7 @@ async function send(e) {
           </div>
           <input class=" d-none modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
           <div class="submit-box margin-top-7">
-            <input @click.prevent="send($event)" class="modal-submit-btn" type="submit" value="업로드">
+            <input  class="modal-submit-btn" type="submit" value="업로드">
           </div>
         </div>
       </div>

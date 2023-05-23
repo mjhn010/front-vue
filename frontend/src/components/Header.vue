@@ -323,6 +323,7 @@ function logoutHandler() {
   router.push("/index");
 }
 
+
 async function changeClickFlag(e, index) {
   console.log(notificationList[index]);
   await fetch(`http://localhost:8080/notifications/changeflag/${notificationList[index].id}`, {

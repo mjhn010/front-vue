@@ -1,4 +1,8 @@
 <script setup>
+import "@/api/kakao.min.js";
+
+Kakao.init("5ae395a2262209fad935a1d4d091d4a3");
+
 const props = defineProps({
   portfolioThumbnail: {
     type: String,
@@ -15,7 +19,15 @@ const props = defineProps({
   show: {
     type: Boolean,
     default: false,
-  }
+  },
+  likeCount: {
+    type: String,
+    required: true,
+  },
+  commentCount: {
+    type: String,
+    required: true,
+  },
 });
 
 const url = window.location.href;
@@ -23,12 +35,50 @@ const uri = encodeURI(encodeURIComponent(url));
 
 function shareToNaver() {
   const title = encodeURI(props.portfolioTitle);
-  const shareURL = "https://share.naver.com/web/shareView?url=" + uri + "&title=" + title;
+  const shareURL =
+    "https://share.naver.com/web/shareView?url=" + uri + "&title=" + title;
   document.location = shareURL;
 }
 
 function copyLink() {
   navigator.clipboard.writeText(url);
+}
+
+// Kakao share
+function shareMessage() {
+  Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: props.portfolioTitle,
+      description: "#프론트엔드 #팀프로젝트",
+      imageUrl: `http://localhost:8080/portfolio/thumbnails/${props.portfolioThumbnail}`,
+      link: {
+        // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+        mobileWebUrl: `${window.location.href}`,
+        webUrl: `${window.location.href}`,
+      },
+    },
+    social: {
+      likeCount: parseInt(props.likeCount),
+      commentCount: parseInt(props.commentCount),
+    },
+    buttons: [
+      {
+        title: "웹으로 보기",
+        link: {
+          mobileWebUrl: `${window.location.href}`,
+          webUrl: `${window.location.href}`,
+        },
+      },
+      {
+        title: "앱으로 보기",
+        link: {
+          mobileWebUrl: `${window.location.href}`,
+          webUrl: `${window.location.href}`,
+        },
+      },
+    ],
+  });
 }
 </script>
 
@@ -55,7 +105,7 @@ function copyLink() {
         >
         <figcaption class="flex h-12 flex-col justify-between">
           <span
-            class="text-sm text-gray-700 font-bold"
+            class="text-sm font-bold text-gray-700"
             v-text="portfolioTitle"
           />
           <span
@@ -64,36 +114,42 @@ function copyLink() {
           />
         </figcaption>
       </figure>
-      <nav class="mt-12 mb-10 grid grid-cols-3">
+      <nav class="mb-10 mt-12 grid grid-cols-3">
         <a
           class="flex flex-col items-center"
           :href="`https://twitter.com/intent/tweet?text=${uri}`"
         >
-          <div class="absolute h-20 w-12 bg-twitter bg-no-repeat hover:opacity-75" />
-          <span class="text-sm mt-14">트위터</span>
+          <div
+            class="absolute h-20 w-12 bg-twitter bg-no-repeat hover:opacity-75"
+          />
+          <span class="mt-14 text-sm">트위터</span>
         </a>
         <div
-          class="flex flex-col items-center cursor-pointer"
+          class="flex cursor-pointer flex-col items-center"
           @click.prevent="shareToNaver"
         >
-          <div class="absolute h-12 w-12 bg-naver bg-cover bg-center hover:opacity-75" />
-          <span class="text-sm mt-14">네이버</span>
+          <div
+            class="absolute h-12 w-12 bg-naver bg-cover bg-center hover:opacity-75"
+          />
+          <span class="mt-14 text-sm">네이버</span>
         </div>
-        <a
-          class="flex flex-col items-center"
-          href="https://twitter.com/intent/tweet?text=Hello%20world"
-        >
-          <div class="absolute block h-12 w-12 bg-kakao bg-cover hover:opacity-75" />
-          <span class="text-sm mt-14">카카오</span>
-        </a>
+        <div class="flex flex-col items-center">
+          <div
+            class="absolute block h-12 w-12 bg-kakao bg-cover hover:opacity-75 cursor-pointer"
+            @click="shareMessage"
+          />
+          <span class="mt-14 text-sm">카카오</span>
+        </div>
       </nav>
 
       <div class="flex h-8 w-full px-4">
         <div
-          class="w-9/12 pl-2 cursor-default rounded-l-lg border border-r-0 bg-gray-50 p-1 text-xs text-gray-600 flex items-center"
+          class="flex w-9/12 cursor-default items-center rounded-l-lg border border-r-0 bg-gray-50 p-1 pl-2 text-xs text-gray-600"
           v-text="url"
         />
-        <div class="w-3/12 cursor-pointer rounded-r-lg border p-1 flex justify-center items-center text-sm text-gray-700 hover:bg-blue-50">
+        <div
+          class="flex w-3/12 cursor-pointer items-center justify-center rounded-r-lg border p-1 text-sm text-gray-700 hover:bg-blue-50"
+        >
           URL 복사
         </div>
       </div>
