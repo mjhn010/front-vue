@@ -3,6 +3,7 @@ import Header from "../Header.vue";
 import { onMounted, onUpdated, reactive, ref } from "vue";
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import { useRouter } from "vue-router";
+import PortfolioPreview from "@/components/member/PortfolioPreview.vue";
 
 let showModal = ref(false);
 let thumbnail = ref('');
@@ -20,6 +21,7 @@ let router = useRouter();
 
 let showLoaing = ref(false);
 
+
 function arrayRemove(event, index) {
   list.splice(index, 1);
 }
@@ -33,6 +35,12 @@ function textPlusHandler() {
   list.push({ type: "text", text: "", img: [], fileInfo: [] });
   listIndex++;
 }
+
+function resetHandler(){
+  console.log("click")
+  list.length = 0;
+}
+
 function showModalHandler() {
   showModal.value = !showModal.value;
 }
@@ -105,7 +113,7 @@ function dropHandler(event, index) {
     objecUrls.push(URL.createObjectURL(flie))
 
   list[index].img = objecUrls;
-
+  
   startApp.classList.add("d-none");
   mainTitle.classList.add("d-none");
 }
@@ -151,7 +159,7 @@ async function send(e) {
     headers: {
       "Accept": "application/json",
     }
-   
+
   });
   let response = null;
   let order = 0;
@@ -182,26 +190,46 @@ async function send(e) {
       });
     }
   }
+
+
+
    let result = await response.text();
    if(result){
      showLoaing.value = false;
      router.push("/member/profile/"+userDetails.id);
    }
+
 }
 
-
-
-
-  
-
-
+// Preview
+const portfolioPreview = ref(null);
+const onOpenPreview = reactive({ value: false });
+function openPreview(){
+  portfolioPreview.value.open();
+  onOpenPreview.value = true;
+}
+function closePreview(){
+  portfolioPreview.value.close();
+  onOpenPreview.value = false;
+}
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
   <Header />
+  <portfolio-preview
+      ref="portfolioPreview"
+      :title="title"
+      :contents="list"
+      @open="openPreview"
+      @close="closePreview"
+      style="z-index: 1"
+  />
   <form @submit.prevent="send($event)" id="form"  method="post" enctype="multipart/form-data">
     <div class="container">
-      <main class="reg-main">
+      <main
+          class="reg-main"
+          v-show="!onOpenPreview.value"
+      >
         <div class="reg-title-box">
           <input v-model="title" class="reg-title" type="text" name="title" placeholder="제목을 입력해주세요.">
         </div>
@@ -297,11 +325,14 @@ async function send(e) {
           </ul>
           <ul class="content-select">
             <li class="aside-li">
-              <button class="aside-btn">
-                <img class="aside-img" src="/src/assets/images/content.svg" alt="">콘텐츠재정렬
+              <button @click.prevent="resetHandler" class="aside-btn">
+                <img class="aside-img" src="/src/assets/images/erase.png" alt="">전체삭제
               </button>
             </li>
-            <li class="aside-li">
+            <li
+                class="aside-li"
+                @click.prevent="openPreview"
+            >
               <button class="aside-btn">
                 <img class="aside-img" src="/src/assets/images/preview.png" alt="">미리보기
               </button>
@@ -385,12 +416,15 @@ async function send(e) {
       </div>
     </div>
   </form>
-  <div class="loading-screen" v-show="showLoaing">
-        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
+  <div v-show="showLoaing" class="loading-screen">
+    <div  class=" loading-white-bg loader"></div>
   </div>
+  
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/register.css");
+
+
 
 .d-none {
   display: none;
@@ -434,13 +468,27 @@ async function send(e) {
   margin-top: 3px;
   color: #9A9A97;
   font-size: 20px;
-
-
 }
 
 .p-tags:focus {
   outline: none;
   max-width: 90%;
 }
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #7404FA;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* 테스트 로딩 */
 
 </style>

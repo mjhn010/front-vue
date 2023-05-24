@@ -428,9 +428,9 @@ function isPassword() {
         @follow="follow" />
 
     <!-- 로딩 gif -->
-    <div class="loading-screen" v-show="showLoaing">
-        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
-    </div>
+    <div v-show="showLoaing" class="loading-screen">
+    <div  class=" loading-white-bg loader"></div>
+  </div>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
@@ -511,5 +511,22 @@ input:read-only {
 
 .hover:hover {
     cursor: pointer;
+}
+
+
+
+/* 로딩 css추가  */
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #7404FA;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

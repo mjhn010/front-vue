@@ -1,47 +1,6 @@
 <script setup>
-const props = defineProps({
-  portfolio: {
-    type: Object,
-    default: () => ({
-      title: "제목",
-    }),
-  },
-  member: {
-    type: Object,
-    default: () => ({
-      nickname: "닉네임",
-      image: "d.bronze.jpg",
-    }),
-  },
-  skills: {
-    type: Array,
-    default: () => [
-      { engName: "HTML" },
-      { engName: "CSS" },
-      { engName: "JavaScript" },
-    ],
-  },
-  contents: {
-    type: Array,
-    default: () => [
-      {
-        content: "내용1",
-        type: 0,
-        orders: 1,
-      },
-      {
-        content: "내용2",
-        type: 1,
-        orders: 2,
-      },
-      {
-        content: "내용3",
-        type: 0,
-        orders: 3,
-      },
-    ],
-  },
-});
+import { useUserDetailsStore } from "@/stores/useUserDetailsStore";
+import { reactive, ref } from "vue";
 
 // Dummy data
 const portfolioCopyright = [
@@ -52,22 +11,70 @@ const portfolioCopyright = [
 ];
 
 const portfolios = [
-  {id: 2, title: "목록2", thumbnail: "aurora-over-iceland.png"},
-  {id: 3, title: "목록3", thumbnail: "calm.jpg"},
-  {id: 4, title: "목록4", thumbnail: "cherryblossom.jpg"},
-  {id: 5, title: "목록5", thumbnail: "corn.jpg"},
+  { id: 1, title: "목록1", thumbnail: "aurora-over-iceland.png" },
+  { id: 2, title: "목록2", thumbnail: "calm.jpg" },
+  { id: 3, title: "목록3", thumbnail: "cherryblossom.jpg" },
+  { id: 4, title: "목록4", thumbnail: "corn.jpg" },
 ];
+
+const props = defineProps({
+  portfolio: {
+    type: Object,
+    default: () => ({
+      awardDate: null,
+    }),
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  member: {
+    type: Object,
+    default: () => ({
+      nickname: useUserDetailsStore().nickname,
+      image: useUserDetailsStore().profileSrc,
+    }),
+  },
+  contents: {
+    type: Array,
+    default: () => [],
+  },
+  skills: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const state = reactive({
+  visible: false,
+});
+
+const open = () => {
+  state.visible = true;
+};
+
+const close = () => {
+  state.visible = false;
+}
+
+defineEmits(["close"])
+
+defineExpose({
+  open,
+  close,
+});
 </script>
 
 <template>
   <div
-    class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
+    class="absolute h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8"
+    v-if="state.visible"
   >
     <div
-      class="w-full bg-white pb-4 xl:col-span-9 xl:ml-36 xl:rounded-lg xl:border"
+      class="mt-16 w-full bg-white pb-4 xl:col-span-9 xl:ml-36 xl:rounded-lg xl:border"
     >
       <!-- Profile -->
-      <figure class="flex p-6 border-b">
+      <figure class="flex border-b p-6">
         <img
           class="mr-4 mt-2 h-12 w-12 cursor-pointer rounded-full duration-300 hover:opacity-50"
           :src="`http://localhost:8080/profileImage/${props.member.image}`"
@@ -76,8 +83,8 @@ const portfolios = [
 
         <figcaption class="flex cursor-default flex-col justify-evenly">
           <h1
-            class="text-sm font-bold sm:text-2xl"
-            v-text="props.portfolio.title"
+            class="text-sm font-bold sm:text-2xl w-full"
+            v-text="props.title"
           />
           <div class="flex">
             <div>
@@ -88,27 +95,31 @@ const portfolios = [
             </div>
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
-              class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
+              class="w-24 cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
             >팔로우</span>
           </div>
         </figcaption>
-        <div class="x-mark-icon"/>
+        <div
+          class="x-mark-icon cursor-pointer bg-cover bg-no-repeat"
+          @click="$emit('close')"
+        />
       </figure>
 
       <!-- Main -->
       <main>
         <template
-          :key="item.id"
-          v-for="item in props.contents"
+          :key="content.index"
+          v-for="content in props.contents"
         >
           <img
-            v-if="item.type === '1'"
-            :src="`http://localhost:8080/portfolio/contents/${item.content}`"
+            :key="src.index"
+            v-for="src in content.img"
+            :src="src"
             alt="Content image"
           >
           <p
-            v-else
-            v-html="item.content"
+            v-if="content.type === 'text'"
+            v-html="content.text"
           />
         </template>
       </main>
@@ -150,9 +161,7 @@ const portfolios = [
             >
               <div class="h-6 w-6 bg-heart bg-center bg-no-repeat" />
             </div>
-            <span
-              class="bottom-0.5 mt-4 hidden text-xs font-bold text-white"
-            />
+            <span class="bottom-0.5 mt-4 hidden text-xs font-bold text-white" />
           </div>
           <div
             class="collection-icon mb-2 cursor-pointer rounded-full border-2 bg-white duration-300 hover:bg-blue-50"
@@ -164,7 +173,7 @@ const portfolios = [
         >POFO PICK 선정</span>
         <span
           class="text-lg font-bold text-white sm:text-xl"
-          v-text="props.portfolio.title"
+          v-text="props.title"
         />
         <div>
           <span
@@ -190,9 +199,7 @@ const portfolios = [
       <!-- Member's portfolio list bar -->
       <div class="flex justify-between px-7 py-6">
         <span class="block font-semibold text-gray-900">모든 작업 목록</span>
-        <div
-          class="flex items-center justify-end"
-        >
+        <div class="flex items-center justify-end">
           <span class="block text-sm font-semibold text-gray-500">프로필 자세히 보기</span>
           <img
             src="/src/assets/images/chevron-right.svg"
@@ -289,7 +296,7 @@ main:deep(div) {
 .x-mark-icon {
   width: 28px;
   height: 28px;
-  margin-left: 82%;
+  margin-left: 81.5%;
   margin-top: 0%;
   background-image: url("/src/assets/images/x-mark.svg");
 }

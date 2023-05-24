@@ -212,7 +212,7 @@ label {
 }
 
 .loading-screen {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.1);
   left: 0;
   top: 0;
   width: 100vw;
@@ -224,7 +224,7 @@ label {
   z-index: 1000;
 }
 
-.loading-white-bg {
+/* .loading-white-bg {
   position: absolute;
   top: 30%;
   left: 42%;
@@ -235,4 +235,9 @@ label {
   background: rgb(255, 255, 255);
   border-radius: 4px;
   box-sizing: border-box;
+} */
+.loading-white-bg {
+  position: absolute;
+  top: 40%;
+  left: 42%; 
 }
