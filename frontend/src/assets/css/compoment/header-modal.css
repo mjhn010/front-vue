@@ -1,7 +1,7 @@
 .noti-content-message {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   top: 50px;
   right: 5px;
   width: 420px;
@@ -18,7 +18,7 @@
 .noti-content-notify {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   top: 50px;
   right: 5px;
   min-width: 500px;
@@ -35,7 +35,7 @@
 .noti-content-profile {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   top: 55px;
   right: 5px;
   width: 330px;
