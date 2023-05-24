@@ -3,6 +3,7 @@ import Header from "../Header.vue";
 import { onMounted, onUpdated, reactive, ref } from "vue";
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import { useRouter } from "vue-router";
+import PortfolioPreview from "@/components/member/PortfolioPreview.vue";
 
 let showModal = ref(false);
 let thumbnail = ref('');
@@ -208,6 +209,7 @@ async function send(e) {
 
 </script>
 <template>
+  <portfolio-preview />
   <div v-show="showModal" class="screen"></div>
   <Header />
   <form @submit.prevent="send($event)" id="form"  method="post" enctype="multipart/form-data">

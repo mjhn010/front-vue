@@ -1,45 +1,28 @@
 <script setup>
+import {useUserDetailsStore} from "@/stores/useUserDetailsStore";
+
 const props = defineProps({
   portfolio: {
     type: Object,
     default: () => ({
       title: "제목",
+      type: 0,
     }),
   },
   member: {
     type: Object,
     default: () => ({
-      nickname: "닉네임",
-      image: "d.bronze.jpg",
+      nickname: useUserDetailsStore().nickname,
+      image: useUserDetailsStore().profileSrc,
     }),
   },
   skills: {
     type: Array,
-    default: () => [
-      { engName: "HTML" },
-      { engName: "CSS" },
-      { engName: "JavaScript" },
-    ],
+    default: () => [],
   },
   contents: {
     type: Array,
-    default: () => [
-      {
-        content: "내용1",
-        type: 0,
-        orders: 1,
-      },
-      {
-        content: "내용2",
-        type: 1,
-        orders: 2,
-      },
-      {
-        content: "내용3",
-        type: 0,
-        orders: 3,
-      },
-    ],
+    default: () => [],
   },
 });
 
@@ -61,10 +44,10 @@ const portfolios = [
 
 <template>
   <div
-    class="absolute min-h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
+    class="absolute h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8 xl:pt-12"
   >
     <div
-      class="w-full bg-white pb-4 xl:col-span-9 xl:ml-36 xl:rounded-lg xl:border"
+      class="w-full bg-white pb-4 xl:col-span-9 xl:ml-36 xl:rounded-lg xl:border mt-16"
     >
       <!-- Profile -->
       <figure class="flex p-6 border-b">
@@ -88,7 +71,7 @@ const portfolios = [
             </div>
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
-              class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
+              class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg w-24"
             >팔로우</span>
           </div>
         </figcaption>
