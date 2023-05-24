@@ -18,22 +18,18 @@ public class PofoSecurityConfig implements WebMvcConfigurer {
 
   //docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html
   //www.baeldung.com/spring-security-thymeleaf
+
   private final SingleVisitInterceptor singleVisitInterceptor;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-      .cors()
-      .and()
-      .csrf()
-      .disable()
-      .authorizeHttpRequests()
-      .requestMatchers("/admin/**")
-      .hasAnyRole("ADMIN")
-      .requestMatchers("/member/**")
-      .hasAnyRole("ADMIN", "MEMBER")
-      .anyRequest()
-      .permitAll();
+    
+    http.cors().and()
+            .csrf().disable()
+            .authorizeHttpRequests()
+            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+            .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
+            .anyRequest().permitAll();
 
     return http.build();
   }

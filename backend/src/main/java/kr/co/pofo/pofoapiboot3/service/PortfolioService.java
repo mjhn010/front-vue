@@ -2,13 +2,9 @@ package kr.co.pofo.pofoapiboot3.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioContents;
 import kr.co.pofo.pofoapiboot3.entity.PortfolioView;
-import kr.co.pofo.pofoapiboot3.entity.Skill;
-import kr.co.pofo.pofoapiboot3.entity.UsedSkill;
 import kr.co.pofo.pofoapiboot3.entity.WeeklyPopularPortfolioView;
 
 public interface PortfolioService {

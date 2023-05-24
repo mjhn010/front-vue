@@ -42,7 +42,7 @@ async function fetchCommunity() {
     let response = await fetch(url);
     let json = await response.json();
     data.community = json.community;
-
+    console.log(data.community);
 }
 
 function nicknameClickHandler(e, memberId) {
@@ -175,7 +175,7 @@ async function getCommunityTeamInfo(){
                     <button v-else-if="teamInfo.participateFlag==1" class="disabled" disabled="true">
                         거절됨
                     </button>
-                    <!-- 그 외 참여여부 확이 -->
+                    <!-- 그 외 참여여부 확인 -->
                     <button v-else @click.prevent="applyBtnClickHandler">
                         {{ btnText }}
                     </button>

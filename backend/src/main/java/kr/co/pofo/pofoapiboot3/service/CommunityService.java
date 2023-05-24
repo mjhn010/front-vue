@@ -16,4 +16,6 @@ public interface CommunityService {
     // 커뮤니티 상세조회
     CommunityView getById(Long id);
 
+    List<Community> getByUserId(int id);
+
 }
