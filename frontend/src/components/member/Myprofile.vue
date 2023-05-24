@@ -10,7 +10,7 @@ let userDetails = useUserDetailsStore();
 let route = useRoute();
 
 //현재 클릭되어있는 TAB
-let current = ref();
+let current = ref(0);
 let isThis = ref(false);
 
 //팔로우 모달관련

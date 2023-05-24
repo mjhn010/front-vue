@@ -45,6 +45,7 @@ async function registerHandler() {
     if (result == "true") {
         alert("Post created successfully.");
         router.push("/community/list");
+        location.reload();
     } else {
         alert("Failed to create post.");
     }
