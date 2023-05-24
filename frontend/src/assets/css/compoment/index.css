@@ -28,7 +28,11 @@
     bottom: 2%;
     left: 2%;
     /* text-align: center; */
-    color: #fff;
+
+    padding: 5px; /* 내부 여백 추가 */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* 그림자 효과 추가 */
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #524f4f;
 }
 
 .overlay h2 {
@@ -148,37 +152,6 @@
 
     position: relative;
 }
-
-/* 카테고리 이미지 */
-/* .category-item {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-
-.category-item.java {
-    background-image: url('/image/Language_Icon/java.svg');
-}
-
-.category-item.javascript {
-    background-image: url('/image/Language_Icon/javascript\ \(1\).svg');
-}
-
-.category-item.python {
-    background-image: url('/image/Language_Icon/Group\ 7.svg');
-}
-
-.category-item.c {
-    background-image: url('/image/Language_Icon/C_Programming_Language.svg');
-}
-
-.category-item.c-sharp {
-    background-image: url('/image/Language_Icon/cdnlogo.com_c.svg');
-}
-
-.category-item.visual-basic {
-    background-image: url('/image/Language_Icon/VB.NET_Logo.svg');
-} */
 
 /* 정렬방식 스타일 */
 
