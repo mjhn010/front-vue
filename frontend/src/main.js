@@ -37,18 +37,21 @@ import Profile from "/src/components/Profile.vue";
 import PortfolioPreview from "@/components/member/PortfolioPreview.vue";
 
 const routes = [
-  {path: "/", component: Index},
-  {path: "/index", component: Index},
+  { path: "/", component: Index },
+  { path: "/index", component: Index },
 
   { path: "/pofo/reg", component: PortfolioRegister },
   { path: "/pofo/preview", component: PortfolioPreview },
   { path: "/pofo/:portfolioId", component: PortfolioDetail },
 
   // community경로
-  { path: "/community", children: [
-    { path: "list", component: List },
-    { path: ":id", component: Detail },
-  ]},
+  {
+    path: "/community",
+    children: [
+      { path: "list", component: List },
+      { path: ":id", component: Detail },
+    ],
+  },
 
   // 로그인,회원가입,비밀번호찾기
   { path: "/login", component: Login },
@@ -59,7 +62,7 @@ const routes = [
   { path: "/pwdreset", component: ResetPwd },
 
   //errorPage
-  { path : "/:pathMatch(.*)*", component : ErrorPage},
+  { path: "/:pathMatch(.*)*", component: ErrorPage },
 
   MemberRoute,
 ];
@@ -71,6 +74,10 @@ const router = createRouter({
 });
 const pinia = createPinia();
 pinia.use(piniaPersist);
+
+// 카카오톡 공유하기
+import "@/api/kakao.min.js";
+Kakao.init("5ae395a2262209fad935a1d4d091d4a3");
 
 createApp(App)
   .use(router)

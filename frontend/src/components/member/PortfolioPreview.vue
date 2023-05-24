@@ -19,7 +19,6 @@ const props = defineProps({
       { engName: "HTML" },
       { engName: "CSS" },
       { engName: "JavaScript" },
-      { engName: "Vue.js" },
     ],
   },
   contents: {
@@ -217,7 +216,7 @@ const portfolios = [
               <img
                 :src="`http://localhost:8080/portfolio/thumbnails/${morePortfolio.thumbnail}`"
                 alt="#"
-                class="h-full w-72 rounded-t-lg"
+                class="h-48 w-72 rounded-t-lg"
               >
               <figcaption
                 class="w-72 rounded-b-lg bg-gray-950 px-5 text-sm font-bold text-white"

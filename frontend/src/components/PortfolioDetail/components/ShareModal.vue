@@ -1,8 +1,4 @@
 <script setup>
-import "@/api/kakao.min.js";
-
-Kakao.init("5ae395a2262209fad935a1d4d091d4a3");
-
 const props = defineProps({
   portfolioThumbnail: {
     type: String,

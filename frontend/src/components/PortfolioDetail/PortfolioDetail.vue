@@ -154,7 +154,6 @@ async function getData() {
       state.reports = data;
     })
     .then(checkReports)
-    .then(checkMine)
     .catch((error) => {
       console.error("Error:", error);
     });
