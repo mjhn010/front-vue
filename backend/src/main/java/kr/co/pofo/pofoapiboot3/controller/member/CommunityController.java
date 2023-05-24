@@ -35,7 +35,11 @@ public class CommunityController {
         image.transferTo(new File(realPath));
 
         boolean result = service.register(post);
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
     }
     

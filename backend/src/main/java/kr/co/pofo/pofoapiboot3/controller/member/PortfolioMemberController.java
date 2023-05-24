@@ -58,6 +58,11 @@ public class PortfolioMemberController {
            pofoContent.setContent(content);
            pofoContent.setType((Integer.toString(types)));
            boolean result = portfolioService.regContent(pofoContent);
+           try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
            return result;
        }
        //아니면 파일 데이터
@@ -68,6 +73,11 @@ public class PortfolioMemberController {
           pofoContent.setContent(content);
           pofoContent.setType((Integer.toString(types)));
           boolean result = portfolioService.regContent(pofoContent);
+          try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
           return result;
        }
     }
