@@ -15,5 +15,6 @@ public class CommunityTeam {
     private Long id;
     private Long communityId; 
     private Long memberId; 
-    private int participateFlag;
+    private Integer participateFlag;
+    private int registerFlag;
 }

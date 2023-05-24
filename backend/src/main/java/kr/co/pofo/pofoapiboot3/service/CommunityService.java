@@ -18,4 +18,5 @@ public interface CommunityService {
 
     List<Community> getByUserId(int id);
 
+    void close(int communityId);
 }

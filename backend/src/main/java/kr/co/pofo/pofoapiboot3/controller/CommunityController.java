@@ -91,7 +91,7 @@ public class CommunityController {
     @GetMapping("getcommunityteaminfo")
     public CommunityTeam getCommunityTeamInfo(CommunityTeam team){
         if(communityTeamService.getInfo(team) == null)
-            return new CommunityTeam(null, null, null, 3);
+            return new CommunityTeam();
         return communityTeamService.getInfo(team);
     }
 
@@ -106,6 +106,12 @@ public class CommunityController {
     public String reject (Integer memberId, Integer communityId, int id){
         communityTeamService.addReject(memberId, communityId);
         notificationService.updateReject(id);
+        return "ok";
+    }
+
+    @GetMapping("close")
+    public String closeCommu(int communityId){
+        service.close(communityId);
         return "ok";
     }
 }

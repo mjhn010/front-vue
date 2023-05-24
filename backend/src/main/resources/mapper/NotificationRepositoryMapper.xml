@@ -19,7 +19,7 @@
         INSERT INTO
             notification
         VALUES
-            (DEFAULT, #{typeId}, #{fromMemberId}, #{toMemberId}, DEFAULT, #{portfolioId}, #{communityId}, DEFAULT,0)
+            (DEFAULT, #{typeId}, #{fromMemberId}, #{toMemberId}, DEFAULT, #{portfolioId}, #{communityId}, DEFAULT, DEFAULT)
     </insert>
 
     <delete id="delete">

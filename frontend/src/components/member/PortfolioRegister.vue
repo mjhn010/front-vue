@@ -1,8 +1,9 @@
 <script setup>
 import Header from "../Header.vue";
-import { onMounted, onUpdated, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import { useRouter } from "vue-router";
+import PortfolioPreview from "@/components/member/PortfolioPreview.vue";
 
 let showModal = ref(false);
 let thumbnail = ref('');
@@ -18,6 +19,9 @@ let team = ref(false);
 let userDetails = useUserDetailsStore();
 let router = useRouter();
 
+let showLoaing = ref(false);
+
+let inputFile = ref(null);
 
 function arrayRemove(event, index) {
   list.splice(index, 1);
@@ -32,6 +36,11 @@ function textPlusHandler() {
   list.push({ type: "text", text: "", img: [], fileInfo: [] });
   listIndex++;
 }
+
+function resetHandler(){
+  list.length = 0;
+}
+
 function showModalHandler() {
   showModal.value = !showModal.value;
 }
@@ -42,6 +51,13 @@ function imgClickHandler(e) {
 }
 
 
+function checkOnlyOne(e){
+  let checkboxs = document.getElementsByName("collaboration");
+  checkboxs.forEach((cb)=>{
+    cb.checked = false;
+  });
+  e.target.checked = true;
+}
 
 function thumbmailClick(e) {
   let upSibling = e.target.previousSibling
@@ -104,33 +120,9 @@ function dropHandler(event, index) {
     objecUrls.push(URL.createObjectURL(flie))
 
   list[index].img = objecUrls;
-
+  
   startApp.classList.add("d-none");
   mainTitle.classList.add("d-none");
-}
-
-// 체크박스 하나만 선택해서 하기 선택자 사용하지않고 짜증나네
-function singgleChecked(e) {
-  if (e.target == singgle.value) {
-    singgle.value.checked = true;
-    team.value.checked = false;
-    let look = e.target.closest(".select-team")
-    let teamBox = look.nextElementSibling
-    let teamInput = teamBox.nextElementSibling
-    teamBox.classList.add("d-none")
-    teamInput.classList.add("d-none")
-  }
-}
-function teamChecked(e) {
-  if (e.target == team.value) {
-    team.value.checked = true;
-    singgle.value.checked = false;
-    let look = e.target.closest(".select-team")
-    let teamBox = look.nextElementSibling
-    let teamInput = teamBox.nextElementSibling
-    teamBox.classList.remove("d-none")
-    teamInput.classList.remove("d-none")
-  }
 }
 
 function saveData(event, index) {
@@ -138,7 +130,7 @@ function saveData(event, index) {
 }
 
 async function send(e) {
-  console.log(userDetails.id);
+  showLoaing.value =true;
   let form = document.querySelector("#form")
   let formData = new FormData(form);
   formData.append("memberId",userDetails.id);
@@ -149,9 +141,9 @@ async function send(e) {
     headers: {
       "Accept": "application/json",
     }
-   
-  });
 
+  });
+  let response = null;
   let order = 0;
   for (let content of list) {
     if (content.img.length != 0) {
@@ -159,7 +151,7 @@ async function send(e) {
         let formdata = new FormData();
         formdata.append("contents", img);
         formdata.append("orders", order++);
-        await fetch("http://localhost:8080/members/regcontent", {
+        response = await fetch("http://localhost:8080/members/regcontent", {
           method: "POST",
           headers: {
             "Accept": "application/json"
@@ -171,7 +163,7 @@ async function send(e) {
       let formdata = new FormData();
       formdata.append("contents", content.text);
       formdata.append("orders", order++);
-      await fetch("http://localhost:8080/members/regcontent", {
+      response = await fetch("http://localhost:8080/members/regcontent", {
         method: "POST",
         headers: {
           "Accept": "application/json"
@@ -181,26 +173,50 @@ async function send(e) {
     }
   }
 
+   let result = await response.text();
+   if(result){
+     showLoaing.value = false;
+     router.push("/member/profile/"+userDetails.id);
+   }
 
-  // 로딩
-  //   setTimeout()무조건 써야함 왜냐하면 이미지 로딩때문에 써야함.
-  //  return router.push("/index");
-   return router.push("/member/profile/"+userDetails.id);
 }
 
+// Preview
+const portfolioPreview = ref(null);
+const onOpenPreview = reactive({ value: false });
+function openPreview(){
+  portfolioPreview.value.open();
+  onOpenPreview.value = true;
+}
+function closePreview(){
+  portfolioPreview.value.close();
+  onOpenPreview.value = false;
+}
 
-
-
-  
-
+function inputFileclickHandler(e){
+  let element = e.currentTarget;
+  let inputTypeFile = element.querySelector('input[type="file"]');
+  inputTypeFile.click();
+}
 
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
   <Header />
+  <portfolio-preview
+      ref="portfolioPreview"
+      :title="title"
+      :contents="list"
+      @open="openPreview"
+      @close="closePreview"
+      style="z-index: 1"
+  />
   <form @submit.prevent="send($event)" id="form"  method="post" enctype="multipart/form-data">
     <div class="container">
-      <main class="reg-main">
+      <main
+          class="reg-main"
+          v-show="!onOpenPreview.value"
+      >
         <div class="reg-title-box">
           <input v-model="title" class="reg-title" type="text" name="title" placeholder="제목을 입력해주세요.">
         </div>
@@ -213,8 +229,8 @@ async function send(e) {
             <div class="start-app">
               <div class="margin-right-5 sub-box">
                 <div @click="imgPlusHandler" class="app-box">
-                  <img class="hover" src="/src/assets/images/img.png" alt=""><img class="hover d-none"
-                    src="/src/assets/images/fff-img.png" alt="">
+                  <img class="hover" src="/src/assets/images/img.png" alt="">
+                  <img class="hover d-none" src="/src/assets/images/fff-img.png" alt="">
                 </div>
                 <div class="app-box-font">
                   이미지
@@ -222,8 +238,8 @@ async function send(e) {
               </div>
               <div class="sub-box">
                 <div @click="textPlusHandler" class="app-box">
-                  <img class="hover" src="/src/assets/images/text.png" alt=""><img class="hover d-none"
-                    src="/src/assets/images/fff-text.png" alt="">
+                  <img class="hover" src="/src/assets/images/text.png" alt="">
+                  <img class="hover d-none" src="/src/assets/images/fff-text.png" alt="">
                 </div>
                 <div class="app-box-font">
                   텍스트
@@ -237,7 +253,7 @@ async function send(e) {
 
             <section @dragover.stop.prevent="onDragover" @drop.stop.prevent="dropHandler($event, index)"
               v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
-              class="click-img-box" :class="{'default-box' : pofo.type!='text', 'default-box-text' : pofo.type=='text'}">
+              class="click-img-box" :class="{'default-box' : pofo.type!='text', 'default-box-text' : pofo.type=='text'}" @click="inputFileclickHandler" >
               <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">
               </div>
@@ -248,9 +264,9 @@ async function send(e) {
                 <div class="start-app">
                   <div class="sub-box">
                     <div class="app-box">
-                      <input @input="imgInputHandler($event, index)" class="d-none" ref="inputFile" type="file" multiple
+                      <input @input="imgInputHandler($event, index)" class="d-none" type="file" multiple
                         accept="jpg,gif,png">
-                      <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover"
+                      <img class="hover"
                         src="/src/assets/images/img.png" alt="">
                     </div>
                   </div>
@@ -296,11 +312,14 @@ async function send(e) {
           </ul>
           <ul class="content-select">
             <li class="aside-li">
-              <button class="aside-btn">
-                <img class="aside-img" src="/src/assets/images/content.svg" alt="">콘텐츠재정렬
+              <button @click.prevent="resetHandler" class="aside-btn">
+                <img class="aside-img" src="/src/assets/images/erase.png" alt="">전체삭제
               </button>
             </li>
-            <li class="aside-li">
+            <li
+                class="aside-li"
+                @click.prevent="openPreview"
+            >
               <button class="aside-btn">
                 <img class="aside-img" src="/src/assets/images/preview.png" alt="">미리보기
               </button>
@@ -352,7 +371,7 @@ async function send(e) {
           </div>
           <div class="check-box margin-top-2">
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="1" checked="checked">java</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="2">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="2">JavaScript</label>
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="3">python</label>
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="4">C</label>
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="5">C#</label>
@@ -366,17 +385,13 @@ async function send(e) {
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="select-team team-info margin-top-3">
-            <label class="skill-label singgle"><input ref="singgle" @click="singgleChecked($event)" class="cb"
-                type="checkbox" checked name="collaboration" value="0">개인</label>
-            <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox"
-                name="collaboration" value="1">팀</label>
-            <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
-            <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
+            <label class="skill-label singgle">
+              <input ref="singgle" class="cb" checked type="checkbox" name="collaboration" value="0" @click="checkOnlyOne">개인
+            </label>
+            <label class="skill-label team">
+              <input ref="team" class="cb" type="checkbox" name="collaboration" value="1" @click="checkOnlyOne">팀
+            </label>
           </div>
-          <div class="d-none modal-main-text margin-top-5">
-            <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
-          </div>
-          <input class=" d-none modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
           <div class="submit-box margin-top-7">
             <input  class="modal-submit-btn" type="submit" value="업로드">
           </div>
@@ -384,9 +399,15 @@ async function send(e) {
       </div>
     </div>
   </form>
+  <div v-show="showLoaing" class="loading-screen">
+    <div  class=" loading-white-bg loader"></div>
+  </div>
+  
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/register.css");
+
+
 
 .d-none {
   display: none;
@@ -429,14 +450,31 @@ async function send(e) {
   content: attr(placeholder);
   margin-top: 3px;
   color: #9A9A97;
-  font-size: 20px;
-
-
+  /* font-size: 20px; */
+  font-size: 16px;
+  padding-left: 5px;
 }
 
 .p-tags:focus {
   outline: none;
   max-width: 90%;
+  padding-left: 5px;
 }
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #7404FA;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* 테스트 로딩 */
 
 </style>

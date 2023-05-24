@@ -53,6 +53,7 @@ form {
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
+  padding-bottom: 70px;
 }
 
 .content {
@@ -101,7 +102,7 @@ form {
   box-sizing: border-box;
   width: 80%;
   margin-top: 5%;
-  min-height: 5vh;
+  min-height: 2vh;
   display: flex;
   flex-direction: column;
   align-items: center;

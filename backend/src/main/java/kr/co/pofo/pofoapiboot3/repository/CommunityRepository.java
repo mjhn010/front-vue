@@ -19,6 +19,5 @@ public interface CommunityRepository {
 
     // 커뮤니티 상세조회
     CommunityView findById(Long id);
-
-
+    int updateCloseFlag(int communityId);
 }

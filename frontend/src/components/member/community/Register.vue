@@ -6,7 +6,7 @@ import { useRouter, useRoute } from 'vue-router';
 
 let userDetails = useUserDetailsStore();
 let router = useRouter();
-let route = useRoute();
+let showLoaing = ref(false);
 
 // --- Variables ---------------------------------------
 let community = reactive({
@@ -25,6 +25,7 @@ let isUploaded = ref(false);
 
 // --- Event Handlers ----------------------------------
 async function registerHandler() {
+    showLoaing.value = true;
     const url = new URL("http://localhost:8080/members/community/register");
     let form = document.querySelector("#form");
     const formData = new FormData(form);
@@ -43,10 +44,11 @@ async function registerHandler() {
 
 
     if (result == "true") {
+        showLoaing.value = false;
         alert("Post created successfully.");
         router.push("/community/list");
-        location.reload();
     } else {
+        showLoaing.value = false;
         alert("Failed to create post.");
     }
 }
@@ -91,10 +93,8 @@ function fileInputHandler(e) {
         reader.readAsDataURL(file);
 
     } else {
-        console.log('파일이 선택되지 않았습니다.');
         imgRef.value = null;
     }
-    console.log(imgRef)
 
 }
 
@@ -183,6 +183,9 @@ function resetHandler(){
                 </div>
             </main>
         </form>
+    </div>
+    <div class="loading-screen" v-show="showLoaing">
+        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
     </div>
 </template>
 <style scoped>

@@ -61,7 +61,6 @@ async function load() {
     let response = await fetch(`http://localhost:8080/members/myprofile/${param}`);
     let json = await response.json();
     model.myInfo = json.member;
-    console.log(model.myInfo);
     model.list[0] = json.works;
     model.list[1] = json.likes;
     model.list[2] = json.collections;
@@ -428,9 +427,9 @@ function isPassword() {
         @follow="follow" />
 
     <!-- 로딩 gif -->
-    <div class="loading-screen" v-show="showLoaing">
-        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
-    </div>
+    <div v-show="showLoaing" class="loading-screen">
+    <div  class=" loading-white-bg loader"></div>
+  </div>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/profile.css");
@@ -509,34 +508,24 @@ input:read-only {
     color: gray;
 }
 
-
-.loading-screen {
-    background-color: rgba(0, 0, 0, 0.8);
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.loading-white-bg {
-    position: absolute;
-    top: 30%;
-    left: 42%;
-    height: 1200;
-    width: 320px;
-    padding: 40px 48px;
-    border: 1px solid rgb(240, 245, 245);
-    background: rgb(255, 255, 255);
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
 .hover:hover {
     cursor: pointer;
+}
+
+
+
+/* 로딩 css추가  */
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #7404FA;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

@@ -327,7 +327,6 @@ function logoutHandler() {
 
 
 async function changeClickFlag(e, index) {
-  console.log(notificationList[index]);
   await fetch(`http://localhost:8080/notifications/changeflag/${notificationList[index].id}`, {
     method: "PUT"
   });
