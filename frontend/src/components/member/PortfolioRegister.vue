@@ -194,6 +194,9 @@ function closePreview(){
 }
 
 function inputFileclickHandler(e){
+  console.log(e.target.tagName);
+  if(e.target.tagName === 'IMG')
+    return;
   let element = e.currentTarget;
   let inputTypeFile = element.querySelector('input[type="file"]');
   inputTypeFile.click();
@@ -254,7 +257,7 @@ function inputFileclickHandler(e){
             <section @dragover.stop.prevent="onDragover" @drop.stop.prevent="dropHandler($event, index)"
               v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
               class="click-img-box" :class="{'default-box' : pofo.type!='text', 'default-box-text' : pofo.type=='text'}" @click="inputFileclickHandler" >
-              <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
+              <div @click.stop.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">
               </div>
               <div class="upload-d-none" v-if="pofo.type == 'img'">
