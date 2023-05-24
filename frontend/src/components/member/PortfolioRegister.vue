@@ -448,12 +448,15 @@ function closePreview(){
   content: attr(placeholder);
   margin-top: 3px;
   color: #9A9A97;
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: 16px;
+  padding-left: 5px;
 }
 
 .p-tags:focus {
   outline: none;
   max-width: 90%;
+  padding-left: 5px;
 }
 .loader {
   border: 16px solid #f3f3f3; /* Light grey */
