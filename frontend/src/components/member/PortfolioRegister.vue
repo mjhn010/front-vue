@@ -384,7 +384,7 @@ function closePreview(){
           </div>
           <div class="check-box margin-top-2">
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="1" checked="checked">java</label>
-            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="2">javaScript</label>
+            <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="2">JavaScript</label>
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="3">python</label>
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="4">C</label>
             <label class="skill-label"><input class="cb" type="checkbox" name="skills" value="5">C#</label>

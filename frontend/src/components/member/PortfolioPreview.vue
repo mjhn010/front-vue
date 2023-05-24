@@ -67,7 +67,7 @@ defineExpose({
 
 <template>
   <div
-    class="absolute h-full w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8"
+    class="absolute min-h-full max-h-fit w-full gap-y-2 bg-gray-50 xl:grid xl:grid-cols-12 xl:px-16 xl:pb-8"
     v-if="state.visible"
   >
     <div
@@ -100,7 +100,7 @@ defineExpose({
           </div>
         </figcaption>
         <div
-          class="x-mark-icon cursor-pointer bg-cover bg-no-repeat"
+          class="x-mark-icon cursor-pointer bg-cover bg-no-repeat opacity-50 hover:opacity-100"
           @click="$emit('close')"
         />
       </figure>
