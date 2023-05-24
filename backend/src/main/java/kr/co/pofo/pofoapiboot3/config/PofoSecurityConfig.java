@@ -23,26 +23,13 @@ public class PofoSecurityConfig implements WebMvcConfigurer {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-      .csrf()
-      .disable()
-      .authorizeHttpRequests(authorize ->
-        authorize
-          .requestMatchers("/admin/**")
-          .hasRole("ADMIN")
-          .requestMatchers("/member/**")
-          .hasAnyRole("ADMIN", "MEMBER")
-          .anyRequest()
-          .permitAll()
-      )
-      .formLogin()
-      .loginPage("/user/login") //GET
-      .loginProcessingUrl("/user/login") //post
-      .defaultSuccessUrl("/index")
-      .and()
-      .logout()
-      .logoutUrl("/user/logout")
-      .logoutSuccessUrl("/");
+    
+    http.cors().and()
+            .csrf().disable()
+            .authorizeHttpRequests()
+            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+            .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
+            .anyRequest().permitAll();
 
     return http.build();
   }
