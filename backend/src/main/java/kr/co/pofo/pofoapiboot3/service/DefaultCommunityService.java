@@ -50,4 +50,8 @@ public class DefaultCommunityService implements CommunityService {
         return repository.findById(id);
     }
 
+    @Override
+    public List<Community> getByUserId(int id) {
+        return teamRepository.findByUserId(id);
+    }
 }

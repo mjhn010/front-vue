@@ -96,14 +96,14 @@ public class CommunityController {
     }
 
     @PostMapping("accept")
-    public String accept (int memberId, int communityId, int id){
+    public String accept (Integer memberId, Integer communityId, int id){
         communityTeamService.add(memberId, communityId);
         notificationService.updateAcceptFlag(id);
         return "ok";
     }
 
     @PostMapping("reject")
-    public String reject (int memberId, int communityId, int id){
+    public String reject (Integer memberId, Integer communityId, int id){
         communityTeamService.addReject(memberId, communityId);
         notificationService.updateReject(id);
         return "ok";

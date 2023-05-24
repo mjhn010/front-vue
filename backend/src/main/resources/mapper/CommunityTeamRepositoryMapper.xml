@@ -11,8 +11,8 @@
 
 	<!-- 팀 등록 -->
 	<insert id="insert" parameterType="CommunityTeam">
-		insert into community_team(community_id, member_id)
-		values(#{communityId}, #{memberId})
+		insert into community_team(community_id, member_id, register_flag)
+		values(#{communityId}, #{memberId}, 1)
 	</insert>
 
 	<select id="findInfo" resultMap="communityTeamResultMap">
@@ -36,5 +36,18 @@
 		values(#{communityId}, #{memberId}, 1)
 	</insert>
 	
+
+	<select id="findByUserId" resultType="Community">
+
+		select
+			*
+		from
+			community
+		where
+			id in (select community_id from community_team where member_id = ${id})
+
+	</select>
+
+
 </mapper>
     

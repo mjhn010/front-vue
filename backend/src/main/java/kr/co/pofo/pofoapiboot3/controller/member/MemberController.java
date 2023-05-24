@@ -19,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.pofo.pofoapiboot3.entity.Activities;
+import kr.co.pofo.pofoapiboot3.entity.Community;
 import kr.co.pofo.pofoapiboot3.entity.Member;
 import kr.co.pofo.pofoapiboot3.entity.Portfolio;
 import kr.co.pofo.pofoapiboot3.service.ActivitiesService;
 import kr.co.pofo.pofoapiboot3.service.CollectionsService;
+import kr.co.pofo.pofoapiboot3.service.CommunityService;
 import kr.co.pofo.pofoapiboot3.service.MemberService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioLikeService;
 import kr.co.pofo.pofoapiboot3.service.PortfolioService;
@@ -45,6 +47,9 @@ public class MemberController {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private CommunityService communityService;
+
     @GetMapping("/myprofile/{id}")
     public ResponseEntity<Map<String, Object>> myProfile(@PathVariable("id") int id) {
         Map<String, Object> map = new HashMap<>();
@@ -60,6 +65,9 @@ public class MemberController {
         List<Portfolio> collections = collectionsService.getByUserId(id);
         map.put("collections", collections);
 
+        List<Community> communities = communityService.getByUserId(id);
+        map.put("communities", communities);
+        
         Activities activities = activitiesService.settingActivities(id);
         map.put("activities", activities);
 

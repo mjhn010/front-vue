@@ -1,9 +1,9 @@
 <script setup>
-import { reactive, onMounted, ref, watch, defineComponent, onBeforeMount } from 'vue';
+import { reactive, onMounted, watch, onBeforeMount,onBeforeUnmount } from 'vue';
 import Header from './Header.vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router';
 import { useUserDetailsStore } from '../stores/useUserDetailsStore';
 
 // --- Variables ---------------------------------------
@@ -15,9 +15,7 @@ let portfolio = reactive({
   query: null, // 검색어를 담을 변수, 
 
   weeklyPopularList: [], // 이번주 인기 포트폴리오 리스트를 담을 변수
-
-  nextOffset: 0, // 다음 리스트를 가져오기 위한 오프셋 값
-  limit: 15, // 한 번에 가져올 리스트의 개수
+  offset: 0, // 다음 리스트를 가져오기 위한 오프셋 값
 });
 
 let userDetails = useUserDetailsStore();
@@ -29,13 +27,33 @@ onBeforeMount(()=>{
   if(route.path == "/")
     router.push("/index")
 })
-onMounted(fetchPortfolios);
+onMounted(async ()=>{
+  if(route.query.q)
+    portfolio.query = route.query.q;
+  await fetchPortfolios();
+});
 watch(() => [portfolio.sort, portfolio.collaboration, portfolio.language, portfolio.query], fetchPortfolios); // 변수가 변경될 때마다 함수 실행
 
 // 스크롤 이벤트 리스너 등록
-// onMounted(() => {
-//   window.addEventListener('scroll', scrollHandler);
-// });
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.query.q != from.query.q) {
+        portfolio.query = to.query.q;
+        fetchPortfolios();
+        next();
+  }
+  else if(!to.query.q){
+    fetchPortfolios();
+  }
+});
+
 
 // --- Event Handlers ----------------------------------
 function queryUpdateHandler(query) {
@@ -61,6 +79,27 @@ async function fetchPortfolios() {
   portfolio.weeklyPopularList = json.weeklyPopularList;
 }
 
+async function refetchPortfolios(offset) {
+  const url = new URL('http://localhost:8080/index');
+  url.searchParams.set('offset', offset);
+  url.searchParams.set('sort', portfolio.sort); // URL의 query string을 처리하는 함수
+  if (portfolio.collaboration !== null) { // 협업여부를 선택한 경우 쿼리 파라미터를 추가함
+    url.searchParams.set('collaboration', portfolio.collaboration);
+  }
+  if (portfolio.language !== null) { // 프로그래밍언어를 선택한 경우 쿼리 파라미터를 추가함
+    url.searchParams.set('language', portfolio.language);
+  }
+  if (portfolio.query !== null) { // 검색한 경우 쿼리 파라미터를 추가함
+    url.searchParams.set('query', portfolio.query);
+  }
+
+  let response = await fetch(url);
+  let json = await response.json();
+  for(let item of json.list)
+    portfolio.list.push(item);
+}
+
+
 function profileIdClickHandler(e, memberId){
   if(memberId === userDetails.id)
     router.push("/member/profile/"+memberId);
@@ -74,6 +113,16 @@ async function portfolioClickHandler(id) {
   await fetch(url);
 }
 
+
+function handleScroll(){
+  const documentHeight = document.documentElement.offsetHeight;
+  const scrollPosition = window.innerHeight + window.pageYOffset;
+
+  if (scrollPosition >= documentHeight) {
+    portfolio.offset += 15;
+    refetchPortfolios(portfolio.offset);
+  }
+};
 
 </script>
 

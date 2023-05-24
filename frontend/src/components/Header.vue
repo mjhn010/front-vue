@@ -2,7 +2,7 @@
   <header class="com-header" v-if="!userDetails.isAuthenticated">
     <ul class="menu-bar">
       <li>
-        <router-link to="/index"><img class="header-logo" src="/src/assets/images/Pofo.svg" alt="logo" /></router-link>
+        <router-link to="/index" @click="removeQuery"><img class="header-logo" src="/src/assets/images/Pofo.svg" alt="logo" /></router-link>
       </li>
       <li class="pro"><a href="">프로젝트</a></li>
       <li class="community">
@@ -11,8 +11,8 @@
     </ul>
     <div class="search-box">
       <img class="search-img" src="/src/assets/images/free-icon-search-482631-3.svg" alt="돋보기" /><input
-        class="header-search" type="text" placeholder="검색어를 입력해보세요"
-        @keydown.enter="(event) => { $emit('query-updated', event.target.value) }" />
+        class="header-search" type="text" placeholder="검색어를 입력해보세요" v-model = "query"
+        @keydown.enter="search()" />
     </div>
     <ul class="m-menu user-bar">
       <li class="login-li">
@@ -38,8 +38,8 @@
     </ul>
     <div class="search-box">
       <img class="search-img" src="/src/assets/images/free-icon-search-482631-3.svg" alt="돋보기" /><input
-        class="header-search" type="text" placeholder="검색어를 입력해보세요"
-        @keydown.enter="(event) => { $emit('query-updated', event.target.value) }" />
+        class="header-search" type="text" placeholder="검색어를 입력해보세요" v-model = "query"
+        @keydown.enter="search()" />
     </div>
     <ul class="m-menu member-bar">
       <li v-if="route.path.includes('/community')">
@@ -261,6 +261,8 @@ let userDetails = useUserDetailsStore();
 let router = useRouter();
 let route = useRoute();
 
+let query = ref();
+
 let loginUrl = ref("");
 onMounted(async () => {
   if (route.path != '/login') {
@@ -376,22 +378,11 @@ async function rejectBtn(index) {
   }
 }
 
-function isIndexPage() {
-    const path = window.location.pathname;
-    return path === '/index';
+  function search() {
+      router.push('/index?q='+query.value);
   }
 
-  function handleSearchEnter(event) {
-      const query = event.target.value;
-      const router = useRouter();
-      if (isIndexPage()) {
-        // $emit('query-updated', query);
-        const emit = defineEmits(['query-updated', query])
-      } else {
-        router.push({ path: '/index', query: { query } });
-        const emit = defineEmits(['query-updated', query])
-      }
+  function removeQuery(){
+    query.value = '';
   }
-
-
 </script>

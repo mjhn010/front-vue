@@ -46,7 +46,7 @@ let showLoaing = ref(false);
 
 let model = reactive({
     myInfo: {},
-    list: [[], [], []],
+    list: [[], [], [], []],
     currentList: [],
     activities: {}
 })
@@ -61,9 +61,11 @@ async function load() {
     let response = await fetch(`http://localhost:8080/members/myprofile/${param}`);
     let json = await response.json();
     model.myInfo = json.member;
+    console.log(model.myInfo);
     model.list[0] = json.works;
     model.list[1] = json.likes;
     model.list[2] = json.collections;
+    model.list[3] = json.communities;
     model.currentList = json.works;
     model.activities = json.activities;
 }
@@ -92,7 +94,11 @@ function clickLikes() {
 function clickCollections() {
     current.value = 2;
     model.currentList = model.list[2];
-    
+}
+
+function clickCommunities() {
+    current.value = 3;
+    model.currentList = model.list[3];
 }
 
 watch(nickname, () => {
@@ -332,10 +338,14 @@ function isPassword() {
                         <span :class="{ 'non-seleted': current != 2, 'selected': current == 2 }">컬렉션</span>
                         <span class="num" :class="{ 'num-non-selected': current != 2 }">{{ model.list[2].length }}</span>
                     </div>
+                    <div @click="clickCommunities">
+                        <span :class="{ 'non-seleted': current != 3, 'selected': current == 3 }">커뮤니티</span>
+                        <span class="num" :class="{ 'num-non-selected': current != 3 }">{{ model.list[3].length }}</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="portfolio-lists">
+            <div class="portfolio-lists" v-if="current < 3">
                 <router-link :to="'/pofo/' + pofo.id" v-for="pofo in model.currentList">
                     <div class="thumbnail" :data-title="pofo.title">
                         <span>
@@ -345,6 +355,15 @@ function isPassword() {
                 </router-link>
             </div>
 
+            <div class="portfolio-lists" v-else>
+                <router-link :to="'/community/' + commu.id" v-for="commu in model.currentList">
+                    <div class="thumbnail" :data-title="commu.title">
+                        <span>
+                            <img :src="'http://localhost:8080/communityImage/' + commu.thumbnail">
+                        </span>
+                    </div>
+                </router-link>
+            </div>
         </section>
     </main>
 

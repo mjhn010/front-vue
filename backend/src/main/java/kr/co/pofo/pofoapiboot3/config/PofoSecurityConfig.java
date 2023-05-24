@@ -15,15 +15,24 @@ public class PofoSecurityConfig {
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    http.cors().and()
-            .csrf().disable()
-            .authorizeHttpRequests()
-            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-            .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
-            .anyRequest().permitAll();
+   http.csrf().disable()
+   .authorizeHttpRequests(authorize -> authorize
+       .requestMatchers("/admin/**").hasRole("ADMIN")
+       .requestMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
+       .anyRequest().permitAll()
+   )
+   .formLogin()
+       .loginPage("/admin/login") //GET
+       .loginProcessingUrl("/user/login") //post
+       .defaultSuccessUrl("/index")
+   .and()
+           .logout()
+           .logoutUrl("/user/logout")
+           .logoutSuccessUrl("/");
 
-    return http.build();
-}
+       return http.build();
+   }
+
    
    @Bean
    public PasswordEncoder passwordEncoder() {

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.pofo.pofoapiboot3.entity.CommunityTeam;
+import kr.co.pofo.pofoapiboot3.entity.Notification;
 import kr.co.pofo.pofoapiboot3.repository.CommunityTeamRepository;
 
 @Service
