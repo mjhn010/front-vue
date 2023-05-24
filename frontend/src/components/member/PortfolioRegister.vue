@@ -21,8 +21,7 @@ let router = useRouter();
 
 let showLoaing = ref(false);
 
-let isSingle = ref(true);
-let isTeam = ref(false);
+let inputFile = ref(null);
 
 function arrayRemove(event, index) {
   list.splice(index, 1);
@@ -39,7 +38,6 @@ function textPlusHandler() {
 }
 
 function resetHandler(){
-  console.log("click")
   list.length = 0;
 }
 
@@ -197,6 +195,13 @@ function closePreview(){
   portfolioPreview.value.close();
   onOpenPreview.value = false;
 }
+
+function inputFileclickHandler(e){
+  let element = e.currentTarget;
+  let inputTypeFile = element.querySelector('input[type="file"]');
+  inputTypeFile.click();
+}
+
 </script>
 <template>
   <div v-show="showModal" class="screen"></div>
@@ -227,8 +232,8 @@ function closePreview(){
             <div class="start-app">
               <div class="margin-right-5 sub-box">
                 <div @click="imgPlusHandler" class="app-box">
-                  <img class="hover" src="/src/assets/images/img.png" alt=""><img class="hover d-none"
-                    src="/src/assets/images/fff-img.png" alt="">
+                  <img class="hover" src="/src/assets/images/img.png" alt="">
+                  <img class="hover d-none" src="/src/assets/images/fff-img.png" alt="">
                 </div>
                 <div class="app-box-font">
                   이미지
@@ -236,8 +241,8 @@ function closePreview(){
               </div>
               <div class="sub-box">
                 <div @click="textPlusHandler" class="app-box">
-                  <img class="hover" src="/src/assets/images/text.png" alt=""><img class="hover d-none"
-                    src="/src/assets/images/fff-text.png" alt="">
+                  <img class="hover" src="/src/assets/images/text.png" alt="">
+                  <img class="hover d-none" src="/src/assets/images/fff-text.png" alt="">
                 </div>
                 <div class="app-box-font">
                   텍스트
@@ -251,7 +256,7 @@ function closePreview(){
 
             <section @dragover.stop.prevent="onDragover" @drop.stop.prevent="dropHandler($event, index)"
               v-on:mouseover.stop.prevent="removeDnone" v-on:mouseleave.stop.prevent="addDnone"
-              class="click-img-box" :class="{'default-box' : pofo.type!='text', 'default-box-text' : pofo.type=='text'}">
+              class="click-img-box" :class="{'default-box' : pofo.type!='text', 'default-box-text' : pofo.type=='text'}" @click="inputFileclickHandler" >
               <div @click.prevent="arrayRemove($event, index)" class="erase-box d-none">
                 <img class="erase" src="/src/assets/images/erase.png" alt="">
               </div>
@@ -262,9 +267,9 @@ function closePreview(){
                 <div class="start-app">
                   <div class="sub-box">
                     <div class="app-box">
-                      <input @input="imgInputHandler($event, index)" class="d-none" ref="inputFile" type="file" multiple
+                      <input @input="imgInputHandler($event, index)" class="d-none" type="file" multiple
                         accept="jpg,gif,png">
-                      <img @click.prevent="imgClickHandler" ref="forderOnpe" class="hover"
+                      <img class="hover"
                         src="/src/assets/images/img.png" alt="">
                     </div>
                   </div>
