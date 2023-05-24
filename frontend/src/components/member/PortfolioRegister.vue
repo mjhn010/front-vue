@@ -189,23 +189,15 @@ async function send(e) {
       });
     }
   }
-<<<<<<< HEAD
 
 
-  // 로딩
-  //   setTimeout()무조건 써야함 왜냐하면 이미지 로딩때문에 써야함.
-  //  return router.push("/index");
-    //  setTimeout(()=>{
-    //   return router.push("/member/profile/"+userDetails.id);
-    //  },2000)
-  return router.push("/member/profile/"+userDetails.id);
-=======
+
    let result = await response.text();
    if(result){
      showLoaing.value = false;
      router.push("/member/profile/"+userDetails.id);
    }
->>>>>>> fe4fd2eac5969b86371a6eb8331976d521af75db
+
 }
 
 
@@ -404,9 +396,13 @@ async function send(e) {
       </div>
     </div>
   </form>
-  <div class="loading-screen" v-show="showLoaing">
-        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
+  <!-- <div class="loading-screen" v-show="showLoaing">
+        <img class="loading-white-bg" src="/src/assets/images/9102278275dbf.gif">
+  </div> -->
+  <div v-show="showLoaing" class="loading-screen">
+    <div  class=" loading-white-bg loader"></div>
   </div>
+  
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/register.css");
@@ -463,5 +459,21 @@ async function send(e) {
   outline: none;
   max-width: 90%;
 }
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #7404FA;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* 테스트 로딩 */
 
 </style>
