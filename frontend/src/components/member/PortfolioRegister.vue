@@ -21,6 +21,8 @@ let router = useRouter();
 
 let showLoaing = ref(false);
 
+let isSingle = ref(true);
+let isTeam = ref(false);
 
 function arrayRemove(event, index) {
   list.splice(index, 1);
@@ -51,6 +53,13 @@ function imgClickHandler(e) {
 }
 
 
+function checkOnlyOne(e){
+  let checkboxs = document.getElementsByName("collaboration");
+  checkboxs.forEach((cb)=>{
+    cb.checked = false;
+  });
+  e.target.checked = true;
+}
 
 function thumbmailClick(e) {
   let upSibling = e.target.previousSibling
@@ -116,30 +125,6 @@ function dropHandler(event, index) {
   
   startApp.classList.add("d-none");
   mainTitle.classList.add("d-none");
-}
-
-// 체크박스 하나만 선택해서 하기 선택자 사용하지않고 짜증나네
-function singgleChecked(e) {
-  if (e.target == singgle.value) {
-    singgle.value.checked = true;
-    team.value.checked = false;
-    let look = e.target.closest(".select-team")
-    let teamBox = look.nextElementSibling
-    let teamInput = teamBox.nextElementSibling
-    teamBox.classList.add("d-none")
-    teamInput.classList.add("d-none")
-  }
-}
-function teamChecked(e) {
-  if (e.target == team.value) {
-    team.value.checked = true;
-    singgle.value.checked = false;
-    let look = e.target.closest(".select-team")
-    let teamBox = look.nextElementSibling
-    let teamInput = teamBox.nextElementSibling
-    teamBox.classList.remove("d-none")
-    teamInput.classList.remove("d-none")
-  }
 }
 
 function saveData(event, index) {
@@ -398,17 +383,13 @@ function closePreview(){
             <span class="thumbnail-span">개인or팀</span><span class="thumbnail-color">(필수)</span>
           </div>
           <div class="select-team team-info margin-top-3">
-            <label class="skill-label singgle"><input ref="singgle" @click="singgleChecked($event)" class="cb"
-                type="checkbox" checked name="collaboration" value="0">개인</label>
-            <label class="skill-label team"><input ref="team" @click="teamChecked($event)" class="cb" type="checkbox"
-                name="collaboration" value="1">팀</label>
-            <!-- <input class="cb" type="checkbox" name="singgle" value="0">개인 -->
-            <!-- <input class="cb" type="checkbox" name="team" value="1">팀 -->
+            <label class="skill-label singgle">
+              <input ref="singgle" class="cb" checked type="checkbox" name="collaboration" value="0" @click="checkOnlyOne">개인
+            </label>
+            <label class="skill-label team">
+              <input ref="team" class="cb" type="checkbox" name="collaboration" value="1" @click="checkOnlyOne">팀
+            </label>
           </div>
-          <div class="d-none modal-main-text margin-top-5">
-            <span class="thumbnail-span">팀원등록</span><span class="thumbnail-color">(선택)</span>
-          </div>
-          <input class=" d-none modal-main-team margin-top-2" type="text" placeholder="팀원을 등록해보세요.">
           <div class="submit-box margin-top-7">
             <input  class="modal-submit-btn" type="submit" value="업로드">
           </div>
