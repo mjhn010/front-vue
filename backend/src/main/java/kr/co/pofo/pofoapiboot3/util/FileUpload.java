@@ -22,7 +22,10 @@ public class FileUpload {
             urlPath = "portfolio/thumbnails" + File.separator + modifiedName;
         if(type == 1) 
             urlPath = "portfolio/contents" + File.separator + modifiedName;
+        if(type == 2) 
+            urlPath = "communityImage" + File.separator + modifiedName;
         String realPath = request.getServletContext().getRealPath(urlPath);
+        
         try {
             img.transferTo(new File(realPath));
         } catch (IllegalStateException | IOException e) {

@@ -509,33 +509,6 @@ input:read-only {
     color: gray;
 }
 
-
-.loading-screen {
-    background-color: rgba(0, 0, 0, 0.8);
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.loading-white-bg {
-    position: absolute;
-    top: 30%;
-    left: 42%;
-    height: 1200;
-    width: 320px;
-    padding: 40px 48px;
-    border: 1px solid rgb(240, 245, 245);
-    background: rgb(255, 255, 255);
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
 .hover:hover {
     cursor: pointer;
 }

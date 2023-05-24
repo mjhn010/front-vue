@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.pofo.pofoapiboot3.entity.Community;
 import kr.co.pofo.pofoapiboot3.service.CommunityService;
+import kr.co.pofo.pofoapiboot3.util.FileUpload;
 
 @RestController("memberCommunityController")
 @RequestMapping("/members/community")
@@ -20,22 +21,23 @@ public class CommunityController {
     
     @Autowired
     private CommunityService service;
+    @Autowired
+    private FileUpload fileUpload;
 
     // 커뮤니티 등록
     @PostMapping("register")
     public boolean register(MultipartFile image, Community post, Boolean onlineType, HttpServletRequest request) throws IllegalStateException, IOException{
         String originalFilename = image.getOriginalFilename();
-        String encodedFilename = URLEncoder.encode(originalFilename, "UTF-8");
+        String modifiedName = fileUpload.modifyImgName(originalFilename);
 
-        post.setThumbnail(encodedFilename);
-
-        String urlPath = "/communityImage" +File.separator + encodedFilename;
-        String realPath = request.getServletContext().getRealPath(urlPath);
-        
-        image.transferTo(new File(realPath));
-
+        fileUpload.upload(image, modifiedName, 2);
+        post.setThumbnail(modifiedName);
         boolean result = service.register(post);
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
     }
     

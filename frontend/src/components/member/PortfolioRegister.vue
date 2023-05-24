@@ -18,6 +18,7 @@ let team = ref(false);
 let userDetails = useUserDetailsStore();
 let router = useRouter();
 
+let showLoaing = ref(false);
 
 
 function arrayRemove(event, index) {
@@ -145,6 +146,7 @@ function saveData(event, index) {
 }
 
 async function send(e) {
+  showLoaing.value =true;
   console.log(userDetails.id);
   let form = document.querySelector("#form")
   let formData = new FormData(form);
@@ -158,7 +160,7 @@ async function send(e) {
     }
    
   });
-
+  let response = null;
   let order = 0;
   for (let content of list) {
     if (content.img.length != 0) {
@@ -166,7 +168,7 @@ async function send(e) {
         let formdata = new FormData();
         formdata.append("contents", img);
         formdata.append("orders", order++);
-        await fetch("http://localhost:8080/members/regcontent", {
+        response = await fetch("http://localhost:8080/members/regcontent", {
           method: "POST",
           headers: {
             "Accept": "application/json"
@@ -178,7 +180,7 @@ async function send(e) {
       let formdata = new FormData();
       formdata.append("contents", content.text);
       formdata.append("orders", order++);
-      await fetch("http://localhost:8080/members/regcontent", {
+      response = await fetch("http://localhost:8080/members/regcontent", {
         method: "POST",
         headers: {
           "Accept": "application/json"
@@ -187,6 +189,7 @@ async function send(e) {
       });
     }
   }
+<<<<<<< HEAD
 
 
   // 로딩
@@ -196,6 +199,13 @@ async function send(e) {
     //   return router.push("/member/profile/"+userDetails.id);
     //  },2000)
   return router.push("/member/profile/"+userDetails.id);
+=======
+   let result = await response.text();
+   if(result){
+     showLoaing.value = false;
+     router.push("/member/profile/"+userDetails.id);
+   }
+>>>>>>> fe4fd2eac5969b86371a6eb8331976d521af75db
 }
 
 
@@ -394,6 +404,9 @@ async function send(e) {
       </div>
     </div>
   </form>
+  <div class="loading-screen" v-show="showLoaing">
+        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
+  </div>
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/register.css");
