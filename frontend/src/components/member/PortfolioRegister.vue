@@ -396,9 +396,6 @@ async function send(e) {
       </div>
     </div>
   </form>
-  <!-- <div class="loading-screen" v-show="showLoaing">
-        <img class="loading-white-bg" src="/src/assets/images/9102278275dbf.gif">
-  </div> -->
   <div v-show="showLoaing" class="loading-screen">
     <div  class=" loading-white-bg loader"></div>
   </div>
