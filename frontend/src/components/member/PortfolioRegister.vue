@@ -159,7 +159,7 @@ async function send(e) {
     headers: {
       "Accept": "application/json",
     }
-   
+
   });
   let response = null;
   let order = 0;
@@ -201,20 +201,35 @@ async function send(e) {
 
 }
 
-
-
-
-  
-
-
+// Preview
+const portfolioPreview = ref(null);
+const onOpenPreview = reactive({ value: false });
+function openPreview(){
+  portfolioPreview.value.open();
+  onOpenPreview.value = true;
+}
+function closePreview(){
+  portfolioPreview.value.close();
+  onOpenPreview.value = false;
+}
 </script>
 <template>
-  <portfolio-preview />
   <div v-show="showModal" class="screen"></div>
   <Header />
+  <portfolio-preview
+      ref="portfolioPreview"
+      :title="title"
+      :contents="list"
+      @open="openPreview"
+      @close="closePreview"
+      style="z-index: 1"
+  />
   <form @submit.prevent="send($event)" id="form"  method="post" enctype="multipart/form-data">
     <div class="container">
-      <main class="reg-main">
+      <main
+          class="reg-main"
+          v-show="!onOpenPreview.value"
+      >
         <div class="reg-title-box">
           <input v-model="title" class="reg-title" type="text" name="title" placeholder="제목을 입력해주세요.">
         </div>
@@ -314,7 +329,10 @@ async function send(e) {
                 <img class="aside-img" src="/src/assets/images/erase.png" alt="">전체삭제
               </button>
             </li>
-            <li class="aside-li">
+            <li
+                class="aside-li"
+                @click.prevent="openPreview"
+            >
               <button class="aside-btn">
                 <img class="aside-img" src="/src/assets/images/preview.png" alt="">미리보기
               </button>
@@ -450,8 +468,6 @@ async function send(e) {
   margin-top: 3px;
   color: #9A9A97;
   font-size: 20px;
-
-
 }
 
 .p-tags:focus {

@@ -106,6 +106,7 @@ async function getData() {
       state.portfolio = data.portfolio;
       state.member = data.member;
     })
+    .then(checkMine)
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -710,7 +711,7 @@ onBeforeRouteUpdate((to, from, next) => {
       :class="onCommentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
-      <figure class="flex p-6 border-b">
+      <figure class="flex border-b p-6">
         <router-link
           :to="
             state.isMine
