@@ -16,7 +16,7 @@
         INSERT INTO
             report
         VALUES
-            (DEFAULT, #{memberId}, #{portfolioId}, #{recruitId}, DEFAULT)
+            (DEFAULT, #{memberId}, #{portfolioId}, DEFAULT)
     </insert>
 
     <delete id="deletePortfolioReport">
