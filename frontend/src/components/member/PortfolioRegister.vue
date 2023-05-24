@@ -19,6 +19,7 @@ let userDetails = useUserDetailsStore();
 let router = useRouter();
 
 
+
 function arrayRemove(event, index) {
   list.splice(index, 1);
 }
@@ -32,6 +33,12 @@ function textPlusHandler() {
   list.push({ type: "text", text: "", img: [], fileInfo: [] });
   listIndex++;
 }
+
+function resetHandler(){
+  console.log("click")
+  list.length = 0;
+}
+
 function showModalHandler() {
   showModal.value = !showModal.value;
 }
@@ -104,7 +111,7 @@ function dropHandler(event, index) {
     objecUrls.push(URL.createObjectURL(flie))
 
   list[index].img = objecUrls;
-
+  
   startApp.classList.add("d-none");
   mainTitle.classList.add("d-none");
 }
@@ -185,7 +192,10 @@ async function send(e) {
   // 로딩
   //   setTimeout()무조건 써야함 왜냐하면 이미지 로딩때문에 써야함.
   //  return router.push("/index");
-   return router.push("/member/profile/"+userDetails.id);
+    //  setTimeout(()=>{
+    //   return router.push("/member/profile/"+userDetails.id);
+    //  },2000)
+  return router.push("/member/profile/"+userDetails.id);
 }
 
 
@@ -296,8 +306,8 @@ async function send(e) {
           </ul>
           <ul class="content-select">
             <li class="aside-li">
-              <button class="aside-btn">
-                <img class="aside-img" src="/src/assets/images/content.svg" alt="">콘텐츠재정렬
+              <button @click.prevent="resetHandler" class="aside-btn">
+                <img class="aside-img" src="/src/assets/images/erase.png" alt="">전체삭제
               </button>
             </li>
             <li class="aside-li">
@@ -387,6 +397,8 @@ async function send(e) {
 </template>
 <style scoped>
 @import url("/src/assets/css/compoment/register.css");
+
+
 
 .d-none {
   display: none;
