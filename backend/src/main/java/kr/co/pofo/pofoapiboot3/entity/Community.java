@@ -25,4 +25,5 @@ public class Community {
     private Date regDate;
     private Date deleteDate;
     private Long hit;
+    private int closeFlag;
 }

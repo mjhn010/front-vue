@@ -54,4 +54,9 @@ public class DefaultCommunityService implements CommunityService {
     public List<Community> getByUserId(int id) {
         return teamRepository.findByUserId(id);
     }
+
+    @Override
+    public void close(int communityId) {
+        repository.updateCloseFlag(communityId);
+    }
 }

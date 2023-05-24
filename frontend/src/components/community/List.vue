@@ -89,6 +89,8 @@ function communityClickHandler(id) {
             class="text-md block truncate font-semibold"
             v-text="community.title"
           />
+          <h3 class="float-right closed" v-if="community.closeFlag==1">모집 마감</h3>
+          <h3 class="float-right non-closed" v-else>모집 중</h3>
           <span
             class="sm:text:lg relative right-4 block w-24 rounded-tr-lg bg-white text-center font-bold sm:bottom-12 xl:bottom-14 xl:text-xl"
             v-if="community.onlineType === true"
@@ -130,4 +132,26 @@ function communityClickHandler(id) {
 
 <style scoped>
 @import url("/src/assets/css/tailwind.css");
+.float-right{
+  float: right !important;
+}
+h3 {
+  display: inline-block !important;
+}
+
+.closed{
+  background-color: gray;
+  font-size: 13px;
+  font-weight: 400;
+  color: white;
+  padding: 4px;
+}
+
+.non-closed{
+  background-color: #fdecc8;
+  font-size: 13px;
+  font-weight: 400;
+  color: #49290e;
+  padding: 4px;
+}
 </style>

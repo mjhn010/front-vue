@@ -30,6 +30,8 @@ onMounted(async () => {
     await getCommunityTeamInfo();
     if(userDetails.id != null) // 로그인된 경우만 확인함
         checkApplicationStatus();
+    else
+        btnText.value = "신청하기";
 })
 watch(() => [isApplied.value], checkApplicationStatus); // 변수가 변경될 때마다 함수 실행
 
@@ -109,10 +111,16 @@ async function checkApplicationStatus() {
 async function getCommunityTeamInfo(){
     let response = await fetch(`http://localhost:8080/community/getcommunityteaminfo?communityId=${route.params.id}&memberId=${userDetails.id}`);
     let json = await response.json();
-    teamInfo  = json;
+    teamInfo = json;
     console.log(teamInfo);
 }
 
+async function closeHandler(){
+    let response = await fetch(`http://localhost:8080/community/close?communityId=${route.params.id}`);
+    let result = await response.text();
+    if(result)
+        location.reload();
+}
 
 </script>
 
@@ -131,7 +139,8 @@ async function getCommunityTeamInfo(){
                     <div class="contents-title-text">{{ data.community.title }}</div>
                 </div>
                 <div class="contents-status-box">
-                    <div class="contents-status-1">모집 중</div>
+                    <div class="contents-status-1"  v-if="data.community.closeFlag==1">모집 마감</div>
+                    <div class="contents-status-1"  v-else>모집 중</div>
                     <!-- <div class="contents-status-2"></div> -->
                 </div>
 
@@ -163,20 +172,27 @@ async function getCommunityTeamInfo(){
 
                 <div class="divider"></div>
 
+                <p class="margin-top-3">
+                    자세한 팀원 모집은 알림과 채팅 기능을 이용해보세요!
+                </p>
                 <div class="contents-apply-form">
-                    <p>
-                        자세한 팀원 모집은 알림과 채팅 기능을 이용해보세요!
-                    </p>
-                    <!-- 0이면 참여 -->
-                    <button v-if="teamInfo.participateFlag==0" class="disabled" disabled="true">
+                    <button v-if="data.community.closeFlag==1" @click.prevent="closeHandler" class="disabled" disabled="true">
+                        모집 마감됨
+                    </button>
+                    <!-- 등록자인지 확인-->
+                    <button v-if="teamInfo.registerFlag==1 && data.community.closeFlag !=1" @click.prevent="closeHandler">
+                        모집 마감
+                    </button>
+                    <!--작성자가 아니고, 참여 수락했을 경우 -->
+                    <button v-if="teamInfo.registerFlag!=1 && teamInfo.participateFlag==0" class="disabled" disabled="true">
                         참여중
                     </button>
-                    <!-- 1이면 게시글 작성자가 거절 -->
-                    <button v-else-if="teamInfo.participateFlag==1" class="disabled" disabled="true">
+                    <!-- 작성자가 아니고, 참여 거절했을 경우 1이면 게시글 작성자가 거절 -->
+                    <button v-else-if="teamInfo.registerFlag!=1 && teamInfo.participateFlag==1" class="disabled" disabled="true">
                         거절됨
                     </button>
-                    <!-- 그 외 참여여부 확인 -->
-                    <button v-else @click.prevent="applyBtnClickHandler">
+                    <!-- 마감이 안 됐고, 참여한적이 없을 때 -->
+                    <button v-else-if="teamInfo.registerFlag!=1 && data.community.closeFlag!=1" @click.prevent="applyBtnClickHandler">
                         {{ btnText }}
                     </button>
                 </div>
@@ -323,7 +339,10 @@ main {
 }
 
 .contents-apply-form {
-    margin-top: 18px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
 }
 
 .contents-apply-form button {
