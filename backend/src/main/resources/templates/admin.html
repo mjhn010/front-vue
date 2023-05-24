@@ -374,8 +374,13 @@
                       전일대비 접속자 수
                       <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                     </h4>
-                    <h2 class="mb-5">27%증가</h2>
-                    <h6 class="card-text">Increased by 27%</h6>
+                    <h2 class="mb-5">
+                      <th:block th:text="${growth_rate}"></th:block>
+                      <th:block th:text="${change_status}"></th:block>
+                    </h2>
+                    <h6 class="card-text"> <th:block th:text="${change_status}"></th:block>
+                      <th:block th:text="by"></th:block>
+                      <th:block th:text="${growth_rate}"></th:block></h6>
                   </div>
                 </div>
               </div>
@@ -388,12 +393,15 @@
                       alt="circle-image"
                     />
                     <h4 class="font-weight-normal mb-3">
-                      지난달대비 회원가입 수<i
-                        class="mdi mdi-bookmark-outline mdi-24px float-right"
+                      전일대비 회원수<i
+                        class="mdi mdi-diamond mdi-24px float-right"
                       ></i>
                     </h4>
-                    <h2 class="mb-5">15%증가</h2>
-                    <h6 class="card-text">Increased by 15%</h6>
+                    <h2 class="mb-5">  <th:block th:text="${diff_percent}"></th:block>
+                      <th:block th:text="${diffStatus}"></th:block></h2>
+                    <h6 class="card-text"> <th:block th:text="${diffStatus}"></th:block>
+                      <th:block th:text="by"></th:block>
+                      <th:block th:text="${diff_percent}"></th:block></h6>
                   </div>
                 </div>
               </div>
@@ -408,12 +416,19 @@
                       alt="circle-image"
                     />
                     <h4 class="font-weight-normal mb-3">
-                      총 회원수<i
-                        class="mdi mdi-diamond mdi-24px float-right"
-                      ></i>
+                    
+                      지난달대비 회원가입 수<i
+                      class="mdi mdi-bookmark-outline mdi-24px float-right"
+                    ></i>
                     </h4>
-                    <h2 class="mb-5">5%감소</h2>
-                    <h6 class="card-text">Decrease by 5%</h6>
+                    <h2 class="mb-5">
+                      <th:block th:text="${signup_diffPercent}"></th:block>
+                      <th:block th:text="${signup_diffStatus}"></th:block>
+                    </h2>
+                    </h2>
+                    <h6 class="card-text"> <th:block th:text="${signup_diffStatus}"></th:block>
+                      <th:block th:text="by"></th:block>
+                      <th:block th:text="${signup_diffPercent}"></th:block></h6>
                   </div>
                 </div>
               </div>
