@@ -1,6 +1,6 @@
 <script setup>
 import Header from "../Header.vue";
-import { onMounted, onUpdated, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useUserDetailsStore } from '../../stores/useUserDetailsStore';
 import { useRouter } from "vue-router";
 import PortfolioPreview from "@/components/member/PortfolioPreview.vue";
@@ -131,7 +131,6 @@ function saveData(event, index) {
 
 async function send(e) {
   showLoaing.value =true;
-  console.log(userDetails.id);
   let form = document.querySelector("#form")
   let formData = new FormData(form);
   formData.append("memberId",userDetails.id);
@@ -173,8 +172,6 @@ async function send(e) {
       });
     }
   }
-
-
 
    let result = await response.text();
    if(result){

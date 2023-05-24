@@ -61,7 +61,6 @@ async function load() {
     let response = await fetch(`http://localhost:8080/members/myprofile/${param}`);
     let json = await response.json();
     model.myInfo = json.member;
-    console.log(model.myInfo);
     model.list[0] = json.works;
     model.list[1] = json.likes;
     model.list[2] = json.collections;

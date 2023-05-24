@@ -93,10 +93,8 @@ function fileInputHandler(e) {
         reader.readAsDataURL(file);
 
     } else {
-        console.log('파일이 선택되지 않았습니다.');
         imgRef.value = null;
     }
-    console.log(imgRef)
 
 }
 

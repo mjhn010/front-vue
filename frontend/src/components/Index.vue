@@ -108,7 +108,6 @@ function profileIdClickHandler(e, memberId){
 }
 
 async function portfolioClickHandler(id) {
-  console.log("조회수 안녕?");
   const url = new URL(`http://localhost:8080/pofo/update/${id}`);
   await fetch(url);
 }

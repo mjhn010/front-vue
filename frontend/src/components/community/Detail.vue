@@ -44,7 +44,6 @@ async function fetchCommunity() {
     let response = await fetch(url);
     let json = await response.json();
     data.community = json.community;
-    console.log(data.community);
 }
 
 function nicknameClickHandler(e, memberId) {
@@ -112,7 +111,6 @@ async function getCommunityTeamInfo(){
     let response = await fetch(`http://localhost:8080/community/getcommunityteaminfo?communityId=${route.params.id}&memberId=${userDetails.id}`);
     let json = await response.json();
     teamInfo = json;
-    console.log(teamInfo);
 }
 
 async function closeHandler(){
