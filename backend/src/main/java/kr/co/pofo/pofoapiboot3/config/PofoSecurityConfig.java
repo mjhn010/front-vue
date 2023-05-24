@@ -22,7 +22,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        .anyRequest().permitAll()
    )
    .formLogin()
-       .loginPage("/admin/login") //GET
+       .loginPage("/user/login") //GET
        .loginProcessingUrl("/user/login") //post
        .defaultSuccessUrl("/index")
    .and()

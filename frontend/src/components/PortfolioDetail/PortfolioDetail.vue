@@ -72,7 +72,7 @@ function toggleCommentBox() {
   onCommentBoxOpen.value = !onCommentBoxOpen.value;
 
   const scrollContainer = document.querySelector(".scroll-container");
-  if (onCommentBoxOpen.value) {
+  if (onCommentBoxOpen.value && scrollContainer.scrollLeft !== 0) {
     scrollContainer.scrollLeft += 12;
   } else {
     scrollContainer.scrollLeft -= 12;
@@ -154,7 +154,6 @@ async function getData() {
       state.reports = data;
     })
     .then(checkReports)
-    .then(checkMine)
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -446,6 +445,8 @@ function toggleReport() {
   }
 
   if (!state.onReported) {
+    if (!confirm("포트폴리오를 신고하시겠습니까?")) return;
+
     postReport();
     return (state.onReported = true);
   } else {
@@ -709,7 +710,7 @@ onBeforeRouteUpdate((to, from, next) => {
       :class="onCommentBoxOpen ? 'xl:col-span-7' : 'xl:col-span-9'"
     >
       <!-- Profile -->
-      <figure class="flex p-6">
+      <figure class="flex p-6 border-b">
         <router-link
           :to="
             state.isMine

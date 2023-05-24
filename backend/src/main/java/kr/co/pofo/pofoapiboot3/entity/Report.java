@@ -7,6 +7,5 @@ public class Report {
     private Integer id;
     private Integer memberId;
     private Integer portfolioId;
-    private Integer recruitId;
     private String regDate;
 }
