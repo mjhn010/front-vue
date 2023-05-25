@@ -45,9 +45,10 @@ public class PortfolioMemberController {
 
     @PostMapping("/regcontent")
     public boolean regContent(@RequestParam(required = false) MultipartFile contents, 
-                   MultipartHttpServletRequest request, int orders) {
+                   MultipartHttpServletRequest request, int orders, int counts) {
        int types = 0;
-
+       System.out.println("counts" + counts);
+       System.out.println("orders" + orders);
        PortfolioContents pofoContent = new PortfolioContents(); 
        pofoContent.setOrders(orders);
        pofoContent.setPortfolioId(id);
@@ -58,12 +59,6 @@ public class PortfolioMemberController {
            pofoContent.setContent(content);
            pofoContent.setType((Integer.toString(types)));
            boolean result = portfolioService.regContent(pofoContent);
-           try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-           return result;
        }
        //아니면 파일 데이터
        else {
@@ -73,13 +68,13 @@ public class PortfolioMemberController {
           pofoContent.setContent(content);
           pofoContent.setType((Integer.toString(types)));
           boolean result = portfolioService.regContent(pofoContent);
-          try {
+       }
+       if((orders+1) == counts)
+        try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-          return result;
-       }
+       return true;
     }
-   
 }

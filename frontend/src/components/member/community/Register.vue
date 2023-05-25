@@ -184,8 +184,8 @@ function resetHandler(){
             </main>
         </form>
     </div>
-    <div class="loading-screen" v-show="showLoaing">
-        <img class="loading-white-bg" src="/src/assets/images/loading.gif">
+    <div v-show="showLoaing" class="loading-screen">
+        <div  class=" loading-white-bg loader"></div>
     </div>
 </template>
 <style scoped>

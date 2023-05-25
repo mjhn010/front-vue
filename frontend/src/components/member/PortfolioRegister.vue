@@ -149,6 +149,7 @@ async function send(e) {
     if (content.img.length != 0) {
       for (let img of content.fileInfo) {
         let formdata = new FormData();
+        formdata.append("counts", list.length);
         formdata.append("contents", img);
         formdata.append("orders", order++);
         response = await fetch("http://localhost:8080/members/regcontent", {
@@ -161,6 +162,7 @@ async function send(e) {
       }
     } else {
       let formdata = new FormData();
+      formdata.append("counts", list.length);
       formdata.append("contents", content.text);
       formdata.append("orders", order++);
       response = await fetch("http://localhost:8080/members/regcontent", {
