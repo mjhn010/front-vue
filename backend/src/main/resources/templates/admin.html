@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -46,39 +46,10 @@
             </form>
           </div>
           <ul class="navbar-nav navbar-nav-right">
-            <li class="nav-item nav-profile dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                id="profileDropdown"
-                href="#"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <div class="nav-profile-img">
-                  <img src="/images/faces/face28.png" alt="image" />
-                  <span class="availability-status online"></span>
-                </div>
-                <div class="nav-profile-text">
-                  <p class="mb-1 text-black">Pofo1</p>
-                  
-                </div>
-              </a>
-              <div
-                class="dropdown-menu navbar-dropdown"
-                aria-labelledby="profileDropdown"
-              >
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-cached me-2 text-success"></i>로그인</a
-                >
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-logout me-2 text-primary"></i> 로그아웃
-                </a>
-              </div>
-            </li>
+           
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link">
-                <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+             
               </a>
             </li>
             <li class="nav-item dropdown">
@@ -89,8 +60,8 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="mdi mdi-email-outline"></i>
-                <span class="count-symbol bg-warning"></span>
+              
+                
               </a>
               <div
                 class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
@@ -168,8 +139,7 @@
                 href="#"
                 data-bs-toggle="dropdown"
               >
-                <i class="mdi mdi-bell-outline"></i>
-                <span class="count-symbol bg-danger"></span>
+              
               </a>
               <div
                 class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
@@ -228,16 +198,37 @@
                 <h6 class="p-3 mb-0 text-center">See all notifications</h6>
               </div>
             </li>
-            <li class="nav-item nav-logout d-none d-lg-block">
-              <a class="nav-link" href="#">
-                <i class="mdi mdi-power"></i>
+            <li class="nav-item nav-profile dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                id="profileDropdown"
+                href="#"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div class="nav-profile-img">
+                  <img src="/images/faces/face28.png" alt="image" />
+                  <span class="availability-status online"></span>
+                </div>
+                <div class="nav-profile-text">
+                  <p class="mb-1 text-black" >PofoAdmin</p>
+                  
+                </div>
               </a>
+              <div
+                class="dropdown-menu navbar-dropdown"
+                aria-labelledby="profileDropdown"
+              >
+                <a class="dropdown-item" href="/login">
+                  <i class="mdi mdi-cached me-2 text-success"></i>로그인</a
+                >
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/login">
+                  <i class="mdi mdi-logout me-2 text-primary"></i> 로그아웃
+                </a>
+              </div>
             </li>
-            <li class="nav-item nav-settings d-none d-lg-block">
-              <a class="nav-link" href="#">
-                <i class="mdi mdi-format-line-spacing"></i>
-              </a>
-            </li>
+           
           </ul>
           <button
             class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
@@ -261,7 +252,7 @@
                   <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                  <span class="font-weight-bold mb-2">Pofo1</span>
+                  <span class="font-weight-bold mb-2">PofoAdmin</span>
                   <span class="text-secondary text-small">관리자1</span>
                 </div>
                 <i
@@ -293,35 +284,6 @@
             <li class="nav-item">
             </li>
             <li class="nav-item">
-              <div class="collapse" id="general-pages">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/samples/blank-page.html">
-                      Blank Page
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/samples/login.html">
-                      Login
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/samples/register.html">
-                      Register
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/samples/error-404.html">
-                      404
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/samples/error-500.html">
-                      500
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </li>
             <li class="nav-item sidebar-actions">
               <span class="nav-link">
@@ -343,16 +305,6 @@
                 </span>
                 Dashboard
               </h3>
-              <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">
-                    <span></span>Overview
-                    <i
-                      class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"
-                    ></i>
-                  </li>
-                </ul>
-              </nav>
             </div>
             <div class="row">
               <div class="col-md-4 stretch-card grid-margin">
@@ -446,8 +398,8 @@
               <div class="col-md-5 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title"></h4>
-                    <canvas id="traffic-chart"></canvas>
+                    <h4 class="card-title">TOP3 STACKS CHART</h4>
+                    <canvas id="myChart" width="800" height="600"></canvas>
                     <div
                       id="traffic-chart-legend"
                       class="rounded-legend legend-vertical legend-bottom-left pt-4"
@@ -457,32 +409,6 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-10 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title text-white">Todo</h4>
-                    <div class="add-items d-flex">
-                      <input
-                        type="text"
-                        class="form-control todo-list-input"
-                        placeholder="관리자를 위한 Todo"
-                      />
-                      <button
-                        class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn"
-                        id="add-task"
-                      >
-                        Add
-                      </button>
-                    </div>
-                    <div class="list-wrapper">
-                      <ul
-                        class="d-flex flex-column-reverse todo-list todo-list-custom"
-                      >
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
             
             <div class="row">

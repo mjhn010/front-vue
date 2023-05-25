@@ -12,4 +12,8 @@ LIMIT 1;
   <select id="memberDiff" resultType="String">
     select diff_percent , status  from member_diff_view;
   </select>
+
+  <select id="AdminLogin" resultType="String">
+     SELECT * FROM admin_account WHERE admin_id = #{admin_id} AND admin_pwd = #{admin_pwd}
+  </select>
 </mapper>

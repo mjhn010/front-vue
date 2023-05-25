@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AdminCalcuRepository {
   List<String> todayVisitCount();
   List<String> memberDiff();
+  String AdminLogin(String admin_id, String admin_pwd);
 }

@@ -2,6 +2,103 @@
   "use strict";
   $(function () {
     Chart.defaults.global.legend.labels.usePointStyle = true;
+    window.onload = function () {
+      fetch("/chart-data")
+        .then((response) => response.json())
+        .then((data) => {
+          // 데이터 처리
+          console.log(data); // 받은 JSON 데이터 출력
+
+          // Chart.js를 사용하여 그래프 그리기
+          const labels = data.map((item) => item.eng_name);
+          const counts = data.map((item) => item.count);
+
+          // Chart.js 그래프 설정
+          const ctx = document.getElementById("myChart").getContext("2d");
+          const myChart = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: counts,
+                  backgroundColor: [
+                    "rgba(254, 112, 150, 1)",
+                    "rgba(54, 215, 232, 1)",
+                    "rgba(177, 148, 250, 1)",
+                  ], // 그래프 색상 설정
+                },
+              ],
+            },
+            options: {
+              legend: {
+                display: true,
+                labels: {
+                  generateLabels: function (chart) {
+                    const data = chart.data;
+                    if (data.labels.length && data.datasets.length) {
+                      return data.labels.map((label, i) => {
+                        const meta = chart.getDatasetMeta(0);
+                        const ds = data.datasets[0];
+                        const arc = meta.data[i];
+                        const custom = (arc && arc.custom) || {};
+                        const getValueAtIndexOrDefault =
+                          Chart.helpers.getValueAtIndexOrDefault;
+                        const arcOpts = chart.options.elements.arc;
+                        const fill = custom.backgroundColor
+                          ? custom.backgroundColor
+                          : getValueAtIndexOrDefault(
+                              ds.backgroundColor,
+                              i,
+                              arcOpts.backgroundColor
+                            );
+                        const stroke = custom.borderColor
+                          ? custom.borderColor
+                          : getValueAtIndexOrDefault(
+                              ds.borderColor,
+                              i,
+                              arcOpts.borderColor
+                            );
+                        const bw = custom.borderWidth
+                          ? custom.borderWidth
+                          : getValueAtIndexOrDefault(
+                              ds.borderWidth,
+                              i,
+                              arcOpts.borderWidth
+                            );
+
+                        // 수정된 라벨 텍스트 설정
+                        let labelContent = "";
+                        if (
+                          chart.data.labels[i] &&
+                          chart.data.datasets[0].data[i]
+                        ) {
+                          labelContent = `${chart.data.labels[i]}: ${chart.data.datasets[0].data[i]}`;
+                        }
+                        const value = chart.data.datasets[0].data[i];
+
+                        return {
+                          text: labelContent,
+                          fillStyle: fill,
+                          strokeStyle: stroke,
+                          lineWidth: bw,
+                          hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
+                          index: i,
+                          value: value,
+                        };
+                      });
+                    }
+                    return [];
+                  },
+                },
+              },
+            },
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
 
     if ($("#serviceSaleProgress").length) {
       var bar = new ProgressBar.Circle(serviceSaleProgress, {

@@ -22,4 +22,10 @@ public class DefaultAdminCalu implements AdminCalcuService {
     List<String> result = adminCalcuRepository.todayVisitCount();
     return result;
   }
+
+  @Override
+  public String AdminLogin(String admin_id, String admin_pwd) {
+    String result = adminCalcuRepository.AdminLogin(admin_id, admin_pwd);
+    return result;
+  }
 }
