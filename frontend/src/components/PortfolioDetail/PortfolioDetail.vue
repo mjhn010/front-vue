@@ -1120,7 +1120,7 @@ onBeforeRouteUpdate((to, from, next) => {
             >
               <img
                 class="h-12 w-12 rounded-full"
-                :src="`/src/assets/images/temp/${comment.memberImage}`"
+                :src="`http://localhost:8080/profileImage/${comment.memberImage}`"
                 alt="Profile image"
               >
             </router-link>
