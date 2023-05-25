@@ -153,8 +153,8 @@ async function closeHandler(){
                     </div>
                     <div class="contents-details-box">
                         <div class="contents-detail-header-text">장소</div>
-                        <span class="contents-status-2">ON-LINE</span>
-                        <!-- <span class="contents-status-2">OFF-LINE</span> -->
+                        <span v-if="data.community.onlineType === true" class="contents-status-2">ON-LINE</span>
+                        <span v-if="data.community.onlineType === false" class="contents-status-2">OFF-LINE</span>
                         <div class="contents-details-text location-info">{{ data.community.locationInfo }}</div>
                     </div>
                     <div class="contents-details-box">
