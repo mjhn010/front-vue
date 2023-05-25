@@ -71,7 +71,7 @@ defineExpose({
     v-if="state.visible"
   >
     <div
-      class="mt-16 w-full bg-white pb-4 xl:col-span-9 xl:ml-36 xl:rounded-lg xl:border"
+      class="mt-16 w-full bg-white pb-4 lg:col-span-9 lg:ml-36 lg:rounded-lg lg:border"
     >
       <!-- Profile -->
       <figure class="flex border-b p-6">
@@ -81,26 +81,26 @@ defineExpose({
           alt="Profile image"
         >
 
-        <figcaption class="flex cursor-default flex-col justify-evenly">
+        <figcaption class="flex w-full cursor-default flex-col">
           <h1
-            class="text-sm font-bold sm:text-2xl w-full"
+            class="text-sm font-bold sm:text-2xl"
             v-text="props.title"
           />
           <div class="flex">
             <div>
               <span
-                class="cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
+                class="w-fit cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
                 v-text="props.member.nickname"
               />
             </div>
             <span class="text-xs sm:text-lg">ᆞ</span>
             <span
-              class="w-24 cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
+              class="w-fit cursor-pointer text-xs font-semibold hover:text-gray-500 sm:text-lg"
             >팔로우</span>
           </div>
         </figcaption>
         <div
-          class="x-mark-icon cursor-pointer bg-cover bg-no-repeat opacity-50 hover:opacity-100"
+          class="relative x-mark-icon cursor-pointer bg-cover bg-no-repeat opacity-50 hover:opacity-100"
           @click="$emit('close')"
         />
       </figure>
@@ -296,8 +296,6 @@ main:deep(div) {
 .x-mark-icon {
   width: 28px;
   height: 28px;
-  margin-left: 81.5%;
-  margin-top: 0%;
   background-image: url("/src/assets/images/x-mark.svg");
 }
 
