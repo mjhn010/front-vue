@@ -211,11 +211,17 @@ async function modifyInfo() {
         body: formData
     });
     let result = await response.text();
-
+    
+    fetch(`http://localhost:8080/user/image/${userDetails.id}`)
+        .then(response => response.text())
+        .then(result =>{
+            userDetails.profileSrc = result;
+            console.log(userDetails.profileSrc);
+    });
+    
     if (result) {
         showLoaing.value = false;
         await load();
-        location.reload();
     }
 }
 

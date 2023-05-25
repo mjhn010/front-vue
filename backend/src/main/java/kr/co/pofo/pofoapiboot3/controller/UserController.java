@@ -66,4 +66,10 @@ public class UserController {
         map.put("result", member);
         return map;
     }
+
+    @GetMapping("/image/{id}")
+    public String getImageById(@PathVariable int id){
+        String image = service.getImageById(id);
+        return image;
+    }
 }
