@@ -45,11 +45,9 @@ async function registerHandler() {
 
     if (result == "true") {
         showLoaing.value = false;
-        alert("Post created successfully.");
         router.push("/community/list");
     } else {
         showLoaing.value = false;
-        alert("Failed to create post.");
     }
 }
 
@@ -204,5 +202,20 @@ function resetHandler(){
     object-fit: none;
     margin-top: -40px;
   }
+
+  .loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #7404FA;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 </style>
