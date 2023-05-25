@@ -330,12 +330,12 @@ function inputFileclickHandler(e){
               </button>
             </li>
           </ul>
-          <button @click.prevent="showModalHandler" class="register-btn btn-1 margin-top-5">
+          <button @click.prevent="showModalHandler" class="register-btn btn-1 margin-top-10">
             등록하기
           </button>
-          <button class="register-btn-1 btn-1 margin-top-5">
+          <!-- <button class="register-btn-1 btn-1 margin-top-5">
             임시저장
-          </button>
+          </button> -->
         </nav>
       </aside>
       <div class="m-comment d-none">

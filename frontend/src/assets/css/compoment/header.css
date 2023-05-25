@@ -99,6 +99,10 @@
   height: 32px;
   margin-bottom: 1px;
 }
+.prj-register:hover{
+  background-color: #8cccf4;
+  
+}
 .header-profile {
   width: 28px;
   height: 28px;
