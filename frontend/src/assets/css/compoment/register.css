@@ -273,6 +273,9 @@ form {
   border-radius: 24px;
   padding: 4% 1%;
 }
+.register-btn:hover{
+  background-color: #8cccf4;  
+}
 .register-btn-1 {
   background-color: #fff;
   color: black;
